@@ -269,10 +269,6 @@ func GetPostByMonth(c *gin.Context) {
 	GetPostsByFilter(c, "DATE_FORMAT(date, '%y-%m') = ?", ym)
 }
 
-func Sandbox(c *gin.Context) {
-	GetPostsByFilter(c, "DATE_FORMAT(date, '%m-%d') = ?", time.Now().Format("01-02"))
-}
-
 func GetPostsByFilter(c *gin.Context, query interface{}, args ...interface{}) {
 
 	type Post struct {
