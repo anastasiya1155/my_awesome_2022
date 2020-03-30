@@ -1,0 +1,88 @@
+# Group Tasks
+Welcome to the tasks API. This API provides access to the tasks service.
+
+## tasks [/tasks]
+
+### Create task [POST]
+
+Create a new task
+
++ Request task (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.vova+json
+    + Attributes
+
+        + Body: BODY (string)
+        + Done: false (boolean)
+
++ Response 201 (application/json; charset=utf-8)
+    + Attributes (task, fixed)
+
+### Get tasks [GET]
+
+Returns a task list.
+
++ Request (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.vova+json
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (array, fixed)
+        + (task)
+
+## task details [/tasks/{id}]
+
++ Parameters
+    + id: `1` (enum[string]) - The ID of the desired task.
+        + Members
+            + `1`
+            + `2`
+            + `3`
+
+### Get task [GET]
+
+Returns a task.
+
++ Request (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.vova+json
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (task, fixed)
+
+### Update task [PUT]
+
+Update a task.
+
++ Request task (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.vova+json
+    + Attributes
+
+        + Body: BODY (string)
+        + Done: false (boolean)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (task, fixed)
+
+### Delete task [DELETE]
+
+Delete a task.
+
++ Request (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.vova+json
+
++ Response 204
+
+# Data Structures
+## task (object)
+
++ : *1* (number)
++ Body: *BODY* (string)
++ Done: *false* (boolean)

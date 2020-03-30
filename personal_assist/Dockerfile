@@ -1,0 +1,10 @@
+FROM golang:1.11
+WORKDIR /go/src/github.com/vova/pa2020/
+COPY . .
+
+RUN go get -d -v ./...
+RUN go install -v ./...
+
+RUN go build -o main .
+EXPOSE 8887
+CMD ["./main"]

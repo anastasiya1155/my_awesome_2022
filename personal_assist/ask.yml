@@ -1,0 +1,39 @@
+"questions":
+    сity:
+      type: string
+      default: "Київ"
+    "Weather":
+      type: string
+    "Thoughts":
+      type: string
+    "Work":
+      type: string
+    "Flowers":
+      type: bool
+    "Shave":
+      type: bool
+    "Fitness/Cross":
+      type: bool
+    "Beer":
+      type: bool
+    "Bought staff":
+      type: string
+    "English":
+      type: bool
+    "GOlANG":
+      type: bool
+    "Tennis(Wall, Where, With whom, How Long, Result, FBServe)":
+      type: string
+    "Move/Show\n// cinema/theatre/concert":
+      type: string
+    "Meetings/Contacs/Calls":
+      type: string
+    "Guitar":
+      type: string
+    "Photo":
+      type: string
+    "Places visited":
+      type: string
+
+  }
+}

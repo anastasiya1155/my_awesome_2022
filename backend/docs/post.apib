@@ -1,0 +1,91 @@
+# Group Posts
+Welcome to the posts API. This API provides access to the posts service.
+
+## posts [/posts]
+
+### Create post [POST]
+
+Create a new post
+
++ Request post (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.vova+json
+    + Attributes
+
+        + : `2000-01-01 00:00:00` (string)
+        + Body: BODY (string)
+        +  ([]label)
+
++ Response 201 (application/json; charset=utf-8)
+    + Attributes (post, fixed)
+
+### Get posts [GET]
+
+Returns a post list.
+
++ Request (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.vova+json
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (array, fixed)
+        + (post)
+
+## post details [/posts/{id}]
+
++ Parameters
+    + id: `1` (enum[string]) - The ID of the desired post.
+        + Members
+            + `1`
+            + `2`
+            + `3`
+
+### Get post [GET]
+
+Returns a post.
+
++ Request (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.vova+json
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (post, fixed)
+
+### Update post [PUT]
+
+Update a post.
+
++ Request post (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.vova+json
+    + Attributes
+
+        + : `2000-01-01 00:00:00` (string)
+        + Body: BODY (string)
+        +  ([]label)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (post, fixed)
+
+### Delete post [DELETE]
+
+Delete a post.
+
++ Request (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.vova+json
+
++ Response 204
+
+# Data Structures
+## post (object)
+
++ : *1* (number)
++ : `*2000-01-01 00:00:00*` (string)
++ Body: *BODY* (string)
++  ([]label)

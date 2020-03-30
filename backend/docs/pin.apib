@@ -1,0 +1,88 @@
+# Group Pins
+Welcome to the pins API. This API provides access to the pins service.
+
+## pins [/pins]
+
+### Create pin [POST]
+
+Create a new pin
+
++ Request pin (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.vova+json
+    + Attributes
+
+        + Name: NAME (string)
+        + Priority: 1 (number)
+
++ Response 201 (application/json; charset=utf-8)
+    + Attributes (pin, fixed)
+
+### Get pins [GET]
+
+Returns a pin list.
+
++ Request (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.vova+json
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (array, fixed)
+        + (pin)
+
+## pin details [/pins/{id}]
+
++ Parameters
+    + id: `1` (enum[string]) - The ID of the desired pin.
+        + Members
+            + `1`
+            + `2`
+            + `3`
+
+### Get pin [GET]
+
+Returns a pin.
+
++ Request (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.vova+json
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (pin, fixed)
+
+### Update pin [PUT]
+
+Update a pin.
+
++ Request pin (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.vova+json
+    + Attributes
+
+        + Name: NAME (string)
+        + Priority: 1 (number)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (pin, fixed)
+
+### Delete pin [DELETE]
+
+Delete a pin.
+
++ Request (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.vova+json
+
++ Response 204
+
+# Data Structures
+## pin (object)
+
++ : *1* (number)
++ Name: *NAME* (string)
++ Priority: *1* (number)

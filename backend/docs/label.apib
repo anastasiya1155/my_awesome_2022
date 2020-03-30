@@ -1,0 +1,85 @@
+# Group Labels
+Welcome to the labels API. This API provides access to the labels service.
+
+## labels [/labels]
+
+### Create label [POST]
+
+Create a new label
+
++ Request label (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.vova+json
+    + Attributes
+
+        + Name: NAME (string)
+
++ Response 201 (application/json; charset=utf-8)
+    + Attributes (label, fixed)
+
+### Get labels [GET]
+
+Returns a label list.
+
++ Request (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.vova+json
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (array, fixed)
+        + (label)
+
+## label details [/labels/{id}]
+
++ Parameters
+    + id: `1` (enum[string]) - The ID of the desired label.
+        + Members
+            + `1`
+            + `2`
+            + `3`
+
+### Get label [GET]
+
+Returns a label.
+
++ Request (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.vova+json
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (label, fixed)
+
+### Update label [PUT]
+
+Update a label.
+
++ Request label (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.vova+json
+    + Attributes
+
+        + Name: NAME (string)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (label, fixed)
+
+### Delete label [DELETE]
+
+Delete a label.
+
++ Request (application/json; charset=utf-8)
+    + Headers
+
+            Accept: application/vnd.vova+json
+
++ Response 204
+
+# Data Structures
+## label (object)
+
++ : *1* (number)
++ Name: *NAME* (string)

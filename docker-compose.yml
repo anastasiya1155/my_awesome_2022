@@ -1,0 +1,37 @@
+version: '3'
+services:
+  mysql:
+    image: "mysql:5.7"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: m2019
+      MYSQL_USER: vova
+      MYSQL_PASSWORD: vova
+    ports:
+      - "3308:3306"
+    tty: true
+    volumes:
+      - "./db:/var/lib/mysql:cached"
+  front:
+    build:
+      context: frontend
+    ports:
+      - "81:80"
+#  pa:
+#    build:
+#      context: personal_assist
+#    ports:
+#      - "8887:8887"
+##    restart: always
+#    depends_on:
+#      - mysql
+#    volumes:
+#      - "./personal_assist/cmd:/cmd"
+  app:
+    build:
+      context: backend
+    ports:
+      - "8888:8888"
+    restart: always
+    depends_on:
+      - mysql
