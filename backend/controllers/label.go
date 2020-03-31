@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"net/http"
 
-	dbpkg "github.com/vova/m2019/backend/db"
-	"github.com/vova/m2019/backend/helper"
-	"github.com/vova/m2019/backend/models"
-	"github.com/vova/m2019/backend/version"
+	dbpkg "github.com/vova/pa2020/backend/db"
+	"github.com/vova/pa2020/backend/helper"
+	"github.com/vova/pa2020/backend/models"
+	"github.com/vova/pa2020/backend/version"
 
 	"github.com/gin-gonic/gin"
 )

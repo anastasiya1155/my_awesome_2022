@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/vova/m2019/backend/db"
-	"github.com/vova/m2019/backend/server"
+	"github.com/vova/pa2020/backend/db"
+	"github.com/vova/pa2020/backend/server"
 	"os"
 	"strconv"
 )

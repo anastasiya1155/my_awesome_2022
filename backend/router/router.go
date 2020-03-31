@@ -3,7 +3,7 @@ package router
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/vova/m2019/backend/controllers"
+	"github.com/vova/pa2020/backend/controllers"
 )
 
 func Initialize(r *gin.Engine) {
@@ -59,11 +59,6 @@ func Initialize(r *gin.Engine) {
 		api.POST("/wishes", controllers.CreateWish)
 		api.PUT("/wishes/:id", controllers.UpdateWish)
 		api.DELETE("/wishes/:id", controllers.DeleteWish)
-
-		api.GET("/player/:id", controllers.GetPlayer)
-		api.GET("/champ/:id", controllers.GetChamp)
-
-		api.GET("/sandbox", controllers.Sandbox)
 
 	}
 

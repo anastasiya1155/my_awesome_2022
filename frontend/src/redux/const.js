@@ -26,4 +26,4 @@ export const CATEGORIES = {
 export const IP = 'localhost';
 export const PORT = '8888';
 
-// export const IP = "192.168.1.2";
+// export const IP = "192.168.1.5";

@@ -2,9 +2,9 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
-	dbpkg "github.com/vova/m2019/backend/db"
-	"github.com/vova/m2019/backend/helper"
-	"github.com/vova/m2019/backend/models"
+	dbpkg "github.com/vova/pa2020/backend/db"
+	"github.com/vova/pa2020/backend/helper"
+	"github.com/vova/pa2020/backend/models"
 	"net/http"
 )
 
