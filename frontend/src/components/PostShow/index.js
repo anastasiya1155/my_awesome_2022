@@ -11,7 +11,7 @@ import { TOGGLE_COMMENT, TOGGLE_EDIT, RELOAD_POST_LIST } from '../../redux/actio
 import { IP, PORT } from '../../redux/const';
 import moment from 'moment';
 
-const styles = theme => ({
+const styles = (theme) => ({
   periods: {
     display: 'flex',
     // justifyContent: 'center',
@@ -19,6 +19,9 @@ const styles = theme => ({
     '& > *': {
       margin: theme.spacing(1),
     },
+  },
+  period: {
+    color: theme.palette.primary.light,
   },
 });
 
@@ -28,7 +31,7 @@ class PostShow extends Component {
   };
 
   toggleDeleteMode = () => {
-    this.setState(prevState => ({ deleteMode: !prevState.deleteMode }));
+    this.setState((prevState) => ({ deleteMode: !prevState.deleteMode }));
   };
 
   handleDeletePost = () => {
@@ -38,7 +41,7 @@ class PostShow extends Component {
       .then(() => {
         reloadPostList(true);
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   };
 
   render() {
@@ -60,12 +63,11 @@ class PostShow extends Component {
     }
     return (
       <div style={{ marginBottom: 20 }}>
-        <span style={{ backgroundColor: 'white', position: 'relative', right: 15 }}>
-
-          {moment(post.date).format("dddd YYYY-MM-DD") }
+        <span style={{ position: 'relative', right: 15 }}>
+          {moment(post.date).format('dddd YYYY-MM-DD')}
         </span>
 
-        {labels.map(l => (
+        {labels.map((l) => (
           <PostLabel key={l.id} label={l} post={post} />
         ))}
         <span className="PostShowEdit" onClick={toggleEdit}>
@@ -108,11 +110,16 @@ class PostShow extends Component {
               </p>
             )}
             <div className={classes.periods}>
-              {post.periods.map(period => (
-                <Chip key={period.ID} label={period.Name} variant="outlined" color="secondary" />
+              {post.periods.map((period) => (
+                <Chip
+                  key={period.ID}
+                  label={period.Name}
+                  className={this.props.classes.period}
+                  variant="outlined"
+                />
               ))}
             </div>
-            {post.comments.map(comment => (
+            {post.comments.map((comment) => (
               <PostComment key={comment.ID} comment={comment} />
             ))}
             {isCommentOpen ? <PostCommentEdit postId={post.id} /> : ''}
@@ -123,14 +130,14 @@ class PostShow extends Component {
   }
 }
 
-const mapStateToProps = function(state, ownProps) {
+const mapStateToProps = function (state, ownProps) {
   return {
     isCommentOpen: state.openComments[ownProps.post.id],
     isEditOpen: state.openEdits[ownProps.post.id],
   };
 };
 
-const mapDispatchToProps = function(dispatch, ownProps) {
+const mapDispatchToProps = function (dispatch, ownProps) {
   return {
     toggleComment: () => {
       dispatch({
@@ -148,7 +155,7 @@ const mapDispatchToProps = function(dispatch, ownProps) {
         },
       });
     },
-    reloadPostList: reload => {
+    reloadPostList: (reload) => {
       dispatch({
         type: RELOAD_POST_LIST,
         payload: {

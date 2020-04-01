@@ -23,10 +23,10 @@ const tableColumns = [
   {
     title: 'Category',
     field: 'category',
-    render: row => (row.category ? CATEGORIES[row.category].name : row),
+    render: (row) => (row.category ? CATEGORIES[row.category].name : row),
   },
   { title: 'Description', field: 'description' },
-  { title: 'Date', field: 'date', render: row => moment(row.date).format('YYYY-MM-DD') },
+  { title: 'Date', field: 'date', render: (row) => moment(row.date).format('YYYY-MM-DD') },
 ];
 
 const categoryColumns = [
@@ -34,7 +34,7 @@ const categoryColumns = [
   {
     title: 'Percentage',
     field: 'percentage',
-    render: row => (
+    render: (row) => (
       <div style={{ width: `${row.percentage}%`, backgroundColor: '#af8f85' }}>
         {row.percentage}
       </div>
@@ -46,17 +46,15 @@ const categoryColumns = [
 const getYears = () => {
   const years = [];
   for (let i = 0; i <= yearsSinceStart; i++) {
-    const year = moment()
-      .subtract(i, 'years')
-      .format('YYYY');
+    const year = moment().subtract(i, 'years').format('YYYY');
     years.push(<MenuItem value={year}>{year}</MenuItem>);
   }
   return years;
 };
 
-const countSum = transactions => {
+const countSum = (transactions) => {
   let total = 0;
-  transactions.forEach(tr => (total += tr.amount));
+  transactions.forEach((tr) => (total += tr.amount));
   return total;
 };
 
@@ -75,32 +73,30 @@ class TransactionsList extends Component {
   }
 
   fetchData = (selectedMonth, selectedYear) => {
-    const month = moment()
-      .month(selectedMonth)
-      .format('M');
+    const month = moment().month(selectedMonth).format('M');
     axios
       .get(`https://tranf-ae713.firebaseio.com/transaction/${selectedYear}/${month}.json`)
-      .then(response => {
+      .then((response) => {
         if (response.data) {
           const transactions = Object.keys(response.data)
             .reverse()
-            .map(key => ({ ...response.data[key], id: key }));
+            .map((key) => ({ ...response.data[key], id: key }));
           const total = countSum(transactions);
           const categoryData = this.normalizeByCategory(transactions, total);
           this.setState({ transactions, total, categoryData });
         }
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   };
 
-  onMonthChange = e => {
+  onMonthChange = (e) => {
     const { selectedYear } = this.state;
     const selectedMonth = e.target.value;
     this.setState({ selectedMonth });
     this.fetchData(selectedMonth, selectedYear);
   };
 
-  onYearChange = e => {
+  onYearChange = (e) => {
     const { selectedMonth } = this.state;
     const selectedYear = e.target.value;
     this.setState({ selectedYear });
@@ -109,15 +105,15 @@ class TransactionsList extends Component {
 
   normalizeByCategory = (transactions, total) =>
     Object.keys(CATEGORIES)
-      .map(id => {
-        const filtered = transactions.filter(tr => tr.category.toString() === id);
+      .map((id) => {
+        const filtered = transactions.filter((tr) => tr.category.toString() === id);
         const sum = countSum(filtered);
         const percentage = ((sum / total) * 100).toFixed(1);
         return { sum, percentage, category: CATEGORIES[id].name };
       })
       .sort((a, b) => (a.sum > b.sum ? -1 : 1));
 
-  onGroupByChange = e => {
+  onGroupByChange = (e) => {
     const { transactions, total } = this.state;
     const categoryData = this.normalizeByCategory(transactions, total);
     this.setState({ groupByCategory: e.target.checked, categoryData });
@@ -137,7 +133,7 @@ class TransactionsList extends Component {
         <Grid container justify="space-around">
           <Grid item>
             <Select value={selectedMonth} onChange={this.onMonthChange}>
-              {moment.months().map(m => (
+              {moment.months().map((m) => (
                 <MenuItem value={m}>{m}</MenuItem>
               ))}
             </Select>
@@ -169,7 +165,7 @@ class TransactionsList extends Component {
               paging: false,
             }}
             components={{
-              GroupRow: rowProps => {
+              GroupRow: (rowProps) => {
                 let sum = 0;
                 rowProps.groupData.data.forEach(({ amount }) => (sum += amount));
                 return (

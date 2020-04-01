@@ -13,7 +13,7 @@ class PostLabel extends Component {
     let isActive = false;
     const props_label = this.props.label;
     if (this.props.post.labels !== null) {
-      this.props.post.labels.map(post_label => {
+      this.props.post.labels.map((post_label) => {
         if (post_label.ID === props_label.id) {
           isActive = true;
         }
@@ -24,25 +24,25 @@ class PostLabel extends Component {
     this.setState({ isActive });
   }
 
-  handleClick = e => {
+  handleClick = (e) => {
     if (this.state.isActive) {
       axios
         .get(
           `http://${IP}:${PORT}/posts-delete-label/?post_id=${this.state.post}&label_id=${this.state.label}`,
         )
-        .then(response => {
+        .then((response) => {
           this.setState({ isActive: false });
         })
-        .catch(error => console.log(error));
+        .catch((error) => console.log(error));
     } else {
       axios
         .get(
           `http://${IP}:${PORT}/posts-add-label/?post_id=${this.state.post}&label_id=${this.state.label}`,
         )
-        .then(response => {
+        .then((response) => {
           this.setState({ isActive: true });
         })
-        .catch(error => console.log(error));
+        .catch((error) => console.log(error));
     }
   };
 

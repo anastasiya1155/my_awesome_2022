@@ -21,8 +21,8 @@ export default class PinList extends Component {
   fetchData = () => {
     axios
       .get(`http://${IP}:${PORT}/pins`)
-      .then(response => {
-        const newContacts = response.data.map(c => ({
+      .then((response) => {
+        const newContacts = response.data.map((c) => ({
           id: c.ID,
           name: c.Name,
           priority: c.Priority,
@@ -30,13 +30,13 @@ export default class PinList extends Component {
 
         this.setState({ contacts: newContacts });
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   };
 
   render() {
     return (
       <div>
-        {this.state.contacts.map(p => (
+        {this.state.contacts.map((p) => (
           <PinShow key={p.id} priority={p.priority} name={p.name} />
         ))}
       </div>

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 
 class Year extends Component {
   state = {
@@ -6,12 +7,12 @@ class Year extends Component {
   };
 
   toggleMonths = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       collapsed: !prevState.collapsed,
     }));
   };
 
-  proxyFetchMonth = ym => {
+  proxyFetchMonth = (ym) => {
     this.props.fetchmonth(ym);
   };
 
@@ -23,13 +24,13 @@ class Year extends Component {
         </span>
         {this.state.collapsed ? null : (
           <ul>
-            {this.props.months.map(m => (
+            {this.props.months.map((m) => (
               <li key={m.YM}>
                 <span
                   style={{
                     cursor: 'pointer',
-                    backgroundColor: this.props.selected === m.YM ? 'rgb(222, 210, 210)' : 'white',
                   }}
+                  className={this.props.selected === m.YM ? this.props.classes.monthSelected : null}
                   onClick={() => this.proxyFetchMonth(m.YM)}
                 >
                   {m.M} ({m.Cnt})
@@ -43,4 +44,10 @@ class Year extends Component {
   }
 }
 
-export default Year;
+const styles = (theme) => ({
+  monthSelected: {
+    color: theme.palette.primary.light,
+  },
+});
+
+export default withStyles(styles)(Year);

@@ -26,31 +26,31 @@ class Tasks extends Component {
 
   fetchData = () => {
     fetch('https://tranf-ae713.firebaseio.com/todo.json')
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         const items = [];
-        Object.keys(data).map(key => items.push({ id: key, name: data[key].name }));
+        Object.keys(data).map((key) => items.push({ id: key, name: data[key].name }));
         this.setState({ toDoArr: items, isLoading: false, refreshing: false });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         this.setState({ isLoading: false, refreshing: false });
       });
   };
 
-  handleDelete = id => {
+  handleDelete = (id) => {
     fetch(`https://tranf-ae713.firebaseio.com/todo/${id}.json`, {
       method: 'delete',
     })
       .then(this.fetchData)
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   };
 
-  handleChange = e => {
+  handleChange = (e) => {
     this.setState({ newTask: e.target.value });
   };
 
-  handleAdd = e => {
+  handleAdd = (e) => {
     const { newTask } = this.state;
     e.preventDefault();
     fetch('https://tranf-ae713.firebaseio.com/todo.json', {
@@ -65,7 +65,7 @@ class Tasks extends Component {
         });
         this.fetchData();
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   };
 
   render() {
@@ -84,7 +84,7 @@ class Tasks extends Component {
         </Grid>
         <List>
           {toDoArr.length > 0 ? (
-            toDoArr.map(todo => (
+            toDoArr.map((todo) => (
               <>
                 <ListItem>
                   <ListItemText>{todo.name}</ListItemText>

@@ -10,7 +10,7 @@ class PostList extends Component {
     const { posts, labels } = this.props;
     return (
       <div>
-        {posts.map(p => (
+        {posts.map((p) => (
           <PostShow key={p.id} post={p} labels={labels} />
         ))}
       </div>

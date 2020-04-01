@@ -1,15 +1,24 @@
 import React from 'react';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import grey from '@material-ui/core/colors/grey';
-import brown from '@material-ui/core/colors/brown';
+import teal from '@material-ui/core/colors/teal';
+import blue from '@material-ui/core/colors/blue';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 // A theme with custom primary and secondary color.
 // It's optional.
 const theme = createMuiTheme({
   palette: {
-    primary: grey,
-    secondary: brown,
+    type: 'dark',
+    primary: {
+      main: teal[700],
+      light: teal[500],
+      dark: teal[900],
+    },
+    secondary: {
+      main: blue[900],
+      light: blue[500],
+      dark: blue[900],
+    },
   },
   typography: {
     fontSize: 14,

@@ -16,15 +16,15 @@ class TransactionsCreate extends Component {
     category: 31,
   };
 
-  handleCategory = e => {
+  handleCategory = (e) => {
     this.setState({ category: e.target.value });
   };
 
-  handleAmount = e => {
+  handleAmount = (e) => {
     this.setState({ amount: e.target.value });
   };
 
-  handleDescription = e => {
+  handleDescription = (e) => {
     this.setState({ description: e.target.value });
   };
 
@@ -46,7 +46,7 @@ class TransactionsCreate extends Component {
       .then(() => {
         this.setState({ description: '', amount: 1, category: 1 });
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   };
 
   render() {
@@ -65,7 +65,7 @@ class TransactionsCreate extends Component {
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              {Object.keys(CATEGORIES).map(c => (
+              {Object.keys(CATEGORIES).map((c) => (
                 <MenuItem key={CATEGORIES[c].id} value={CATEGORIES[c].id}>
                   {CATEGORIES[c].name}
                 </MenuItem>

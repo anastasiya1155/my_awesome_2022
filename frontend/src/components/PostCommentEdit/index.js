@@ -9,11 +9,11 @@ class PostCommentEdit extends Component {
     commentBody: '',
   };
 
-  handleText = e => {
+  handleText = (e) => {
     this.setState({ commentBody: e.target.value });
   };
 
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
     axios
       .post(`http://${IP}:${PORT}/comments`, {
@@ -24,7 +24,7 @@ class PostCommentEdit extends Component {
         this.props.closeComment();
         this.props.reloadPostList(true);
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   };
 
   render() {
@@ -61,7 +61,7 @@ class PostCommentEdit extends Component {
   }
 }
 
-const mapDispatchToProps = function(dispatch, ownProps) {
+const mapDispatchToProps = function (dispatch, ownProps) {
   return {
     closeComment: () => {
       dispatch({
@@ -71,7 +71,7 @@ const mapDispatchToProps = function(dispatch, ownProps) {
         },
       });
     },
-    reloadPostList: reload => {
+    reloadPostList: (reload) => {
       dispatch({
         type: RELOAD_POST_LIST,
         payload: {
@@ -82,7 +82,4 @@ const mapDispatchToProps = function(dispatch, ownProps) {
   };
 };
 
-export default connect(
-  null,
-  mapDispatchToProps,
-)(PostCommentEdit);
+export default connect(null, mapDispatchToProps)(PostCommentEdit);

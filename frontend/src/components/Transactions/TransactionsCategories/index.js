@@ -26,8 +26,8 @@ class TransactionsCategories extends Component {
   fetchData = () => {
     axios
       .get('https://tranf-ae713.firebaseio.com/cat.json')
-      .then(response => {
-        const categories = Object.keys(response.data).map(key => {
+      .then((response) => {
+        const categories = Object.keys(response.data).map((key) => {
           if (response.data[key].id >= this.state.nextId) {
             this.setState({ nextId: response.data[key].id + 1 });
           }
@@ -39,7 +39,7 @@ class TransactionsCategories extends Component {
 
         this.setState({ categories });
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   };
 
   render() {
@@ -48,7 +48,7 @@ class TransactionsCategories extends Component {
         <TransactionsCategoriesCreate nextId={this.state.nextId} />
         <br />
         <List component="nav">
-          {this.state.categories.map(c => (
+          {this.state.categories.map((c) => (
             <TransactionsCategoriesShow key={c.id} id={c.id} name={c.name} />
           ))}
         </List>
@@ -57,15 +57,15 @@ class TransactionsCategories extends Component {
   }
 }
 
-const mapStateToProps = function(state) {
+const mapStateToProps = function (state) {
   return {
     reloadTransCategoriesList: state.reloadTransCategoriesList,
   };
 };
 
-const mapDispatchToProps = function(dispatch) {
+const mapDispatchToProps = function (dispatch) {
   return {
-    reloadList: reload => {
+    reloadList: (reload) => {
       dispatch({
         type: RELOAD_TRANS_CATEGORIES_LIST,
         payload: {
@@ -75,7 +75,4 @@ const mapDispatchToProps = function(dispatch) {
     },
   };
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(TransactionsCategories);
+export default connect(mapStateToProps, mapDispatchToProps)(TransactionsCategories);

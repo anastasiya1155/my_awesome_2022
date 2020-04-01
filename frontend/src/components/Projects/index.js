@@ -1,148 +1,143 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
-    Collapse,
-    Divider,
-    Icon,
-    IconButton,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemSecondaryAction,
-    ListItemText,
-    Menu,
+  Collapse,
+  Divider,
+  Icon,
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemSecondaryAction,
+  ListItemText,
+  Menu,
 } from '@material-ui/core';
 
-import axios from "axios";
-import {IP, PORT} from "../../redux/const";
+import axios from 'axios';
+import { IP, PORT } from '../../redux/const';
 
 class Projects extends Component {
-    state = {
-        projects: [],
-        tasks:[],
-        pressedList: undefined,
-        menuAnchorElement: undefined,
-        pressedProject: null,
-    };
+  state = {
+    projects: [],
+    tasks: [],
+    pressedList: undefined,
+    menuAnchorElement: undefined,
+    pressedProject: null,
+  };
 
-    componentDidMount() {
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  fetchData = () => {
+    axios
+      .get(`http://${IP}:${PORT}/projects`)
+      .then((response) => {
+        const projects = response.data.map((p) => ({
+          id: p.id,
+          title: p.title,
+          description: p.description,
+          created_at: p.created_at,
+        }));
+
+        this.setState({ projects: projects });
+      })
+      .catch((error) => console.log(error));
+  };
+
+  handleDelete = (id) => {
+    axios
+      .delete(`http://${IP}:${PORT}/projects`)
+      .then((response) => {
         this.fetchData();
-    }
+      })
+      .catch((error) => console.log(error));
+  };
 
-    fetchData = () => {
-        axios
-            .get(`http://${IP}:${PORT}/projects`)
-            .then(response => {
-                const projects = response.data.map(p => ({
-                    id: p.id,
-                    title: p.title,
-                    description: p.description,
-                    created_at: p.created_at
-                }));
+  handleChange = (e) => {};
 
-                this.setState({projects: projects});
-            })
-            .catch(error => console.log(error));
-    };
+  handleCreate = (e) => {};
 
-    handleDelete = id => {
-        axios
-            .delete(`http://${IP}:${PORT}/projects`)
-            .then(response => {
-                this.fetchData();
-            })
-            .catch(error => console.log(error));
-    };
+  handleRename(list) {
+    this.handleMenuClose();
+    this.props.onRenameList(this.state.pressedList);
+  }
 
-    handleChange = e => {
-    };
+  handleMoreClick(list, element) {
+    this.setState({ pressedList: list, menuAnchorElement: element });
+  }
 
-    handleCreate = e => {
+  handleMenuClose() {
+    this.setState({ pressedList: undefined, menuAnchorElement: undefined });
+  }
 
-    };
+  handleListClick = (projectId) => {
+    this.setState({ pressedProject: projectId });
+    axios
+      .get(`http://${IP}:${PORT}/tasks?q[project_id]=${projectId}`)
+      .then((response) => {
+        const tasks = response.data.map((p) => ({
+          id: p.id,
+          body: p.body,
+          status: p.status,
+          created_at: p.created_at,
+        }));
 
-    handleRename(list) {
-        this.handleMenuClose();
-        this.props.onRenameList(this.state.pressedList);
-    }
+        this.setState({ tasks: tasks });
+      })
+      .catch((error) => console.log(error));
+  };
 
-    handleMoreClick(list, element) {
-        this.setState({pressedList: list, menuAnchorElement: element});
-    }
+  render() {
+    return (
+      <div>
+        <h1>Projects</h1>
+        <List>
+          {this.state.projects.map((list, index) => (
+            <React.Fragment key={list.id}>
+              <ListItem
+                button
+                onClick={() => this.handleListClick(list.id)}
+                selected={this.state.pressedProject === list.id}
+              >
+                <ListItemIcon>
+                  <Icon>
+                    {this.state.pressedProject === list.id ? 'chevron_right' : 'chevron_left'}
+                  </Icon>
+                </ListItemIcon>
 
-    handleMenuClose() {
-        this.setState({pressedList: undefined, menuAnchorElement: undefined});
-    }
+                <ListItemText inset primary={list.title} />
 
-    handleListClick = projectId => {
-        this.setState({pressedProject: projectId});
-        axios
-            .get(`http://${IP}:${PORT}/tasks?q[project_id]=${projectId}`)
-            .then(response => {
-                const tasks = response.data.map(p => ({
-                    id: p.id,
-                    body: p.body,
-                    status: p.status,
-                    created_at: p.created_at
-                }));
-
-                this.setState({tasks: tasks});
-            })
-            .catch(error => console.log(error));
-
-    };
-
-
-    render() {
-        return (
-            <div>
-                <h1>Projects</h1>
-                <List>
-                    {this.state.projects.map((list, index) =>
-                        <React.Fragment key={list.id}>
-                        <ListItem button
-                                  onClick={() => this.handleListClick(list.id)}
-                                  selected={this.state.pressedProject === list.id}
-                        >
-                            <ListItemIcon>
-                                <Icon>{this.state.pressedProject === list.id ? 'chevron_right' : 'chevron_left'}</Icon>
-                            </ListItemIcon>
-
-                            <ListItemText inset primary={list.title}/>
-
-                            <ListItemSecondaryAction>
-                                <IconButton onClick={event => this.handleMoreClick(list, event.currentTarget)}>
-                                    <Icon>more_vert</Icon>
-                                </IconButton>
-                            </ListItemSecondaryAction>
-                        </ListItem>
-                        <Collapse in={this.state.pressedProject === list.id} timeout="auto" unmountOnExit>
-                            <List component="div" disablePadding>
-                                {this.state.tasks.map((task) =>
-                                    <ListItem button key={task.id} >
-                                        <ListItemText primary={task.body} />
-                                    </ListItem>
-                                )}
-                            </List>
-                        </Collapse>
-                      </React.Fragment>
-                    )}
+                <ListItemSecondaryAction>
+                  <IconButton onClick={(event) => this.handleMoreClick(list, event.currentTarget)}>
+                    <Icon>more_vert</Icon>
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+              <Collapse in={this.state.pressedProject === list.id} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  {this.state.tasks.map((task) => (
+                    <ListItem button key={task.id}>
+                      <ListItemText primary={task.body} />
+                    </ListItem>
+                  ))}
                 </List>
+              </Collapse>
+            </React.Fragment>
+          ))}
+        </List>
 
-                <Menu
-                    anchorEl={this.state.menuAnchorElement}
-                    open={Boolean(this.state.menuAnchorElement)}
-                    onClose={this.handleMenuClose.bind(this)}>
-
-                    <ListItem onClick={() => {
-                    }}>Open</ListItem>
-                    <ListItem onClick={() => {
-                    }}>Rename</ListItem>
-                    <ListItem onClick={() => {
-                    }}>Delete</ListItem>
-                </Menu>
-            </div>
-        );
-    }
+        <Menu
+          anchorEl={this.state.menuAnchorElement}
+          open={Boolean(this.state.menuAnchorElement)}
+          onClose={this.handleMenuClose.bind(this)}
+        >
+          <ListItem onClick={() => {}}>Open</ListItem>
+          <ListItem onClick={() => {}}>Rename</ListItem>
+          <ListItem onClick={() => {}}>Delete</ListItem>
+        </Menu>
+      </div>
+    );
+  }
 }
 
 export default Projects;

@@ -6,7 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { RELOAD_POST_LIST, TOGGLE_EDIT } from '../../redux/actions';
 import { IP, PORT } from '../../redux/const';
 
-const styles = theme => ({
+const styles = (theme) => ({
   textarea: {
     width: '100%',
     padding: theme.spacing(2),
@@ -22,7 +22,7 @@ class PostEdit extends Component {
     this.setState({ updatedPostBody: this.props.body });
   }
 
-  handleText = e => {
+  handleText = (e) => {
     this.setState({ updatedPostBody: e.target.value });
   };
 
@@ -31,11 +31,11 @@ class PostEdit extends Component {
       .put(`http://${IP}:${PORT}/posts/${this.props.post.id}`, {
         body: this.state.updatedPostBody,
       })
-      .then(response => {
+      .then((response) => {
         this.props.reloadPostList(true);
         this.props.toggleEdit(true);
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   };
 
   render() {
@@ -59,7 +59,7 @@ class PostEdit extends Component {
   }
 }
 
-const mapDispatchToProps = function(dispatch, ownProps) {
+const mapDispatchToProps = function (dispatch, ownProps) {
   return {
     toggleEdit: () => {
       dispatch({
@@ -69,7 +69,7 @@ const mapDispatchToProps = function(dispatch, ownProps) {
         },
       });
     },
-    reloadPostList: reload => {
+    reloadPostList: (reload) => {
       dispatch({
         type: RELOAD_POST_LIST,
         payload: {

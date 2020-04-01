@@ -6,7 +6,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { RELOAD_TRANS_CATEGORIES_LIST } from '../../../redux/actions';
 
-const styles = theme => ({
+const styles = (theme) => ({
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
@@ -20,27 +20,27 @@ class TransactionsCategoriesCreate extends Component {
     value: '',
   };
 
-  handleText = e => {
+  handleText = (e) => {
     this.setState({ value: e.target.value });
   };
 
-  toggleInput = e => {
-    this.setState(prevState => ({ showInput: !prevState.showInput }));
+  toggleInput = (e) => {
+    this.setState((prevState) => ({ showInput: !prevState.showInput }));
   };
 
-  createCategory = e => {
+  createCategory = (e) => {
     const post = {
       name: this.state.value,
       id: this.props.nextId,
     };
     axios
       .post('https://tranf-ae713.firebaseio.com/cat.json', post)
-      .then(response => {
+      .then((response) => {
         this.setState({ value: '' });
         this.props.reloadList(true);
         this.toggleInput();
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   };
 
   render() {
@@ -70,9 +70,9 @@ class TransactionsCategoriesCreate extends Component {
   }
 }
 
-const mapDispatchToProps = function(dispatch) {
+const mapDispatchToProps = function (dispatch) {
   return {
-    reloadList: reload => {
+    reloadList: (reload) => {
       dispatch({
         type: RELOAD_TRANS_CATEGORIES_LIST,
         payload: {
@@ -82,7 +82,4 @@ const mapDispatchToProps = function(dispatch) {
     },
   };
 };
-export default connect(
-  null,
-  mapDispatchToProps,
-)(withStyles(styles)(TransactionsCategoriesCreate));
+export default connect(null, mapDispatchToProps)(withStyles(styles)(TransactionsCategoriesCreate));

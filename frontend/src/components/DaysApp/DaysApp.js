@@ -20,38 +20,37 @@ class DaysApp extends Component {
   fetchLabels = () => {
     axios
       .get(`http://${IP}:${PORT}/labels`)
-      .then(response => {
-        const labels = response.data.map(c => ({
+      .then((response) => {
+        const labels = response.data.map((c) => ({
           id: c.ID,
           name: c.Name,
           color: c.Color,
           colorActive: c.ColorActive,
-
         }));
 
         this.setState({ labels });
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   };
 
   fetchYears = () => {
     axios
       .get(`http://${IP}:${PORT}/posts-months/`)
-      .then(response => {
-        const years = Object.keys(response.data).map(key => ({
+      .then((response) => {
+        const years = Object.keys(response.data).map((key) => ({
           id: key,
           months: response.data[key],
         }));
         this.setState({ years });
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   };
 
-  fetchmonth = ym => {
+  fetchmonth = (ym) => {
     axios
       .get(`http://${IP}:${PORT}/posts-by-month/?ym=${ym}`)
-      .then(response => {
-        const posts = response.data.map(c => ({
+      .then((response) => {
+        const posts = response.data.map((c) => ({
           id: c.ID,
           labels: c.Labels,
           comments: c.Comments,
@@ -65,7 +64,7 @@ class DaysApp extends Component {
           selectedMonth: ym,
         });
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   };
 
   render() {
@@ -73,7 +72,7 @@ class DaysApp extends Component {
       <div className="App">
         <div className="row">
           <div className="column" style={{ textAlign: 'left' }}>
-            {this.state.years.map(y => (
+            {this.state.years.map((y) => (
               <Year
                 key={y.id}
                 year={y.id}
@@ -85,7 +84,7 @@ class DaysApp extends Component {
           </div>
           <div className="column" style={{ float: 'left', width: '65%' }}>
             <div>
-              {this.state.posts.map(p => (
+              {this.state.posts.map((p) => (
                 <PostShow key={p.id} post={p} labels={this.state.labels} />
               ))}
             </div>
