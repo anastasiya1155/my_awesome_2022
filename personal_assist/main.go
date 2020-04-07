@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/desertbit/grumble"
-	"github.com/vova/pa2020/cmd"
+	"github.com/vova/pa2020/personal_assist/cmd"
 )
 
 func main() {

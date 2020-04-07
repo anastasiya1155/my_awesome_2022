@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import {getTransactionsCategories} from "../../../utils/routes";
 
 class TransactionsCategoriesUpdate extends Component {
   state = {
@@ -11,8 +11,7 @@ class TransactionsCategoriesUpdate extends Component {
   }
 
   fetchData = () => {
-    axios
-      .get('https://tranf-ae713.firebaseio.com/cat.json')
+      getTransactionsCategories()
       .then((response) => {
         console.log();
 

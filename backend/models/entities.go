@@ -34,12 +34,6 @@ type Task struct {
 	ProjectId int       `json:"project_id"`
 }
 
-type Pin struct {
-	ID       int    `gorm:"primary_key"`
-	Name     string `sql:"type:text;"`
-	Priority int
-}
-
 type Comment struct {
 	ID     int       `gorm:"primary_key"`
 	Date   time.Time `sql:"type:date;"`
@@ -47,23 +41,9 @@ type Comment struct {
 	PostId int
 }
 
-type Photo struct {
-	ID   int       `gorm:"primary_key"`
-	Date time.Time `sql:"type:date;"time_format:"2006-01-02"`
-	Path string
-}
-
 type Period struct {
 	ID    int `gorm:"primary_key"`
 	Name  string
 	Start time.Time
 	End   time.Time
-}
-
-type Wish struct {
-	ID          int
-	Name        string
-	Description string
-	Price       int
-	Picture     string
 }

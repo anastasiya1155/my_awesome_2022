@@ -4,7 +4,8 @@ import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormGroup from '@material-ui/core/FormGroup';
-import axios from 'axios';
+import {postTransactionsToMonthAndYear} from "../../../utils/routes";
+
 
 import moment from 'moment';
 import { CATEGORIES } from '../../../redux/const';
@@ -37,12 +38,7 @@ class TransactionsCreate extends Component {
     };
 
     const month = moment().month() + 1;
-
-    axios
-      .post(
-        `https://tranf-ae713.firebaseio.com/transaction/${moment().year()}/${month}.json`,
-        transaction,
-      )
+    postTransactionsToMonthAndYear(moment().year(), month,transaction)
       .then(() => {
         this.setState({ description: '', amount: 1, category: 1 });
       })

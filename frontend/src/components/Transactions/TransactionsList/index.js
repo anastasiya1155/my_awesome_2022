@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import axios from 'axios';
 
 import moment from 'moment';
 
@@ -12,6 +11,7 @@ import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { CATEGORIES } from '../../../redux/const';
+import {getTransactionsByMonthAndYear} from "../../../utils/routes";
 
 const thisMonth = moment().format('MMMM');
 const thisYear = moment().year();
@@ -74,8 +74,7 @@ class TransactionsList extends Component {
 
   fetchData = (selectedMonth, selectedYear) => {
     const month = moment().month(selectedMonth).format('M');
-    axios
-      .get(`https://tranf-ae713.firebaseio.com/transaction/${selectedYear}/${month}.json`)
+    getTransactionsByMonthAndYear(selectedYear, month)
       .then((response) => {
         if (response.data) {
           const transactions = Object.keys(response.data)

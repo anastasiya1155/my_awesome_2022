@@ -14,6 +14,7 @@ import {
 
 import axios from 'axios';
 import { IP, PORT } from '../../redux/const';
+import { withRouter } from 'react-router-dom';
 
 class Projects extends Component {
   state = {
@@ -127,17 +128,22 @@ class Projects extends Component {
         </List>
 
         <Menu
+          style={{ cursor: 'pointer' }}
           anchorEl={this.state.menuAnchorElement}
           open={Boolean(this.state.menuAnchorElement)}
           onClose={this.handleMenuClose.bind(this)}
         >
-          <ListItem onClick={() => {}}>Open</ListItem>
+          <ListItem
+            onClick={() => this.props.history.push(`/projects/${this.state.pressedList.id}`)}
+          >
+            Open
+          </ListItem>
           <ListItem onClick={() => {}}>Rename</ListItem>
-          <ListItem onClick={() => {}}>Delete</ListItem>
+          <ListItem onClick={() => {}}>Archive</ListItem>
         </Menu>
       </div>
     );
   }
 }
 
-export default Projects;
+export default withRouter(Projects);

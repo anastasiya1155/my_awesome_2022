@@ -5,8 +5,6 @@ import (
 	"os"
 	"strings"
 
-	"github.com/vova/pa2020/backend/models"
-
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -30,16 +28,6 @@ func Connect() *gorm.DB {
 
 	if gin.IsDebugging() {
 		db.LogMode(true)
-	}
-
-	if os.Getenv("AUTOMIGRATE") == "1" {
-		db.AutoMigrate(
-			&models.Comment{},
-			&models.Label{},
-			&models.Pin{},
-			&models.Post{},
-			&models.Task{},
-		)
 	}
 
 	return db

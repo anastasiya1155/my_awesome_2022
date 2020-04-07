@@ -12,6 +12,7 @@ import {
   Button,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
+import {postTodo, deleteTodo, getTodos} from "../../utils/routes";
 
 class Tasks extends Component {
   state = {
@@ -25,11 +26,11 @@ class Tasks extends Component {
   }
 
   fetchData = () => {
-    fetch('https://tranf-ae713.firebaseio.com/todo.json')
-      .then((res) => res.json())
+    getTodos()
       .then((data) => {
         const items = [];
-        Object.keys(data).map((key) => items.push({ id: key, name: data[key].name }));
+         console.log(data);
+        Object.entries(data.data).map(([key, value]) => items.push({ id: key, name: value.name }));
         this.setState({ toDoArr: items, isLoading: false, refreshing: false });
       })
       .catch((err) => {
@@ -39,9 +40,7 @@ class Tasks extends Component {
   };
 
   handleDelete = (id) => {
-    fetch(`https://tranf-ae713.firebaseio.com/todo/${id}.json`, {
-      method: 'delete',
-    })
+      deleteTodo(id)
       .then(this.fetchData)
       .catch((err) => console.log(err));
   };
@@ -53,12 +52,7 @@ class Tasks extends Component {
   handleAdd = (e) => {
     const { newTask } = this.state;
     e.preventDefault();
-    fetch('https://tranf-ae713.firebaseio.com/todo.json', {
-      method: 'post',
-      body: JSON.stringify({
-        name: newTask,
-      }),
-    })
+    postTodo({name: newTask})
       .then(() => {
         this.setState({
           newTask: '',

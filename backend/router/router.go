@@ -24,12 +24,6 @@ func Initialize(r *gin.Engine) {
 		api.PUT("/labels/:id", controllers.UpdateLabel)
 		api.DELETE("/labels/:id", controllers.DeleteLabel)
 
-		api.GET("/pins", controllers.GetPins)
-		api.GET("/pins/:id", controllers.GetPin)
-		api.POST("/pins", controllers.CreatePin)
-		api.PUT("/pins/:id", controllers.UpdatePin)
-		api.DELETE("/pins/:id", controllers.DeletePin)
-
 		api.GET("/posts", controllers.GetPosts)
 		api.GET("/posts/:id", controllers.GetPost)
 		api.POST("/posts", controllers.CreatePost)
@@ -53,12 +47,6 @@ func Initialize(r *gin.Engine) {
 		api.POST("/projects", controllers.CreateProject)
 		api.PUT("/projects/:id", controllers.UpdateProject)
 		api.DELETE("/projects/:id", controllers.DeleteProject)
-
-		api.GET("/wishes", controllers.GetWishes)
-		api.GET("/wishes/:id", controllers.GetWish)
-		api.POST("/wishes", controllers.CreateWish)
-		api.PUT("/wishes/:id", controllers.UpdateWish)
-		api.DELETE("/wishes/:id", controllers.DeleteWish)
 
 	}
 

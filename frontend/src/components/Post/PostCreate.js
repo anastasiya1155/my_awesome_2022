@@ -42,7 +42,7 @@ class PostCreate extends Component {
           multiline
           fullWidth
           rows={4}
-          variant='outlined'
+          variant="outlined"
           value={this.state.value}
           onChange={this.handleText}
         />

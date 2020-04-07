@@ -8,6 +8,7 @@ import Tasks from './components/Tasks';
 import Sandbox from './components/Sandbox';
 import withTheme from './withRoot';
 import Projects from './components/Projects';
+import Project from './components/Projects/show';
 
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -16,7 +17,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -206,6 +206,7 @@ function App() {
             <Route path="/days/app" component={DaysApp} exact />
             <Route path="/transactions" component={Transactions} />
             <Route path="/tasks" component={Tasks} />
+            <Route path="/projects/:id" component={Project} />
             <Route path="/projects" component={Projects} />
             <Route path="/sandbox" component={Sandbox} exact />
             <Route path="/" render={() => <h1>Нiчого</h1>} />

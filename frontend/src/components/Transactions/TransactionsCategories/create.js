@@ -5,6 +5,8 @@ import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { RELOAD_TRANS_CATEGORIES_LIST } from '../../../redux/actions';
+import {postTransactionsCategories} from "../../../utils/routes";
+
 
 const styles = (theme) => ({
   textField: {
@@ -33,8 +35,7 @@ class TransactionsCategoriesCreate extends Component {
       name: this.state.value,
       id: this.props.nextId,
     };
-    axios
-      .post('https://tranf-ae713.firebaseio.com/cat.json', post)
+    postTransactionsCategories(post)
       .then((response) => {
         this.setState({ value: '' });
         this.props.reloadList(true);

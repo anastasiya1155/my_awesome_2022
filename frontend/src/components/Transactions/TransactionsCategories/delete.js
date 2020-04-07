@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import {getTransactionsCategories} from "../../../utils/routes";
 
 class TransactionsCategoriesDelete extends Component {
   state = {
@@ -11,9 +11,8 @@ class TransactionsCategoriesDelete extends Component {
   }
 
   fetchData = () => {
-    axios
-      .get('https://tranf-ae713.firebaseio.com/cat.json')
-      .then((response) => {
+      getTransactionsCategories()
+          .then((response) => {
         const categories = Object.keys(response.data).map((key) => ({
           id: response.data[key].id,
           name: response.data[key].name,

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+
 import { connect } from 'react-redux';
 import List from '@material-ui/core/List';
 import TransactionsCategoriesShow from './show';
 import TransactionsCategoriesCreate from './create';
 import { RELOAD_TRANS_CATEGORIES_LIST } from '../../../redux/actions';
+import {getTransactionsCategories} from "../../../utils/routes";
 
 class TransactionsCategories extends Component {
   state = {
@@ -24,8 +25,7 @@ class TransactionsCategories extends Component {
   }
 
   fetchData = () => {
-    axios
-      .get('https://tranf-ae713.firebaseio.com/cat.json')
+    getTransactionsCategories()
       .then((response) => {
         const categories = Object.keys(response.data).map((key) => {
           if (response.data[key].id >= this.state.nextId) {

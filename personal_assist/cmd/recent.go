@@ -8,6 +8,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"log"
+	"os"
 )
 
 type Post struct {
@@ -28,8 +29,13 @@ func init() {
 		},
 		Run: func(c *grumble.Context) error {
 
-			db, err := gorm.Open("mysql", "vova:vova@tcp(mysql:3306)/m2019?charset=utf8&parseTime=True&loc=Local")
+			dbstr := "vova:vova@tcp(mysql:3306)/m2019?charset=utf8&parseTime=True&loc=Local"
 
+			if os.Getenv("LOCAL") == "1" {
+				dbstr = "root:root@tcp(localhost:3308)/m2019?charset=utf8&parseTime=True&loc=Local"
+			}
+
+			db, err := gorm.Open("mysql", dbstr)
 			if err != nil {
 				log.Fatalf("Got error when connect database, the error is '%v'", err)
 			}

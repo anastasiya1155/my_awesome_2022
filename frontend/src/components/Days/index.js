@@ -7,7 +7,7 @@ import PostList from '../PostList';
 import { RELOAD_POST_LIST } from '../../redux/actions';
 import { IP, PORT } from '../../redux/const';
 import Tabs from '@material-ui/core/Tabs';
-import { Link } from 'react-router-dom';
+
 import Tab from '@material-ui/core/Tab';
 
 class Days extends React.Component {
@@ -25,12 +25,12 @@ class Days extends React.Component {
 
   componentDidMount() {
     this.fetchLabels();
-    this.fetchPosts();
+    this.fetchPosts(this.state.activeTab.link);
   }
 
   componentDidUpdate(previousProps) {
     if (previousProps !== this.props) {
-      this.fetchPosts();
+      this.fetchPosts(this.state.activeTab.link);
       this.props.reloadPostList(false);
     }
   }
@@ -51,11 +51,11 @@ class Days extends React.Component {
       .catch((error) => console.log(error));
   };
 
-  fetchPosts = () => {
+  fetchPosts = (tablink) => {
     console.log('fetchPosts');
 
     axios
-      .get(`http://${IP}:${PORT}/posts${this.state.activeTab.link}`)
+      .get(`http://${IP}:${PORT}/posts${tablink}`)
       .then((response) => {
         const posts = response.data.map((c) => ({
           id: c.ID,
@@ -79,7 +79,7 @@ class Days extends React.Component {
         name: tab.name,
       },
     });
-    this.fetchPosts();
+    this.fetchPosts(tab.link);
   };
 
   render() {
@@ -88,17 +88,17 @@ class Days extends React.Component {
         <div style={{ marginBottom: '30px' }}>
           <Tabs
             value={this.state.activeTabIndex}
-            onChange={(e, newVal) => this.setState({ activeTabIndex: newVal})}
+            onChange={(e, newVal) => this.setState({ activeTabIndex: newVal })}
             indicatorColor="primary"
             textColor="primary"
           >
             <Tab
-              label="This day in history"
-              onClick={() => this.toggleTab({ link: '-history', name: 'history', i: 0 })}
+              label="Last 25 posts"
+              onClick={() => this.toggleTab({ link: '?sort=-date', name: 'mada' })}
             />
             <Tab
-              label="Last 25 posts"
-              onClick={() => this.toggleTab({ link: '?sort=-date', name: 'mada', i: 1 })}
+              label="This day in history"
+              onClick={() => this.toggleTab({ link: '-history', name: 'history' })}
             />
           </Tabs>
         </div>
