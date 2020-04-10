@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import PinShow from '../Pin/PinShowd';
-import { IP, PORT } from '../../redux/const';
+import {getPins} from '../../utils/routes';
 
 export default class PinList extends Component {
   state = {
@@ -19,8 +18,7 @@ export default class PinList extends Component {
   }
 
   fetchData = () => {
-    axios
-      .get(`http://${IP}:${PORT}/pins`)
+    getPins()
       .then((response) => {
         const newContacts = response.data.map((c) => ({
           id: c.ID,

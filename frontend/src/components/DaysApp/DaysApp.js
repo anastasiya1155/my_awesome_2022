@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import axios from 'axios/index';
 import PostShow from '../PostShow';
 import Year from './Year';
-import { IP, PORT } from '../../redux/const';
+import {getLabels, getMonth, getYears} from '../../utils/routes';
 
 class DaysApp extends Component {
   state = {
@@ -18,8 +17,7 @@ class DaysApp extends Component {
   }
 
   fetchLabels = () => {
-    axios
-      .get(`http://${IP}:${PORT}/labels`)
+    getLabels()
       .then((response) => {
         const labels = response.data.map((c) => ({
           id: c.ID,
@@ -34,8 +32,7 @@ class DaysApp extends Component {
   };
 
   fetchYears = () => {
-    axios
-      .get(`http://${IP}:${PORT}/posts-months/`)
+    getYears()
       .then((response) => {
         const years = Object.keys(response.data).map((key) => ({
           id: key,
@@ -47,8 +44,7 @@ class DaysApp extends Component {
   };
 
   fetchmonth = (ym) => {
-    axios
-      .get(`http://${IP}:${PORT}/posts-by-month/?ym=${ym}`)
+    getMonth(ym)
       .then((response) => {
         const posts = response.data.map((c) => ({
           id: c.ID,

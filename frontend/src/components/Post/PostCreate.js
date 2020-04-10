@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import axios from 'axios/index';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { IP, PORT } from '../../redux/const';
 import { RELOAD_POST_LIST } from '../../redux/actions';
+import {postPost} from '../../utils/routes';
 
 class PostCreate extends Component {
   state = {
@@ -26,8 +25,7 @@ class PostCreate extends Component {
       body: this.state.value,
       date: moment.utc(this.state.date),
     };
-    axios
-      .post(`http://${IP}:${PORT}/posts`, post)
+    postPost(post)
       .then(() => {
         this.setState({ value: '' });
         this.props.reloadPostList(true);

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import { IP, PORT } from '../../redux/const';
+import {addLabel, deleteLabel} from '../../utils/routes';
 
 class PostLabel extends Component {
   state = {
@@ -26,19 +25,13 @@ class PostLabel extends Component {
 
   handleClick = (e) => {
     if (this.state.isActive) {
-      axios
-        .get(
-          `http://${IP}:${PORT}/posts-delete-label/?post_id=${this.state.post}&label_id=${this.state.label}`,
-        )
+      deleteLabel(this.state.post, this.state.label)
         .then((response) => {
           this.setState({ isActive: false });
         })
         .catch((error) => console.log(error));
     } else {
-      axios
-        .get(
-          `http://${IP}:${PORT}/posts-add-label/?post_id=${this.state.post}&label_id=${this.state.label}`,
-        )
+      addLabel(this.state.post, this.state.label)
         .then((response) => {
           this.setState({ isActive: true });
         })

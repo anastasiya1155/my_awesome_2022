@@ -12,9 +12,8 @@ import {
   Menu,
 } from '@material-ui/core';
 
-import axios from 'axios';
-import { IP, PORT } from '../../redux/const';
 import { withRouter } from 'react-router-dom';
+import {getProjects, getTasks} from '../../utils/routes';
 
 class Projects extends Component {
   state = {
@@ -30,8 +29,7 @@ class Projects extends Component {
   }
 
   fetchData = () => {
-    axios
-      .get(`http://${IP}:${PORT}/projects`)
+    getProjects()
       .then((response) => {
         const projects = response.data.map((p) => ({
           id: p.id,
@@ -45,14 +43,14 @@ class Projects extends Component {
       .catch((error) => console.log(error));
   };
 
-  handleDelete = (id) => {
-    axios
-      .delete(`http://${IP}:${PORT}/projects`)
-      .then((response) => {
-        this.fetchData();
-      })
-      .catch((error) => console.log(error));
-  };
+  // handleDelete = (id) => {
+  //   axios
+  //     .delete(`http://${IP}:${PORT}/projects`)
+  //     .then((response) => {
+  //       this.fetchData();
+  //     })
+  //     .catch((error) => console.log(error));
+  // };
 
   handleChange = (e) => {};
 
@@ -73,8 +71,7 @@ class Projects extends Component {
 
   handleListClick = (projectId) => {
     this.setState({ pressedProject: projectId });
-    axios
-      .get(`http://${IP}:${PORT}/tasks?q[project_id]=${projectId}`)
+    getTasks(projectId)
       .then((response) => {
         const tasks = response.data.map((p) => ({
           id: p.id,
