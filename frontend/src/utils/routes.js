@@ -1,6 +1,8 @@
 import axios from 'axios';
+import {IP, PORT} from 'frontend/src/redux/const';
 
 const FIREBASE = 'https://tranf-ae713.firebaseio.com/';
+const LOCAL = `http://${IP}:${PORT}`;
 
 const apiGetRequest = (url) => axios.get(url);
 const apiPostRequest = (url, data) => axios.post(url, data);
@@ -15,8 +17,29 @@ export const postTransactionsToMonthAndYear = (year, month, data) => apiPostRequ
 export const getTransactionsCategories = () =>  apiGetRequest(`${FIREBASE}cat.json`);
 export const postTransactionsCategories = (data) => apiPostRequest(`${FIREBASE}cat.json`, data);
 
-export const getTodos   = () => apiGetRequest(`${FIREBASE}todo.json`);
-export const getTodo    = (id) => apiGetRequest(`${FIREBASE}todo/${id}.json`);
-export const postTodo   = (data) => apiPostRequest(`${FIREBASE}todo.json`, data);
-export const putTodo    = (id, data) => apiPutRequest(`${FIREBASE}todo/${id}.json`, data);
-export const deleteTodo = (id) => apiDeleteRequest(`${FIREBASE}todo/${id}.json`);
+export const getTodos    = () => apiGetRequest(`${FIREBASE}todo.json`);
+export const getTodo     = (id) => apiGetRequest(`${FIREBASE}todo/${id}.json`);
+export const postTodo    = (data) => apiPostRequest(`${FIREBASE}todo.json`, data);
+export const putTodo     = (id, data) => apiPutRequest(`${FIREBASE}todo/${id}.json`, data);
+export const deleteTodo  = (id) => apiDeleteRequest(`${FIREBASE}todo/${id}.json`);
+
+export const getPosts    = (link) => apiGetRequest(`${LOCAL}/posts${link}`);
+export const deletePost  = id => apiDeleteRequest(`${LOCAL}/posts/${id}`);
+export const editPost    = (id, data) => apiPutRequest(`${LOCAL}/posts/${id}`, data);
+export const postComment = (data) => apiPostRequest(`${LOCAL}/comments`, data);
+export const postPost    = (data) => apiPostRequest(`${LOCAL}/posts`, data);
+
+export const getYears    = () => apiGetRequest(`${LOCAL}/posts-months/`);
+export const getMonth    = (month) => apiGetRequest(`${LOCAL}/posts-by-month/?ym=${month}`);
+
+export const getLabels   = () => apiGetRequest(`${LOCAL}/labels`);
+export const deleteLabel = (postId, labelId) => apiGetRequest(`${LOCAL}/posts-delete-label/?post_id=${postId}&label_id=${labelId}`);
+export const addLabel    = (postId, labelId) => apiGetRequest(`${LOCAL}/posts-add-label/?post_id=${postId}&label_id=${labelId}`);
+
+export const getPins     = () => apiGetRequest(`${LOCAL}/pins`);
+
+export const getProjects = () => apiGetRequest(`${LOCAL}/projects`);
+export const getProject  = (id) => apiGetRequest(`${LOCAL}/projects/${id}`);
+export const getTasks    = (id) => apiGetRequest(`${LOCAL}/tasks?q[project_id]=${id}`);
+export const editTask    = (id, data) => apiPutRequest(`${LOCAL}/tasks/${id}`, data);
+export const postTask    = (id, data) => apiPostRequest(`${LOCAL}/tasks`, data);

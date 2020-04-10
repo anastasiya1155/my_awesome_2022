@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import axios from 'axios/index';
 import { connect } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 import { RELOAD_POST_LIST, TOGGLE_EDIT } from '../../redux/actions';
-import { IP, PORT } from '../../redux/const';
+import {editPost} from '../../utils/routes';
 
 const styles = (theme) => ({
   textarea: {
@@ -27,10 +26,9 @@ class PostEdit extends Component {
   };
 
   handleSubmit = () => {
-    axios
-      .put(`http://${IP}:${PORT}/posts/${this.props.post.id}`, {
-        body: this.state.updatedPostBody,
-      })
+    editPost(this.props.post.id, {
+      body: this.state.updatedPostBody,
+    })
       .then((response) => {
         this.props.reloadPostList(true);
         this.props.toggleEdit(true);

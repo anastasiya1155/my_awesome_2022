@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
-import axios from 'axios';
-import { IP, PORT } from '../../redux/const';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
@@ -19,6 +17,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import {editTask, getProject, getTasks, postTask} from '../../utils/routes';
 
 const styles = (theme) => ({
   root: {
@@ -50,8 +49,8 @@ class Project extends Component {
   }
 
   fetchData = () => {
-    axios
-      .get(`http://${IP}:${PORT}/projects/${this.props.match.params.id}`)
+    const { id } = this.props.match.params;
+    getProject(id)
       .then((response) => {
         const project = response.data;
 
@@ -59,8 +58,7 @@ class Project extends Component {
       })
       .catch((error) => console.log(error));
 
-    axios
-      .get(`http://${IP}:${PORT}/tasks?q[project_id]=${this.props.match.params.id}`)
+    getTasks(id)
       .then((response) => {
         const tasks = {
           incoming: [],
@@ -92,7 +90,7 @@ class Project extends Component {
 
   handleStatusChange(task, status) {
     this.handleMenuClose();
-    axios.put(`http://${IP}:${PORT}/tasks/${task.id}`, { status: status }).then((response) => {
+    editTask(task.id, { status: status }).then((response) => {
       this.fetchData();
     });
   }
@@ -118,12 +116,11 @@ class Project extends Component {
             color="primary"
             size="small"
             onClick={(e) => {
-              axios
-                .post(`http://${IP}:${PORT}/tasks`, {
-                  body: this.state.newTaskName,
-                  project_id: parseInt(this.props.match.params.id),
-                  status: 'incoming',
-                })
+              postTask({
+                body: this.state.newTaskName,
+                project_id: parseInt(this.props.match.params.id),
+                status: 'incoming',
+              })
                 .then((response) => {
                   this.fetchData();
                 });

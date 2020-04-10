@@ -1,15 +1,14 @@
 import React, { Component, Fragment } from 'react';
 import Chip from '@material-ui/core/Chip';
 import { withStyles } from '@material-ui/core/styles';
-import axios from 'axios/index';
 import { connect } from 'react-redux';
 import PostLabel from '../PostLabel';
 import PostEdit from '../PostEdit';
 import PostComment from '../PostComment';
 import PostCommentEdit from '../PostCommentEdit';
 import { TOGGLE_COMMENT, TOGGLE_EDIT, RELOAD_POST_LIST } from '../../redux/actions';
-import { IP, PORT } from '../../redux/const';
 import moment from 'moment';
+import {deletePost} from '../../utils/routes';
 
 const styles = (theme) => ({
   periods: {
@@ -36,8 +35,7 @@ class PostShow extends Component {
 
   handleDeletePost = () => {
     const { post, reloadPostList } = this.props;
-    axios
-      .delete(`http://${IP}:${PORT}/posts/${post.id}`)
+    deletePost(post.id)
       .then(() => {
         reloadPostList(true);
       })

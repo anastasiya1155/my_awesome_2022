@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import axios from 'axios/index';
 import { connect } from 'react-redux';
 import { RELOAD_POST_LIST, TOGGLE_COMMENT } from '../../redux/actions';
-import { IP, PORT } from '../../redux/const';
+import {postComment} from '../../utils/routes';
 
 class PostCommentEdit extends Component {
   state = {
@@ -15,11 +14,10 @@ class PostCommentEdit extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post(`http://${IP}:${PORT}/comments`, {
-        body: this.state.commentBody,
-        PostId: this.props.postId,
-      })
+    postComment({
+      body: this.state.commentBody,
+      PostId: this.props.postId,
+    })
       .then(() => {
         this.props.closeComment();
         this.props.reloadPostList(true);

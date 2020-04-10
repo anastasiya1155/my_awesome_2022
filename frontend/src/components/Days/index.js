@@ -1,14 +1,13 @@
 import React from 'react';
-import axios from 'axios';
 import { connect } from 'react-redux';
 import PostCreate from '../Post/PostCreate';
 import PostList from '../PostList';
 
 import { RELOAD_POST_LIST } from '../../redux/actions';
-import { IP, PORT } from '../../redux/const';
 import Tabs from '@material-ui/core/Tabs';
 
 import Tab from '@material-ui/core/Tab';
+import {getLabels, getPosts} from '../../utils/routes';
 
 class Days extends React.Component {
   state = {
@@ -36,8 +35,7 @@ class Days extends React.Component {
   }
 
   fetchLabels = () => {
-    axios
-      .get(`http://${IP}:${PORT}/labels`)
+    getLabels()
       .then((response) => {
         const labels = response.data.map((c) => ({
           id: c.ID,
@@ -54,8 +52,7 @@ class Days extends React.Component {
   fetchPosts = (tablink) => {
     console.log('fetchPosts');
 
-    axios
-      .get(`http://${IP}:${PORT}/posts${tablink}`)
+    getPosts(tablink)
       .then((response) => {
         const posts = response.data.map((c) => ({
           id: c.ID,
