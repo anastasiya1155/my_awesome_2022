@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"sort"
 	"time"
@@ -180,6 +179,11 @@ func GetThisDayInHistory(c *gin.Context) {
 	GetPostsByFilter(c, "DATE_FORMAT(date, '%m-%d') = ?", time.Now().Format("01-02"))
 }
 
+func SearchPosts(c *gin.Context) {
+	q := c.DefaultQuery("q", "java")
+	GetPostsByFilter(c, "body LIKE ?", "%"+q+"%")
+}
+
 func AddPostLabel(c *gin.Context) {
 	db := dbpkg.DBInstance(c)
 
@@ -321,7 +325,6 @@ func GetPostsByFilter(c *gin.Context, query interface{}, args ...interface{}) {
 	s := make([]models.Post, 0)
 
 	for _, mapElement := range tochedPosts {
-		fmt.Printf("%d - %s ", mapElement.ID, mapElement.Date)
 		s = append(s, mapElement)
 	}
 	sort.Slice(s, func(i, j int) bool {

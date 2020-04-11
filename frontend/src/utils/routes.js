@@ -36,6 +36,7 @@ export const postPost    = (data) => apiPostRequest(`${LOCAL}/posts`, data);
 
 export const getYears    = () => apiGetRequest(`${LOCAL}/posts-months/`);
 export const getMonth    = (month) => apiGetRequest(`${LOCAL}/posts-by-month/?ym=${month}`);
+export const searchPosts = (q) => apiGetRequest(`${LOCAL}/posts-search/?q=${q}`);
 
 export const getLabels   = () => apiGetRequest(`${LOCAL}/labels`);
 export const deleteLabel = (postId, labelId) => apiGetRequest(`${LOCAL}/posts-delete-label/?post_id=${postId}&label_id=${labelId}`);
@@ -47,4 +48,4 @@ export const getProjects = () => apiGetRequest(`${LOCAL}/projects`);
 export const getProject  = (id) => apiGetRequest(`${LOCAL}/projects/${id}`);
 export const getTasks    = (id) => apiGetRequest(`${LOCAL}/tasks?q[project_id]=${id}`);
 export const editTask    = (id, data) => apiPutRequest(`${LOCAL}/tasks/${id}`, data);
-export const postTask    = (id, data) => apiPostRequest(`${LOCAL}/tasks`, data);
+export const postTask    = (data) => apiPostRequest(`${LOCAL}/tasks`, data);
