@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {IP, PORT} from 'frontend/src/redux/const';
+import {IP, PORT} from '../redux/const';
 
 const FIREBASE = 'https://tranf-ae713.firebaseio.com/';
 const LOCAL = `http://${IP}:${PORT}`;
@@ -22,6 +22,11 @@ export const getTodo     = (id) => apiGetRequest(`${FIREBASE}todo/${id}.json`);
 export const postTodo    = (data) => apiPostRequest(`${FIREBASE}todo.json`, data);
 export const putTodo     = (id, data) => apiPutRequest(`${FIREBASE}todo/${id}.json`, data);
 export const deleteTodo  = (id) => apiDeleteRequest(`${FIREBASE}todo/${id}.json`);
+
+export const getWishes   = () => apiGetRequest(`${FIREBASE}wish.json`);
+export const postWish    = (data) => apiPostRequest(`${FIREBASE}wish.json`, data);
+export const putWish     = (id, data) => apiPutRequest(`${FIREBASE}wish/${id}.json`, data);
+export const deleteWish  = (id) => apiDeleteRequest(`${FIREBASE}wish/${id}.json`);
 
 export const getPosts    = (link) => apiGetRequest(`${LOCAL}/posts${link}`);
 export const deletePost  = id => apiDeleteRequest(`${LOCAL}/posts/${id}`);

@@ -9,6 +9,7 @@ import Sandbox from './components/Sandbox';
 import withTheme from './withRoot';
 import Projects from './components/Projects';
 import Project from './components/Projects/show';
+import Wishlist from './components/Wishlist';
 
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -33,6 +34,7 @@ import EqualizerIcon from '@material-ui/icons/Equalizer';
 import EventNoteIcon from '@material-ui/icons/EventNote';
 import ViewWeekIcon from '@material-ui/icons/ViewWeek';
 import HistoryIcon from '@material-ui/icons/History';
+import CardGiftcardIcon from '@material-ui/icons/CardGiftcard';
 
 const drawerWidth = 240;
 
@@ -196,6 +198,14 @@ function App() {
               <ListItemText primary="Tasks" />
             </ListItem>
           </Link>
+          <Link to="/wishlist">
+            <ListItem button>
+              <ListItemIcon>
+                <CardGiftcardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Wishlist" />
+            </ListItem>
+          </Link>
         </List>
       </Drawer>
       <main className={classes.content}>
@@ -209,6 +219,7 @@ function App() {
             <Route path="/projects/:id" component={Project} />
             <Route path="/projects" component={Projects} />
             <Route path="/sandbox" component={Sandbox} exact />
+            <Route path="/wishlist" component={Wishlist} />
             <Route path="/" render={() => <h1>Нiчого</h1>} />
           </Switch>
         </div>
