@@ -35,6 +35,7 @@ func Initialize(r *gin.Engine) {
 		api.GET("/posts-delete-label/", controllers.DeletePostLabel)
 		api.GET("/posts-months/", controllers.GetPostMonths)
 		api.GET("/posts-by-month/", controllers.GetPostByMonth)
+		api.GET("/posts-search/", controllers.SearchPosts)
 
 		api.GET("/tasks", controllers.GetTasks)
 		api.GET("/tasks/:id", controllers.GetTask)

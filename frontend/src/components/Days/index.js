@@ -7,7 +7,8 @@ import { RELOAD_POST_LIST } from '../../redux/actions';
 import Tabs from '@material-ui/core/Tabs';
 
 import Tab from '@material-ui/core/Tab';
-import {getLabels, getPosts} from '../../utils/routes';
+import {getLabels, getPosts, searchPosts} from '../../utils/routes';
+import {Button, TextField} from "@material-ui/core";
 
 class Days extends React.Component {
   state = {
@@ -20,6 +21,7 @@ class Days extends React.Component {
     },
     isLoading: false,
     labels: [],
+    searchQuery:''
   };
 
   componentDidMount() {
@@ -79,6 +81,28 @@ class Days extends React.Component {
     this.fetchPosts(tab.link);
   };
 
+  handleSearchInputChange = (e) => {
+    this.setState({ searchQuery: e.target.value });
+  };
+
+  search= (e) =>{
+    searchPosts(this.state.searchQuery)
+      .then((response) => {
+        const posts = response.data.map((c) => ({
+          id: c.ID,
+          labels: c.Labels,
+          comments: c.Comments,
+          periods: c.Periods,
+          body: c.Body,
+          date: c.Date.slice(0, 10),
+        }));
+
+        this.setState({ posts });
+      })
+      .catch((error) => console.log(error))
+  };
+
+
   render() {
     return (
       <div>
@@ -98,6 +122,8 @@ class Days extends React.Component {
               onClick={() => this.toggleTab({ link: '-history', name: 'history' })}
             />
           </Tabs>
+          <TextField value={this.state.searchQuery} onChange={this.handleSearchInputChange}/>
+          <Button onClick={this.search}>search</Button>
         </div>
         <PostCreate />
         <PostList labels={this.state.labels} posts={this.state.posts} />
