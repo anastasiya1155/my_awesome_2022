@@ -198,7 +198,7 @@ function App() {
               <ListItemText primary="Tasks" />
             </ListItem>
           </Link>
-          <Link to="/wishlist">
+          <Link to="/wishlist/list">
             <ListItem button>
               <ListItemIcon>
                 <CardGiftcardIcon />
