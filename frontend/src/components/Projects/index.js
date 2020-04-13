@@ -10,10 +10,13 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   Menu,
+  TextField,
 } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 
 import { withRouter } from 'react-router-dom';
-import {getProjects, getTasks} from '../../utils/routes';
+import { getProjects, getTasks, postProject } from '../../utils/routes';
+import AddProject from './AddProject';
 
 class Projects extends Component {
   state = {
@@ -22,6 +25,7 @@ class Projects extends Component {
     pressedList: undefined,
     menuAnchorElement: undefined,
     pressedProject: null,
+    isAdd: false,
   };
 
   componentDidMount() {
@@ -30,8 +34,8 @@ class Projects extends Component {
 
   fetchData = () => {
     getProjects()
-      .then((response) => {
-        const projects = response.data.map((p) => ({
+      .then(response => {
+        const projects = response.data.map(p => ({
           id: p.id,
           title: p.title,
           description: p.description,
@@ -40,7 +44,7 @@ class Projects extends Component {
 
         this.setState({ projects: projects });
       })
-      .catch((error) => console.log(error));
+      .catch(error => console.log(error));
   };
 
   // handleDelete = (id) => {
@@ -52,9 +56,9 @@ class Projects extends Component {
   //     .catch((error) => console.log(error));
   // };
 
-  handleChange = (e) => {};
+  handleChange = e => {};
 
-  handleCreate = (e) => {};
+  handleCreate = e => {};
 
   handleRename(list) {
     this.handleMenuClose();
@@ -69,11 +73,11 @@ class Projects extends Component {
     this.setState({ pressedList: undefined, menuAnchorElement: undefined });
   }
 
-  handleListClick = (projectId) => {
+  handleListClick = projectId => {
     this.setState({ pressedProject: projectId });
     getTasks(projectId)
-      .then((response) => {
-        const tasks = response.data.map((p) => ({
+      .then(response => {
+        const tasks = response.data.map(p => ({
           id: p.id,
           body: p.body,
           status: p.status,
@@ -82,62 +86,38 @@ class Projects extends Component {
 
         this.setState({ tasks: tasks });
       })
-      .catch((error) => console.log(error));
+      .catch(error => console.log(error));
+  };
+
+  handleSubmit = values => {
+    postProject(values)
+      .then(() => {
+        this.fetchData();
+        this.setState({ isAdd: false });
+      })
+      .catch(console.log);
   };
 
   render() {
+    const { projects, isAdd } = this.state;
     return (
       <div>
         <h1>Projects</h1>
         <List>
-          {this.state.projects.map((list, index) => (
-            <React.Fragment key={list.id}>
-              <ListItem
-                button
-                onClick={() => this.handleListClick(list.id)}
-                selected={this.state.pressedProject === list.id}
-              >
-                <ListItemIcon>
-                  <Icon>
-                    {this.state.pressedProject === list.id ? 'chevron_right' : 'chevron_left'}
-                  </Icon>
-                </ListItemIcon>
-
-                <ListItemText inset primary={list.title} />
-
-                <ListItemSecondaryAction>
-                  <IconButton onClick={(event) => this.handleMoreClick(list, event.currentTarget)}>
-                    <Icon>more_vert</Icon>
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-              <Collapse in={this.state.pressedProject === list.id} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  {this.state.tasks.map((task) => (
-                    <ListItem button key={task.id}>
-                      <ListItemText primary={task.body} />
-                    </ListItem>
-                  ))}
-                </List>
-              </Collapse>
-            </React.Fragment>
+          {projects.map((list, index) => (
+            <ListItem
+              key={list.id}
+              button
+              onClick={() => this.props.history.push(`/projects/${list.id}`)}
+            >
+              <ListItemText primary={list.title} />
+            </ListItem>
           ))}
         </List>
-
-        <Menu
-          style={{ cursor: 'pointer' }}
-          anchorEl={this.state.menuAnchorElement}
-          open={Boolean(this.state.menuAnchorElement)}
-          onClose={this.handleMenuClose.bind(this)}
-        >
-          <ListItem
-            onClick={() => this.props.history.push(`/projects/${this.state.pressedList.id}`)}
-          >
-            Open
-          </ListItem>
-          <ListItem onClick={() => {}}>Rename</ListItem>
-          <ListItem onClick={() => {}}>Archive</ListItem>
-        </Menu>
+        <IconButton onClick={() => this.setState({ isAdd: true })}>
+          <AddIcon />
+        </IconButton>
+        {isAdd ? <AddProject handleSubmit={this.handleSubmit} /> : null}
       </div>
     );
   }

@@ -46,6 +46,7 @@ export const getPins     = () => apiGetRequest(`${LOCAL}/pins`);
 
 export const getProjects = () => apiGetRequest(`${LOCAL}/projects`);
 export const getProject  = (id) => apiGetRequest(`${LOCAL}/projects/${id}`);
+export const postProject = (data) => apiPostRequest(`${LOCAL}/projects`, data);
 export const getTasks    = (id) => apiGetRequest(`${LOCAL}/tasks?q[project_id]=${id}`);
 export const editTask    = (id, data) => apiPutRequest(`${LOCAL}/tasks/${id}`, data);
 export const postTask    = (data) => apiPostRequest(`${LOCAL}/tasks`, data);

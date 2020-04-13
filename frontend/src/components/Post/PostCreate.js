@@ -35,7 +35,7 @@ class PostCreate extends Component {
 
   render() {
     return (
-      <form style={{ marginBottom: '30px' }} className="PostCreate">
+      <form style={{ marginBottom: '30px', textAlign: 'center' }}>
         <TextField
           multiline
           fullWidth

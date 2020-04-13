@@ -60,7 +60,7 @@ class PostShow extends Component {
       ];
     }
     return (
-      <div style={{ marginBottom: 20 }}>
+      <div style={{ marginBottom: 20, textAlign: 'center' }}>
         <span style={{ position: 'relative', right: 15 }}>
           {moment(post.date).format('dddd YYYY-MM-DD')}
         </span>
