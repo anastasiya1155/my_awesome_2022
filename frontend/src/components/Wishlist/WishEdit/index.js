@@ -26,7 +26,7 @@ const WishEdit = ({ isOpen, wish, onSubmit, handleClose }) => {
         handleChange={handleChange}
         onSubmit={e => {
           e.preventDefault();
-          onSubmit(values)
+          onSubmit(wish.id, values)
             .then(() => {
               handleClose();
             })

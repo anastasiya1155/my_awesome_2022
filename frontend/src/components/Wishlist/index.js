@@ -42,7 +42,7 @@ const Wishlist = ({ location }) => {
       .catch(console.log);
   };
   const editWish = (id, data) => {
-    putWish(id, data)
+    return putWish(id, data)
       .then(() => {
         fetchWishes();
       })
