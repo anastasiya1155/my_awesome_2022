@@ -48,5 +48,8 @@ export const getProjects = () => apiGetRequest(`${LOCAL}/projects`);
 export const getProject  = (id) => apiGetRequest(`${LOCAL}/projects/${id}`);
 export const postProject = (data) => apiPostRequest(`${LOCAL}/projects`, data);
 export const getTasks    = (id) => apiGetRequest(`${LOCAL}/tasks?q[project_id]=${id}`);
+// todo: hardcode in_progress
+export const getInProgress   = () => apiGetRequest(`${LOCAL}/tasks?q[status]=in_progress`);
 export const editTask    = (id, data) => apiPutRequest(`${LOCAL}/tasks/${id}`, data);
 export const postTask    = (data) => apiPostRequest(`${LOCAL}/tasks`, data);
+

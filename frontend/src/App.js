@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
 import Days from './components/Days';
 import DaysApp from './components/DaysApp/DaysApp';
@@ -35,6 +35,8 @@ import EventNoteIcon from '@material-ui/icons/EventNote';
 import ViewWeekIcon from '@material-ui/icons/ViewWeek';
 import HistoryIcon from '@material-ui/icons/History';
 import CardGiftcardIcon from '@material-ui/icons/CardGiftcard';
+import {IP, PORT} from "./redux/const";
+import axios from 'axios';
 
 const drawerWidth = 240;
 
@@ -104,6 +106,16 @@ function App() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
+  const [inProgress, setInProgress] = React.useState([{id:-1, body:"empty"}]);
+
+  useEffect(async () => {
+    const result = await axios(
+        `http://${IP}:${PORT}/tasks?q[status]=in_progress`,
+  );
+    setInProgress(result.data);
+  }, []);
+
+
   function handleDrawerOpen() {
     setOpen(true);
   }
@@ -133,6 +145,9 @@ function App() {
           >
             <MenuIcon />
           </IconButton>
+          {inProgress.map((task) => (
+              <b key={task.id}> --- {task.body} ---  </b>
+          ))}
         </Toolbar>
       </AppBar>
       <Drawer
