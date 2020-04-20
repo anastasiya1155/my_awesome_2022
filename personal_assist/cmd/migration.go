@@ -46,8 +46,7 @@ func init() {
 			lastAppliedMigration := MigrationRecord{}
 
 			db.Raw("select * from migration order by version desc limit 1").Scan(&lastAppliedMigration)
-			fmt.Println(lastAppliedMigration)
-
+			fmt.Println(fmt.Sprintf("Last applied migration is %s", lastAppliedMigration))
 			f, err := os.Open("../migrations")
 			if err != nil {
 				log.Fatal(err)
@@ -62,13 +61,18 @@ func init() {
 					indexOfLastMigration = in
 				}
 			}
-
+			newMigrations := 0
 			for i, filename := range allFiles {
 				if i > indexOfLastMigration {
+					newMigrations++
+					fmt.Println(fmt.Sprintf("Found new migration %s, executing...", filename))
 					dat, _ := ioutil.ReadFile(fmt.Sprintf("../migrations/%s", filename))
 					db.Exec(string(dat))
 					db.Exec(fmt.Sprintf("INSERT INTO `m2019`.`migration` (`version`) VALUES ('%s');", filename))
 				}
+			}
+			if newMigrations == 0 {
+				fmt.Println("New migrations not found")
 			}
 			if err := f.Close(); err != nil {
 				log.Fatal(err)

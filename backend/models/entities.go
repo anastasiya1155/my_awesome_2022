@@ -47,3 +47,13 @@ type Period struct {
 	Start time.Time
 	End   time.Time
 }
+
+type Lt struct {
+	ID   int       `json:"id"`
+	Date time.Time `json:"date"`
+	Body string    `json:"body"`
+}
+
+func (Lt) TableName() string {
+	return "last_time"
+}

@@ -49,6 +49,12 @@ func Initialize(r *gin.Engine) {
 		api.PUT("/projects/:id", controllers.UpdateProject)
 		api.DELETE("/projects/:id", controllers.DeleteProject)
 
+		api.GET("/lts", controllers.GetLts)
+		api.GET("/lt/:id", controllers.GetLt)
+		api.POST("/lt", controllers.CreateLt)
+		api.PUT("/lt/:id", controllers.UpdateLt)
+		api.DELETE("/lt/:id", controllers.DeleteLt)
+
 	}
 
 	r.Use(cors.Default())

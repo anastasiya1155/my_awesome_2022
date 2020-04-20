@@ -53,3 +53,8 @@ export const getInProgress   = () => apiGetRequest(`${LOCAL}/tasks?q[status]=in_
 export const editTask    = (id, data) => apiPutRequest(`${LOCAL}/tasks/${id}`, data);
 export const postTask    = (data) => apiPostRequest(`${LOCAL}/tasks`, data);
 
+
+export const deleteLt   = (id) => apiDeleteRequest(`${LOCAL}/${id}`);
+export const getLts   = () => apiGetRequest(`${LOCAL}/lts?sort=-date`);
+export const postLT   = (data) => apiPostRequest(`${LOCAL}/lt`, data);
+export const putLT   = (id, data) => apiPutRequest(`${LOCAL}/lt/${id}`, data);

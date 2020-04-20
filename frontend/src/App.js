@@ -10,6 +10,7 @@ import withTheme from './withRoot';
 import Projects from './components/Projects';
 import Project from './components/Projects/show';
 import Wishlist from './components/Wishlist';
+import LastTime from './components/LastTime';
 
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -26,6 +27,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import AlarmIcon from '@material-ui/icons/Alarm';
 import ListSubheader from '@material-ui/core/ListSubheader';
 
 import ListAltIcon from '@material-ui/icons/ListAlt';
@@ -196,6 +198,14 @@ function App() {
               <ListItemText primary="Projects" />
             </ListItem>
           </Link>
+          <Link to="/last-time">
+            <ListItem button>
+              <ListItemIcon>
+                <AlarmIcon />
+              </ListItemIcon>
+              <ListItemText primary="Last Time" />
+            </ListItem>
+          </Link>
           {open ? <ListSubheader component="spam"> Family </ListSubheader> : <Divider />}
           <Link to="/transactions/list">
             <ListItem button>
@@ -233,6 +243,7 @@ function App() {
             <Route path="/tasks" component={Tasks} />
             <Route path="/projects/:id" component={Project} />
             <Route path="/projects" component={Projects} />
+            <Route path="/last-time" component={LastTime} exact />
             <Route path="/sandbox" component={Sandbox} exact />
             <Route path="/wishlist" component={Wishlist} />
             <Route path="/" render={() => <h1>Нiчого</h1>} />
