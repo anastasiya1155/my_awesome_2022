@@ -136,7 +136,7 @@ class Days extends React.Component {
               }}
             >
               <TextField value={this.state.searchQuery} onChange={this.handleSearchInputChange} />
-              <Button>search</Button>
+              <Button type="submit">search</Button>
             </form>
           </Grid>
         </Grid>
