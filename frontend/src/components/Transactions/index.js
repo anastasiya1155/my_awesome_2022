@@ -5,8 +5,9 @@ import Tab from '@material-ui/core/Tab';
 import TransactionsList from './TransactionsList';
 import TransactionsCreate from './TransactionsCreate';
 import TransactionsCategories from './TransactionsCategories';
+import TransactionsStatistics from './TransactionsStatistics';
 
-const links = ['/transactions/list', '/transactions/add', '/transactions/categories'];
+const links = ['/transactions/list', '/transactions/add', '/transactions/categories', '/transactions/statistics'];
 
 class Transactions extends Component {
   render() {
@@ -23,12 +24,16 @@ class Transactions extends Component {
           <Link to="/transactions/categories" style={{ textDecoration: 'none', color: 'inherit' }}>
             <Tab label="Categories" />
           </Link>
+          <Link to="/transactions/statistics" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Tab label="Statistics" />
+          </Link>
         </Tabs>
         <br /> <br />
         <Switch>
           <Route path="/transactions/add" component={TransactionsCreate} />
           <Route path="/transactions/list" component={TransactionsList} />
           <Route path="/transactions/categories" component={TransactionsCategories} />
+          <Route path="/transactions/statistics" component={TransactionsStatistics} />
         </Switch>
       </div>
     );

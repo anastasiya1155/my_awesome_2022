@@ -16,6 +16,7 @@ export const postTransactionsToMonthAndYear = (year, month, data) => apiPostRequ
 
 export const getTransactionsCategories = () =>  apiGetRequest(`${FIREBASE}cat.json`);
 export const postTransactionsCategories = (data) => apiPostRequest(`${FIREBASE}cat.json`, data);
+export const getTransactionsStatistics = () => apiGetRequest(`${FIREBASE}transactions-statistics.json`)
 
 export const getTodos    = () => apiGetRequest(`${FIREBASE}todo.json`);
 export const getTodo     = (id) => apiGetRequest(`${FIREBASE}todo/${id}.json`);
