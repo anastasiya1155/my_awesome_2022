@@ -1,5 +1,4 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
 import { getLts, postLT, putLT } from '../shared/utils/routes';
 import {
   Divider,
@@ -117,4 +116,4 @@ const LastTime = () => {
     </div>
   );
 };
-export default withRouter(LastTime);
+export default LastTime;

@@ -1,10 +1,18 @@
-import React from 'react';
-import { Route, Switch, withRouter } from 'react-router-dom';
-import TransactionsList from './TransactionsList';
-import TransactionsCreate from './TransactionsCreate';
-import TransactionsCategories from './TransactionsCategories';
-import TransactionsStatistics from './TransactionsStatistics';
+import React, { lazy, Suspense } from 'react';
+import { Route, Switch } from 'react-router-dom';
 import Tabs from '../shared/components/Tabs';
+const TransactionsList = lazy(() =>
+  import(/* webpackChunkName: "transactions-list" */ './TransactionsList'),
+);
+const TransactionsCreate = lazy(() =>
+  import(/* webpackChunkName: "transactions-add" */ './TransactionsCreate'),
+);
+const TransactionsCategories = lazy(() =>
+  import(/* webpackChunkName: "transactions-cats" */ './TransactionsCategories'),
+);
+const TransactionsStatistics = lazy(() =>
+  import(/* webpackChunkName: "transactions-stats" */ './TransactionsStatistics'),
+);
 
 const links = [
   '/transactions/list',
@@ -28,14 +36,16 @@ function Transactions({ history, location }) {
         ]}
       />
       <br /> <br />
-      <Switch>
-        <Route path="/transactions/add" component={TransactionsCreate} />
-        <Route path="/transactions/list" component={TransactionsList} />
-        <Route path="/transactions/categories" component={TransactionsCategories} />
-        <Route path="/transactions/statistics" component={TransactionsStatistics} />
-      </Switch>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Switch>
+          <Route path="/transactions/add" component={TransactionsCreate} />
+          <Route path="/transactions/list" component={TransactionsList} />
+          <Route path="/transactions/categories" component={TransactionsCategories} />
+          <Route path="/transactions/statistics" component={TransactionsStatistics} />
+        </Switch>
+      </Suspense>
     </div>
   );
 }
 
-export default withRouter(Transactions);
+export default Transactions;

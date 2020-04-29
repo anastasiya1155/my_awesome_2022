@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { IconButton, List, ListItem, ListItemText } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-
-import { withRouter } from 'react-router-dom';
 import { getProjects, getTasks, postProject } from '../shared/utils/routes';
 import AddProject from './AddProject';
 
@@ -111,4 +109,4 @@ class Projects extends Component {
   }
 }
 
-export default withRouter(Projects);
+export default Projects;

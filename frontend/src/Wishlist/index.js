@@ -1,10 +1,10 @@
-import React from 'react';
-import { Route, Switch, withRouter } from 'react-router-dom';
-import WishCreate from './WishCreate';
-import WishList from './WishList';
+import React, { lazy, Suspense } from 'react';
+import { Route, Switch } from 'react-router-dom';
 import { deleteWish, getWishes, postWish, putWish } from '../shared/utils/routes';
-import WishEdit from './WishEdit';
 import Tabs from '../shared/components/Tabs';
+const WishCreate = lazy(() => import(/* webpackChunkName: "wish-add" */ './WishCreate'));
+const WishList = lazy(() => import(/* webpackChunkName: "wish-list" */ './WishList'));
+const WishEdit = lazy(() => import(/* webpackChunkName: "wish-edit" */ './WishEdit'));
 
 const links = ['/wishlist/list', '/wishlist/add'];
 
@@ -76,21 +76,33 @@ const Wishlist = ({ history, location }) => {
         ]}
       />
       <br /> <br />
-      <Switch>
-        <Route path="/wishlist/add" component={() => WishCreate({ onSubmit: handleAddWish })} />
-        <Route
-          path="/wishlist/list"
-          component={() => WishList({ wishes, editWish, removeWish, openEditPopup })}
-        />
-      </Switch>
-      <WishEdit
-        onSubmit={editWish}
-        handleClose={handleCloseEdit}
-        isOpen={!!wishToEdit}
-        wish={wishToEdit}
-      />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Switch>
+          <Route path="/wishlist/add">
+            <WishCreate onSubmit={handleAddWish} />
+          </Route>
+          <Route path="/wishlist/list">
+            <WishList
+              wishes={wishes}
+              editWish={editWish}
+              removeWish={removeWish}
+              openEditPopup={openEditPopup}
+            />
+          </Route>
+        </Switch>
+      </Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
+        {wishToEdit ? (
+          <WishEdit
+            onSubmit={editWish}
+            handleClose={handleCloseEdit}
+            isOpen={!!wishToEdit}
+            wish={wishToEdit}
+          />
+        ) : null}
+      </Suspense>
     </div>
   );
 };
 
-export default withRouter(Wishlist);
+export default Wishlist;

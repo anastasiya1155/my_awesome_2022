@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Grid, TextField, Button, Snackbar } from '@material-ui/core';
 import { sendLogin } from '../../shared/utils/routes';
 import useStyles from '../useStyles';
@@ -66,4 +66,4 @@ LoginPage.propTypes = {
   history: PropTypes.object,
 };
 
-export default withRouter(LoginPage);
+export default LoginPage;

@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router';
-
 import moment from 'moment';
-
 import Table, { MTableGroupRow } from 'material-table';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -189,4 +186,4 @@ class TransactionsList extends Component {
   }
 }
 
-export default withRouter(TransactionsList);
+export default TransactionsList;

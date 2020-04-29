@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -196,4 +195,4 @@ class Project extends Component {
   }
 }
 
-export default withRouter(withStyles(styles)(Project));
+export default withStyles(styles)(Project);

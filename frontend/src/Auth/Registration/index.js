@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import useStyles from '../useStyles';
 import { sendRegistration } from '../../shared/utils/routes';
 import { Button, Grid, Snackbar, TextField } from '@material-ui/core';
@@ -109,4 +109,4 @@ RegistrationPage.propTypes = {
   history: PropTypes.object,
 };
 
-export default withRouter(RegistrationPage);
+export default RegistrationPage;
