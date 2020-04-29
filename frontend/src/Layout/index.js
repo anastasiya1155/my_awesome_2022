@@ -62,8 +62,8 @@ const Layout = ({ children }) => {
           {inProgress.length > 0 ? (
             <Grid container>
               {inProgress.map(task => (
-                <Grid item>
-                  <b key={task.id}> --- {task.body} --- </b>
+                <Grid item key={task.id}>
+                  <b> --- {task.body} --- </b>
                 </Grid>
               ))}
             </Grid>
