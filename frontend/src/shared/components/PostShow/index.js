@@ -127,15 +127,25 @@ class PostShow extends Component {
             ))}
           </Grid>
           <Grid item className={classes.actionBtns}>
-            <Button onClick={toggleEdit} className={classes.button}>edit</Button>
-            <Button onClick={toggleComment} className={classes.button}>cmnt</Button>
-            <Button onClick={this.toggleDeleteMode} className={classes.button}>x</Button>
+            <Button onClick={toggleEdit} className={classes.button}>
+              edit
+            </Button>
+            <Button onClick={toggleComment} className={classes.button}>
+              cmnt
+            </Button>
+            <Button onClick={this.toggleDeleteMode} className={classes.button}>
+              x
+            </Button>
           </Grid>
         </Grid>
 
         {deleteMode ? (
           <div className={classes.post}>
-            <Button variant="contained" onClick={this.handleDeletePost} className={classes.deleteBtn}>
+            <Button
+              variant="contained"
+              onClick={this.handleDeletePost}
+              className={classes.deleteBtn}
+            >
               Delete ?
             </Button>
           </div>

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import Table, { MTableGroupRow } from 'material-table';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -9,6 +8,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { CATEGORIES } from '../../shared/config/const';
 import { getTransactionsByMonthAndYear } from '../../shared/utils/routes';
+import Table from './Table';
 
 const thisMonth = moment().format('MMMM');
 const thisYear = moment().year();
@@ -159,26 +159,6 @@ class TransactionsList extends Component {
           <Table
             data={groupByCategory ? categoryData : transactions}
             columns={groupByCategory ? categoryColumns : tableColumns}
-            title=""
-            options={{
-              grouping: true,
-              paging: false,
-            }}
-            components={{
-              GroupRow: rowProps => {
-                let sum = 0;
-                rowProps.groupData.data.forEach(({ amount }) => (sum += amount));
-                return (
-                  <MTableGroupRow
-                    {...rowProps}
-                    groupData={{
-                      ...rowProps.groupData,
-                      value: `${CATEGORIES[rowProps.groupData.value].name}  ${sum}`,
-                    }}
-                  />
-                );
-              },
-            }}
           />
         </Paper>
       </div>
