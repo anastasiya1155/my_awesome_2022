@@ -2,13 +2,18 @@ import React, { lazy, Suspense } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Button, TextField, Grid } from '@material-ui/core';
+import SettingsIcon from '@material-ui/icons/Settings';
+import SearchIcon from '@material-ui/icons/Search';
 import { RELOAD_POST_LIST } from '../shared/redux/actions';
 import { getLabels, getPosts, searchPosts } from '../shared/utils/routes';
 import Tabs from '../shared/components/Tabs';
 import PostList from './PostList';
+import DaysSettings from './Settings';
+import Search from './Search';
+import PostCreate from './PostList/PostCreate';
 const DaysApp = lazy(() => import(/* webpackChunkName: "days-app" */ './DaysApp'));
 
-const links = ['/days', '/days', '/days/app'];
+const links = ['/days', '/days', '/days/app', '/days/settings', '/days/search'];
 
 const getCurrentTab = path => (links.indexOf(path) >= 0 ? links.indexOf(path) : 0);
 
@@ -23,7 +28,6 @@ class Days extends React.Component {
     },
     isLoading: false,
     labels: [],
-    searchQuery: '',
   };
 
   componentDidMount() {
@@ -54,8 +58,6 @@ class Days extends React.Component {
   };
 
   fetchPosts = tablink => {
-    console.log('fetchPosts');
-
     getPosts(tablink)
       .then(response => {
         const posts = response.data.map(c => ({
@@ -73,7 +75,6 @@ class Days extends React.Component {
   };
 
   toggleTab = tab => {
-    console.log('toggleTab');
     this.props.history.push('/days');
     this.setState({
       activeTab: {
@@ -84,79 +85,67 @@ class Days extends React.Component {
     this.fetchPosts(tab.link);
   };
 
-  handleSearchInputChange = e => {
-    this.setState({ searchQuery: e.target.value });
-  };
-
-  search = e => {
-    searchPosts(this.state.searchQuery)
-      .then(response => {
-        const posts = response.data.map(c => ({
-          id: c.ID,
-          labels: c.Labels,
-          comments: c.Comments,
-          periods: c.Periods,
-          body: c.Body,
-          date: c.Date.slice(0, 10),
-        }));
-
-        this.setState({ posts });
-      })
-      .catch(error => console.log(error));
-  };
-
   render() {
-    const { activeTabIndex, searchQuery, labels, posts } = this.state;
+    const { activeTabIndex, labels, posts } = this.state;
     const { history } = this.props;
     return (
       <div>
-        <Grid
-          container
-          justify="space-between"
-          alignItems="flex-end"
-          style={{ marginBottom: '30px' }}
-          spacing={3}
-        >
-          <Grid item>
-            <Tabs
-              value={activeTabIndex}
-              onChange={(e, newVal) => this.setState({ activeTabIndex: newVal })}
-              tabs={[
-                {
-                  label: 'Last 25 posts',
-                  onClick: () => this.toggleTab({ link: '?sort=-date', name: 'mada' }),
-                },
-                {
-                  label: 'This day in history',
-                  onClick: () => this.toggleTab({ link: '-history', name: 'history' }),
-                },
-                {
-                  label: 'All posts',
-                  onClick: () => history.push('/days/app'),
-                },
-              ]}
-            />
-          </Grid>
-          {activeTabIndex === 0 || activeTabIndex === 1 ? (
-            <Grid item>
-              <form
-                onSubmit={e => {
-                  e.preventDefault();
-                  this.search();
-                }}
-              >
-                <TextField value={searchQuery} onChange={this.handleSearchInputChange} />
-                <Button type="submit">search</Button>
-              </form>
-            </Grid>
-          ) : null}
-        </Grid>
+        <Tabs
+          value={activeTabIndex}
+          onChange={(e, newVal) => this.setState({ activeTabIndex: newVal })}
+          tabs={[
+            {
+              label: 'Last 25 posts',
+              mobile: {
+                label: 'Last posts',
+              },
+              onClick: () => this.toggleTab({ link: '?sort=-date', name: 'mada' }),
+            },
+            {
+              label: 'This day in history',
+              mobile: {
+                label: 'This day',
+              },
+              onClick: () => this.toggleTab({ link: '-history', name: 'history' }),
+            },
+            {
+              label: 'All posts',
+              mobile: {
+                label: 'All',
+              },
+              onClick: () => history.push('/days/app'),
+            },
+            {
+              label: 'Settings',
+              // icon: <SettingsIcon />,
+              mobile: {
+                icon: <SettingsIcon />,
+              },
+              onClick: () => history.push('/days/settings'),
+            },
+            {
+              icon: <SearchIcon />,
+              mobile: {
+                icon: <SearchIcon />,
+              },
+              onClick: () => history.push('/days/search'),
+            },
+          ]}
+        />
+        <br /> <br />
         <Suspense fallback={<div>Loading...</div>}>
           <Switch>
             <Route path="/days/app">
               <DaysApp />
             </Route>
+            <Route path="/days/settings">
+              <DaysSettings />
+            </Route>
+            <Route path="/days/search">
+              <Search labels={labels} />
+            </Route>
             <Route path="/days">
+              <PostCreate />
               <PostList labels={labels} posts={posts} />
             </Route>
           </Switch>
