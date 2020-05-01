@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/styles';
-import { addLabel, deleteLabel } from '../../../utils/routes';
+import { addLabel, deleteLabel } from '../../../shared/utils/routes';
 
 class PostLabel extends Component {
   state = {

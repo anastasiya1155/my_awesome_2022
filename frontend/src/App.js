@@ -1,7 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 import { Route, Switch, BrowserRouter as Router, Redirect } from 'react-router-dom';
 const Days = lazy(() => import(/* webpackChunkName: "days" */ './Days'));
-const DaysApp = lazy(() => import(/* webpackChunkName: "days-app" */ './DaysApp'));
 const Transactions = lazy(() => import(/* webpackChunkName: "transactions" */ './Transactions'));
 const Tasks = lazy(() => import(/* webpackChunkName: "tasks" */ './Tasks'));
 const Sandbox = lazy(() => import(/* webpackChunkName: "sandbox" */ './Sandbox'));
@@ -25,8 +24,7 @@ function App() {
           <Layout>
             <Suspense fallback={<div>Loading...</div>}>
               <Switch>
-                <Route path="/days" component={Days} exact />
-                <Route path="/days/app" component={DaysApp} exact />
+                <Route path="/days" component={Days} />
                 <Route path="/transactions" component={Transactions} />
                 <Route path="/tasks" component={Tasks} />
                 <Route path="/projects/:id" component={Project} />

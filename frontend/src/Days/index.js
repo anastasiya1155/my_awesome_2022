@@ -1,16 +1,21 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
+import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Button, TextField, Grid } from '@material-ui/core';
 import { RELOAD_POST_LIST } from '../shared/redux/actions';
 import { getLabels, getPosts, searchPosts } from '../shared/utils/routes';
 import Tabs from '../shared/components/Tabs';
-import PostCreate from './PostCreate';
 import PostList from './PostList';
+const DaysApp = lazy(() => import(/* webpackChunkName: "days-app" */ './DaysApp'));
+
+const links = ['/days', '/days', '/days/app'];
+
+const getCurrentTab = path => (links.indexOf(path) >= 0 ? links.indexOf(path) : 0);
 
 class Days extends React.Component {
   state = {
     posts: [],
-    activeTabIndex: 0,
+    activeTabIndex: getCurrentTab(this.props.location.pathname),
 
     activeTab: {
       link: '?sort=-date',
@@ -69,6 +74,7 @@ class Days extends React.Component {
 
   toggleTab = tab => {
     console.log('toggleTab');
+    this.props.history.push('/days');
     this.setState({
       activeTab: {
         link: tab.link,
@@ -100,6 +106,8 @@ class Days extends React.Component {
   };
 
   render() {
+    const { activeTabIndex, searchQuery, labels, posts } = this.state;
+    const { history } = this.props;
     return (
       <div>
         <Grid
@@ -111,7 +119,7 @@ class Days extends React.Component {
         >
           <Grid item>
             <Tabs
-              value={this.state.activeTabIndex}
+              value={activeTabIndex}
               onChange={(e, newVal) => this.setState({ activeTabIndex: newVal })}
               tabs={[
                 {
@@ -122,23 +130,37 @@ class Days extends React.Component {
                   label: 'This day in history',
                   onClick: () => this.toggleTab({ link: '-history', name: 'history' }),
                 },
+                {
+                  label: 'All posts',
+                  onClick: () => history.push('/days/app'),
+                },
               ]}
             />
           </Grid>
-          <Grid item>
-            <form
-              onSubmit={e => {
-                e.preventDefault();
-                this.search();
-              }}
-            >
-              <TextField value={this.state.searchQuery} onChange={this.handleSearchInputChange} />
-              <Button type="submit">search</Button>
-            </form>
-          </Grid>
+          {activeTabIndex === 0 || activeTabIndex === 1 ? (
+            <Grid item>
+              <form
+                onSubmit={e => {
+                  e.preventDefault();
+                  this.search();
+                }}
+              >
+                <TextField value={searchQuery} onChange={this.handleSearchInputChange} />
+                <Button type="submit">search</Button>
+              </form>
+            </Grid>
+          ) : null}
         </Grid>
-        <PostCreate />
-        <PostList labels={this.state.labels} posts={this.state.posts} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Switch>
+            <Route path="/days/app">
+              <DaysApp />
+            </Route>
+            <Route path="/days">
+              <PostList labels={labels} posts={posts} />
+            </Route>
+          </Switch>
+        </Suspense>
       </div>
     );
   }

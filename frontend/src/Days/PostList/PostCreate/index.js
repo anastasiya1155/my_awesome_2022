@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { RELOAD_POST_LIST } from '../../shared/redux/actions';
-import { postPost } from '../../shared/utils/routes';
+import { RELOAD_POST_LIST } from '../../../shared/redux/actions';
+import { postPost } from '../../../shared/utils/routes';
 
 class PostCreate extends Component {
   state = {

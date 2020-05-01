@@ -8,9 +8,9 @@ import PostLabel from './PostLabel';
 import PostEdit from './PostEdit';
 import PostComment from './PostComment';
 import PostCommentEdit from './PostCommentEdit';
-import { TOGGLE_COMMENT, TOGGLE_EDIT, RELOAD_POST_LIST } from '../../redux/actions';
+import { TOGGLE_COMMENT, TOGGLE_EDIT, RELOAD_POST_LIST } from '../../shared/redux/actions';
 import moment from 'moment';
-import { deletePost } from '../../utils/routes';
+import { deletePost } from '../../shared/utils/routes';
 
 const styles = theme => ({
   container: {
