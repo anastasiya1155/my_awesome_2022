@@ -111,12 +111,6 @@ class PostShow extends Component {
       classes,
     } = this.props;
     const { deleteMode } = this.state;
-    if (!post.periods) {
-      post.periods = [
-        { ID: 1, Name: 'work' },
-        { ID: 2, Name: 'health' },
-      ];
-    }
     return (
       <div className={classes.container}>
         <Grid container justify="center" alignItems="center" className={classes.topActions}>
@@ -163,16 +157,18 @@ class PostShow extends Component {
                 ))}
               </p>
             )}
-            <div className={classes.periods}>
-              {post.periods.map(period => (
-                <Chip
-                  key={period.ID}
-                  label={period.Name}
-                  className={this.props.classes.period}
-                  variant="outlined"
-                />
-              ))}
-            </div>
+            {post.periods && post.periods.length > 0 ? (
+              <div className={classes.periods}>
+                {post.periods.map(period => (
+                  <Chip
+                    key={period.ID}
+                    label={period.Name}
+                    className={this.props.classes.period}
+                    variant="outlined"
+                  />
+                ))}
+              </div>
+            ) : null}
             {post.comments.map(comment => (
               <PostComment key={comment.ID} comment={comment} />
             ))}
