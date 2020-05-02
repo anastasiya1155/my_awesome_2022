@@ -1,9 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, Grid, TextField } from '@material-ui/core';
 import PostList from '../PostList';
-import { Route } from 'react-router-dom';
-import {searchPosts} from '../../shared/utils/routes';
+import { searchPosts } from '../../shared/utils/routes';
 
 const Search = ({ labels }) => {
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -40,7 +38,5 @@ const Search = ({ labels }) => {
     </Grid>
   );
 };
-
-Search.propTypes = {};
 
 export default Search;

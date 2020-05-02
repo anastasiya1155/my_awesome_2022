@@ -12,7 +12,7 @@ const Tabs = ({ value, onChange, tabs }) => {
       onChange={onChange}
       indicatorColor="primary"
       textColor="primary"
-      variant={isMobile ? tabs.length > 3 ? 'scrollable' : 'fullWidth' : 'standard'}
+      variant={isMobile ? (tabs.length > 3 ? 'scrollable' : 'fullWidth') : 'standard'}
     >
       {tabs.map(t => (
         <Tab

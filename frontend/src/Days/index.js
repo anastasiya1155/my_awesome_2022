@@ -1,11 +1,10 @@
 import React, { lazy, Suspense } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Button, TextField, Grid } from '@material-ui/core';
 import SettingsIcon from '@material-ui/icons/Settings';
 import SearchIcon from '@material-ui/icons/Search';
 import { RELOAD_POST_LIST } from '../shared/redux/actions';
-import { getLabels, getPosts, searchPosts } from '../shared/utils/routes';
+import { getLabels, getPosts } from '../shared/utils/routes';
 import Tabs from '../shared/components/Tabs';
 import PostList from './PostList';
 import DaysSettings from './Settings';

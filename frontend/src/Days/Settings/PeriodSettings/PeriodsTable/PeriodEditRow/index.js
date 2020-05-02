@@ -51,7 +51,7 @@ const PeriodEditRow = ({ period, onSubmit, onCancel }) => {
           }
           label="Is in progress"
         />
-        <br/>
+        <br />
         <TextField
           name="periodEnd"
           type="date"

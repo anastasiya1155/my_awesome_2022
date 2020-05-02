@@ -9,7 +9,11 @@ const PeriodRow = ({ period, onEditClicked, onDeleteSubmit }) => {
   return isDelete ? (
     <TableRow>
       <TableCell colSpan={4}>
-        <Button fullWidth variant="contained" onClick={() => onDeleteSubmit().then(() => setIsDelete(false))}>
+        <Button
+          fullWidth
+          variant="contained"
+          onClick={() => onDeleteSubmit().then(() => setIsDelete(false))}
+        >
           DELETE
         </Button>
       </TableCell>
