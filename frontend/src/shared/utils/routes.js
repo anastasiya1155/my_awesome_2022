@@ -2,7 +2,7 @@ import axios from 'axios';
 import { IP, PORT } from '../config/const';
 
 const FIREBASE = 'https://tranf-ae713.firebaseio.com/';
-const LOCAL = `http://${IP}:${PORT}`;
+const LOCAL = `http://${IP}:${PORT}/api`;
 
 const apiGetRequest = (url, config) => axios.get(url, config);
 const apiPostRequest = (url, data, config) => axios.post(url, data, config);

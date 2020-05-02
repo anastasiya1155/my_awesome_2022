@@ -33,9 +33,9 @@ func init() {
 
 			dbstr := "vova:vova@tcp(mysql:3306)/m2019?charset=utf8&parseTime=True&loc=Local"
 
-			if os.Getenv("LOCAL") == "1" {
-				dbstr = "root:root@tcp(localhost:3308)/m2019?charset=utf8&parseTime=True&loc=Local"
-			}
+			//if os.Getenv("LOCAL") == "1" {
+			//	dbstr = "root:root@tcp(localhost:3308)/m2019?charset=utf8&parseTime=True&loc=Local"
+			//}
 
 			db, err := gorm.Open("mysql", dbstr)
 

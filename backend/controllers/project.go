@@ -1,111 +1,25 @@
 package controllers
 
 import (
-	"encoding/json"
+	"github.com/vova/pa2020/backend/middleware"
 	"net/http"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	dbpkg "github.com/vova/pa2020/backend/db"
 	"github.com/vova/pa2020/backend/helper"
 	"github.com/vova/pa2020/backend/models"
-	"github.com/vova/pa2020/backend/version"
-
-	"github.com/gin-gonic/gin"
 )
 
-// todo: rename all task
+// todo: vote
 func GetProjects(c *gin.Context) {
-	ver, err := version.New(c)
-	if err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
-		return
-	}
-
 	db := dbpkg.DBInstance(c)
-	parameter, err := dbpkg.NewParameter(c, models.Project{})
-	if err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
-		return
-	}
-
-	db, err = parameter.Paginate(db)
-	if err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
-		return
-	}
-
-	db = parameter.SetPreloads(db)
-	db = parameter.SortRecords(db)
-	db = parameter.FilterFields(db)
-	projects := []models.Project{}
-	fields := helper.ParseFields(c.DefaultQuery("fields", "*"))
-	queryFields := helper.QueryFields(models.Project{}, fields)
-
-	if err := db.Select(queryFields).Find(&projects).Error; err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
-		return
-	}
-
-	index := 0
-
-	if len(projects) > 0 {
-		index = int(projects[len(projects)-1].ID)
-	}
-
-	if err := parameter.SetHeaderLink(c, index); err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
-		return
-	}
-
-	if version.Range("1.0.0", "<=", ver) && version.Range(ver, "<", "2.0.0") {
-		// conditional branch by version.
-		// 1.0.0 <= this version < 2.0.0 !!
-	}
-
-	if _, ok := c.GetQuery("stream"); ok {
-		enc := json.NewEncoder(c.Writer)
-		c.Status(200)
-
-		for _, project := range projects {
-			fieldMap, err := helper.FieldToMap(project, fields)
-			if err != nil {
-				c.JSON(400, gin.H{"error": err.Error()})
-				return
-			}
-
-			if err := enc.Encode(fieldMap); err != nil {
-				c.JSON(400, gin.H{"error": err.Error()})
-				return
-			}
-		}
-	} else {
-		fieldMaps := []map[string]interface{}{}
-
-		for _, project := range projects {
-			fieldMap, err := helper.FieldToMap(project, fields)
-			if err != nil {
-				c.JSON(400, gin.H{"error": err.Error()})
-				return
-			}
-
-			fieldMaps = append(fieldMaps, fieldMap)
-		}
-
-		if _, ok := c.GetQuery("pretty"); ok {
-			c.IndentedJSON(200, fieldMaps)
-		} else {
-			c.JSON(200, fieldMaps)
-		}
-	}
+	var projects []models.Project
+	rawQuery := "SELECT * FROM projects where user_id = ? order by priority;"
+	db.Raw(rawQuery, middleware.UserInstance(c).ID).Scan(&projects)
+	c.JSON(201, projects)
 }
-
 func GetProject(c *gin.Context) {
-	ver, err := version.New(c)
-	if err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
-		return
-	}
-
 	db := dbpkg.DBInstance(c)
 	parameter, err := dbpkg.NewParameter(c, models.Project{})
 	if err != nil {
@@ -125,15 +39,16 @@ func GetProject(c *gin.Context) {
 		return
 	}
 
+	if !vote(c, project) {
+		c.JSON(403, "you dont have permissions")
+		c.Abort()
+		return
+	}
+
 	fieldMap, err := helper.FieldToMap(project, fields)
 	if err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
-	}
-
-	if version.Range("1.0.0", "<=", ver) && version.Range(ver, "<", "2.0.0") {
-		// conditional branch by version.
-		// 1.0.0 <= this version < 2.0.0 !!
 	}
 
 	if _, ok := c.GetQuery("pretty"); ok {
@@ -142,7 +57,6 @@ func GetProject(c *gin.Context) {
 		c.JSON(200, fieldMap)
 	}
 }
-
 func CreateProject(c *gin.Context) {
 
 	db := dbpkg.DBInstance(c)
@@ -152,6 +66,13 @@ func CreateProject(c *gin.Context) {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
+
+	if !vote(c, project) {
+		c.JSON(403, "you dont have permissions")
+		c.Abort()
+		return
+	}
+
 	project.CreatedAt = time.Now()
 	if err := db.Create(&project).Error; err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
@@ -160,13 +81,7 @@ func CreateProject(c *gin.Context) {
 
 	c.JSON(201, project)
 }
-
 func UpdateProject(c *gin.Context) {
-	ver, err := version.New(c)
-	if err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
-		return
-	}
 
 	db := dbpkg.DBInstance(c)
 	id := c.Params.ByName("id")
@@ -183,26 +98,20 @@ func UpdateProject(c *gin.Context) {
 		return
 	}
 
+	if !vote(c, project) {
+		c.JSON(403, "you dont have permissions")
+		c.Abort()
+		return
+	}
+
 	if err := db.Save(&project).Error; err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
 
-	if version.Range("1.0.0", "<=", ver) && version.Range(ver, "<", "2.0.0") {
-		// conditional branch by version.
-		// 1.0.0 <= this version < 2.0.0 !!
-	}
-
 	c.JSON(200, project)
 }
-
 func DeleteProject(c *gin.Context) {
-	ver, err := version.New(c)
-	if err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
-		return
-	}
-
 	db := dbpkg.DBInstance(c)
 	id := c.Params.ByName("id")
 	project := models.Project{}
@@ -213,14 +122,15 @@ func DeleteProject(c *gin.Context) {
 		return
 	}
 
-	if err := db.Delete(&project).Error; err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
+	if !vote(c, project) {
+		c.JSON(403, "you dont have permissions")
+		c.Abort()
 		return
 	}
 
-	if version.Range("1.0.0", "<=", ver) && version.Range(ver, "<", "2.0.0") {
-		// conditional branch by version.
-		// 1.0.0 <= this version < 2.0.0 !!
+	if err := db.Delete(&project).Error; err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
 	}
 
 	c.Writer.WriteHeader(http.StatusNoContent)

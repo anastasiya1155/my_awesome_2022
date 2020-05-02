@@ -4,16 +4,20 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/vova/pa2020/backend/controllers"
+	"github.com/vova/pa2020/backend/middleware"
 )
 
 func Initialize(r *gin.Engine) {
 	r.GET("/", controllers.APIEndpoints)
 
-	api := r.Group("")
-	{
+	r.POST("/login", controllers.Login)
+	r.POST("/register", controllers.Resister)
 
-		api.GET("/comments", controllers.GetComments)
-		api.GET("/comments/:id", controllers.GetComment)
+	api := r.Group("api")
+	api.Use(middleware.CheckJwt())
+	{
+		api.POST("/sandbox", controllers.Sandbox)
+
 		api.POST("/comments", controllers.CreateComment)
 		api.PUT("/comments/:id", controllers.UpdateComment)
 		api.DELETE("/comments/:id", controllers.DeleteComment)
@@ -25,7 +29,6 @@ func Initialize(r *gin.Engine) {
 		api.DELETE("/labels/:id", controllers.DeleteLabel)
 
 		api.GET("/posts", controllers.GetPosts)
-		api.GET("/posts/:id", controllers.GetPost)
 		api.POST("/posts", controllers.CreatePost)
 		api.PUT("/posts/:id", controllers.UpdatePost)
 		api.DELETE("/posts/:id", controllers.DeletePost)
@@ -37,7 +40,7 @@ func Initialize(r *gin.Engine) {
 		api.GET("/posts-by-month/", controllers.GetPostByMonth)
 		api.GET("/posts-search/", controllers.SearchPosts)
 
-		api.GET("/tasks", controllers.GetTasks)
+		api.GET("/tasks-in-progress", controllers.GetTasksInprogressForUser)
 		api.GET("/tasks/:id", controllers.GetTask)
 		api.POST("/tasks", controllers.CreateTask)
 		api.PUT("/tasks/:id", controllers.UpdateTask)
@@ -45,12 +48,12 @@ func Initialize(r *gin.Engine) {
 
 		api.GET("/projects", controllers.GetProjects)
 		api.GET("/projects/:id", controllers.GetProject)
+		api.GET("/projects/:id/tasks", controllers.GetTasksByProject)
 		api.POST("/projects", controllers.CreateProject)
 		api.PUT("/projects/:id", controllers.UpdateProject)
 		api.DELETE("/projects/:id", controllers.DeleteProject)
 
 		api.GET("/lts", controllers.GetLts)
-		api.GET("/lt/:id", controllers.GetLt)
 		api.POST("/lt", controllers.CreateLt)
 		api.PUT("/lt/:id", controllers.UpdateLt)
 		api.DELETE("/lt/:id", controllers.DeleteLt)

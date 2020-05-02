@@ -1,0 +1,7 @@
+ALTER TABLE `projects`
+ADD COLUMN `priority` INT(11) NULL,
+ADD COLUMN `archived` TINYINT NULL DEFAULT 0;
+
+ALTER TABLE `tasks`
+ADD COLUMN `priority` INT(11) NULL;
+

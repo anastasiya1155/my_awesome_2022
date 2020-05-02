@@ -1,13 +1,13 @@
 package controllers
 
 import (
+	"github.com/vova/pa2020/backend/middleware"
 	"net/http"
 	"sort"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	dbpkg "github.com/vova/pa2020/backend/db"
-	"github.com/vova/pa2020/backend/helper"
 	"github.com/vova/pa2020/backend/models"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -32,6 +32,7 @@ func GetPosts(c *gin.Context) {
 
 	if err := db.
 		Select("*").
+		Where("user_id = ? ", middleware.UserInstance(c).ID).
 		Preload("Comments").
 		Preload("Labels").
 		Order("date DESC").
@@ -50,6 +51,7 @@ func GetPosts(c *gin.Context) {
 
 	if err := db.
 		Select("posts.id as id, periods.id as period_id,periods.name as period_name").
+		Where("user_id = ? ", middleware.UserInstance(c).ID).
 		Joins("LEFT JOIN periods ON posts.date BETWEEN periods.start AND IFNULL(periods.end, NOW())").
 		Order("date DESC").
 		Limit(25).
@@ -80,40 +82,7 @@ func GetPosts(c *gin.Context) {
 	c.IndentedJSON(200, s)
 }
 
-func GetPost(c *gin.Context) {
-
-	db := dbpkg.DBInstance(c)
-	parameter, err := dbpkg.NewParameter(c, models.Post{})
-	if err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
-		return
-	}
-
-	db = parameter.SetPreloads(db)
-	post := models.Post{}
-	id := c.Params.ByName("id")
-	fields := helper.ParseFields(c.DefaultQuery("fields", "*"))
-	queryFields := helper.QueryFields(models.Post{}, fields)
-
-	if err := db.Select(queryFields).First(&post, id).Error; err != nil {
-		content := gin.H{"error": "post with id#" + id + " not found"}
-		c.JSON(404, content)
-		return
-	}
-
-	fieldMap, err := helper.FieldToMap(post, fields)
-	if err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
-		return
-	}
-
-	if _, ok := c.GetQuery("pretty"); ok {
-		c.IndentedJSON(200, fieldMap)
-	} else {
-		c.JSON(200, fieldMap)
-	}
-}
-
+// voted
 func CreatePost(c *gin.Context) {
 
 	db := dbpkg.DBInstance(c)
@@ -123,7 +92,7 @@ func CreatePost(c *gin.Context) {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
-
+	post.UserId = middleware.UserInstance(c).ID
 	if err := db.Create(&post).Error; err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
@@ -132,6 +101,7 @@ func CreatePost(c *gin.Context) {
 	c.JSON(201, post)
 }
 
+// voted
 func UpdatePost(c *gin.Context) {
 	db := dbpkg.DBInstance(c)
 	id := c.Params.ByName("id")
@@ -147,6 +117,11 @@ func UpdatePost(c *gin.Context) {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
+	if !vote(c, post) {
+		c.JSON(403, "you dont have permissions")
+		c.Abort()
+		return
+	}
 
 	if err := db.Save(&post).Error; err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
@@ -156,6 +131,7 @@ func UpdatePost(c *gin.Context) {
 	c.JSON(200, post)
 }
 
+// voted
 func DeletePost(c *gin.Context) {
 	db := dbpkg.DBInstance(c)
 	id := c.Params.ByName("id")
@@ -164,6 +140,11 @@ func DeletePost(c *gin.Context) {
 	if db.First(&post, id).Error != nil {
 		content := gin.H{"error": "post with id#" + id + " not found"}
 		c.JSON(404, content)
+		return
+	}
+	if !vote(c, post) {
+		c.JSON(403, "you dont have permissions")
+		c.Abort()
 		return
 	}
 
@@ -176,61 +157,81 @@ func DeletePost(c *gin.Context) {
 }
 
 func GetThisDayInHistory(c *gin.Context) {
-	GetPostsByFilter(c, "DATE_FORMAT(date, '%m-%d') = ?", time.Now().Format("01-02"))
+	GetPostsByFilter(c, "DATE_FORMAT(date, '%m-%d') = ? and posts.user_id = ?", time.Now().Format("01-02"), middleware.UserInstance(c).ID)
 }
 
 func SearchPosts(c *gin.Context) {
 	q := c.DefaultQuery("q", "java")
-	GetPostsByFilter(c, "body LIKE ?", "%"+q+"%")
+	GetPostsByFilter(c, "body LIKE ? AND posts.user_id = ?", "%"+q+"%", middleware.UserInstance(c).ID)
 }
 
+// voted
 func AddPostLabel(c *gin.Context) {
 	db := dbpkg.DBInstance(c)
 
 	var form FormPostLabel
 
-	if c.ShouldBindQuery(&form) == nil {
-		query := "INSERT INTO `posts_labels` (`post_id`,`label_id`)  values( ?, ?)"
-		db.Exec(query, form.Post, form.Label)
-		c.JSON(200, "success")
-
+	err := c.ShouldBindQuery(&form)
+	if err != nil {
+		c.JSON(400, err.Error())
 	}
 
-	c.JSON(200, "not 200")
+	var post models.Post
+	db.Raw("select * from posts where id =?", form.Post).Scan(&post)
+	if !vote(c, post) {
+		c.JSON(403, "you dont have permissions")
+		c.Abort()
+		return
+	}
+
+	var label models.Label
+	db.Raw("select * from labels where id =?", form.Label).Scan(&label)
+	if !vote(c, label) {
+		c.JSON(403, "you dont have permissions")
+		c.Abort()
+		return
+	}
+
+	query := "INSERT INTO `posts_labels` (`post_id`,`label_id`)  values( ?, ?)"
+	db.Exec(query, form.Post, form.Label)
+	c.JSON(200, "success")
 
 }
 
+// voted
 func DeletePostLabel(c *gin.Context) {
 	db := dbpkg.DBInstance(c)
 
 	var form FormPostLabel
 
-	if c.ShouldBindQuery(&form) == nil {
-		post := models.Post{}
-		label := models.Label{}
-
-		if db.Preload("Labels").First(&post, form.Post).Error != nil {
-			content := gin.H{"error": "post with id#" + form.Post + " not found"}
-			c.JSON(404, content)
-			return
-		}
-
-		if db.First(&label, form.Label).Error != nil {
-			content := gin.H{"error": "label with id#" + form.Label + " not found"}
-			c.JSON(404, content)
-			return
-		}
-
-		db.Debug().Model(&post).Association("Labels").Delete(&models.Label{ID: label.ID})
-
-		c.JSON(200, post)
-
+	err := c.ShouldBindQuery(&form)
+	if err != nil {
+		c.JSON(400, err.Error())
 	}
 
-	c.JSON(200, "not 200")
+	var post models.Post
+	db.Raw("select * from posts where id =?", form.Post).Scan(&post)
+	if !vote(c, post) {
+		c.JSON(403, "you dont have permissions")
+		c.Abort()
+		return
+	}
+
+	var label models.Label
+	db.Raw("select * from labels where id =?", form.Label).Scan(&label)
+	if !vote(c, label) {
+		c.JSON(403, "you dont have permissions")
+		c.Abort()
+		return
+	}
+
+	query := "Delete from `posts_labels`  WHERE `post_id`=? and`label_id`= ?;"
+	db.Exec(query, form.Post, form.Label)
+	c.JSON(200, "success")
 }
 
 // це шоб отримати менюху з місяцями
+// voted
 func GetPostMonths(c *gin.Context) {
 
 	db := dbpkg.DBInstance(c)
@@ -251,13 +252,14 @@ func GetPostMonths(c *gin.Context) {
 		COUNT(id) cnt
 	FROM
 		posts
+	Where user_id = ?
 	GROUP BY 
 		DATE_FORMAT(date, '%y-%m'),
 		DATE_FORMAT(date, '%M'),
 		DATE_FORMAT(date, '%Y')	
 	;`
 
-	db.Raw(sqlquery).Scan(&result)
+	db.Raw(sqlquery, middleware.UserInstance(c).ID).Scan(&result)
 
 	byYears := make(map[string][]Result)
 	for _, month := range result {
@@ -267,12 +269,10 @@ func GetPostMonths(c *gin.Context) {
 
 	c.JSON(200, byYears)
 }
-
 func GetPostByMonth(c *gin.Context) {
 	ym := c.DefaultQuery("ym", "10-10")
-	GetPostsByFilter(c, "DATE_FORMAT(date, '%y-%m') = ?", ym)
+	GetPostsByFilter(c, "DATE_FORMAT(date, '%y-%m') = ? and posts.user_id = ?", ym, middleware.UserInstance(c).ID)
 }
-
 func GetPostsByFilter(c *gin.Context, query interface{}, args ...interface{}) {
 
 	type Post struct {
@@ -287,7 +287,7 @@ func GetPostsByFilter(c *gin.Context, query interface{}, args ...interface{}) {
 
 	if err := db.
 		Select("*").
-		Where(query, args).
+		Where(query, args[0], args[1]).
 		Preload("Comments").
 		Preload("Labels").
 		Find(&modelPosts).Error; err != nil {
@@ -303,9 +303,9 @@ func GetPostsByFilter(c *gin.Context, query interface{}, args ...interface{}) {
 	var periodPosts []Post
 
 	if err := db.
-		Select("posts.id as id, periods.id as period_id,periods.name as period_name").
+		Select("posts.id as id, periods.id as period_id, periods.name as period_name").
 		Joins("LEFT JOIN periods ON posts.date BETWEEN periods.start AND IFNULL(periods.end, NOW())").
-		Where(query, args).
+		Where(query, args[0], args[1]).
 		Find(&periodPosts).Error; err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
