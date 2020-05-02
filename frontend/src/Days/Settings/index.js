@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Grid, TextField } from '@material-ui/core';
+import LabelsSettings from './LabelsSettings';
 
 const DaysSettings = props => {
-    return (
-        <div>settings</div>
-    );
+  return (
+    <div>
+      <LabelsSettings />
+    </div>
+  );
 };
 
-DaysSettings.propTypes = {
-
-};
+DaysSettings.propTypes = {};
 
 export default DaysSettings;

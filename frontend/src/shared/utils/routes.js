@@ -46,10 +46,13 @@ export const getYears = () => apiLocalGetRequest(`posts-months/`);
 export const getMonth = month => apiLocalGetRequest(`posts-by-month/?ym=${month}`);
 export const searchPosts = q => apiLocalGetRequest(`posts-search/?q=${q}`);
 
-export const getLabels = () => apiLocalGetRequest(`labels`);
-export const deleteLabel = (postId, labelId) =>
+export const getLabels = () => apiLocalGetRequest('labels');
+export const postLabel = data => apiLocalPostRequest('labels', data);
+export const deleteLabel = id => apiLocalDeleteRequest(`labels/${id}`);
+
+export const deleteLabelFromPost = (postId, labelId) =>
   apiLocalGetRequest(`posts-delete-label/?post_id=${postId}&label_id=${labelId}`);
-export const addLabel = (postId, labelId) =>
+export const addLabelToPost = (postId, labelId) =>
   apiLocalGetRequest(`posts-add-label/?post_id=${postId}&label_id=${labelId}`);
 
 export const getPins = () => apiLocalGetRequest(`pins`);
