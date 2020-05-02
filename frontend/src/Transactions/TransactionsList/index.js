@@ -8,7 +8,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { CATEGORIES } from '../../shared/config/const';
 import { getTransactionsByMonthAndYear } from '../../shared/utils/routes';
-import Table from './Table';
+import Table from '../../shared/components/Table';
 
 const thisMonth = moment().format('MMMM');
 const thisYear = moment().year();

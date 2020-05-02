@@ -76,3 +76,8 @@ export const sendLogin = data =>
     localStorage.setItem('token', resp.headers.authorization),
   );
 export const sendRegistration = data => apiLocalPostRequest(`register`, data);
+
+export const getPeriods = () => Promise.resolve({ data: [{ ID: 1, Name: "Kyiv", Start: '2019-10-01', End: null }]})
+export const postPeriod = (data) => Promise.resolve(data);
+export const deletePeriod = (id) => Promise.resolve(id);
+export const putPeriod = (id, data) => Promise.resolve({id, data});

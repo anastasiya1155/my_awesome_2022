@@ -185,7 +185,7 @@ class PostShow extends Component {
                   <Chip
                     key={period.ID}
                     label={period.Name}
-                    className={this.props.classes.period}
+                    className={classes.period}
                     variant="outlined"
                   />
                 ))}
