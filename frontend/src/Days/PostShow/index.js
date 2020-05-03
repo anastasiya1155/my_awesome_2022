@@ -8,9 +8,9 @@ import PostLabel from './PostLabel';
 import PostEdit from './PostEdit';
 import PostComment from './PostComment';
 import PostCommentEdit from './PostCommentEdit';
-import { TOGGLE_COMMENT, TOGGLE_EDIT, RELOAD_POST_LIST } from '../../redux/actions';
+import { TOGGLE_COMMENT, TOGGLE_EDIT, RELOAD_POST_LIST } from '../../shared/redux/actions';
 import moment from 'moment';
-import { deletePost } from '../../utils/routes';
+import { addLabelToPost, deleteLabelFromPost, deletePost } from '../../shared/utils/routes';
 
 const styles = theme => ({
   container: {
@@ -100,6 +100,23 @@ class PostShow extends Component {
       .catch(error => console.log(error));
   };
 
+  handleLabelClick = (isActive, labelId) => {
+    const { post, reloadPostList } = this.props;
+    if (isActive) {
+      deleteLabelFromPost(post.id, labelId)
+        .then(() => {
+          reloadPostList(true);
+        })
+        .catch(console.log);
+    } else {
+      addLabelToPost(post.id, labelId)
+        .then(() => {
+          reloadPostList(true);
+        })
+        .catch(console.log);
+    }
+  };
+
   render() {
     const {
       post,
@@ -117,7 +134,12 @@ class PostShow extends Component {
           <Grid item>{moment(post.date).format('dddd YYYY-MM-DD')}</Grid>
           <Grid item>
             {labels.map(l => (
-              <PostLabel key={l.id} label={l} post={post} />
+              <PostLabel
+                key={l.id}
+                label={l}
+                onClick={(e, active) => this.handleLabelClick(active, l.id)}
+                isActive={!!post.labels.find(pl => pl.ID === l.id)}
+              />
             ))}
           </Grid>
           <Grid item className={classes.actionBtns}>
@@ -163,7 +185,7 @@ class PostShow extends Component {
                   <Chip
                     key={period.ID}
                     label={period.Name}
-                    className={this.props.classes.period}
+                    className={classes.period}
                     variant="outlined"
                   />
                 ))}

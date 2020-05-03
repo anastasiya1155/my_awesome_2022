@@ -1,6 +1,6 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
-import PostShow from '../../shared/components/PostShow';
+import PostShow from '../PostShow';
 
 const PostList = ({ posts, labels }) => {
   return (
