@@ -6,7 +6,6 @@ import (
 	"github.com/jinzhu/gorm"
 	dbpkg "github.com/vova/pa2020/backend/db"
 	"github.com/vova/pa2020/backend/models"
-	"net/http"
 )
 
 var jwtKey = []byte("my_awsome_key")
@@ -42,16 +41,16 @@ func CheckJwt() gin.HandlerFunc {
 
 		if err != nil {
 			if err == jwt.ErrSignatureInvalid {
-				c.JSON(401, gin.H{"error": http.StatusUnauthorized})
+				c.JSON(401, gin.H{"error": "Signature Invalid"})
 				c.Abort()
 				return
 			}
-			c.JSON(400, gin.H{"error": http.StatusBadRequest})
+			c.JSON(401, gin.H{"error": "auth error"})
 			c.Abort()
 			return
 		}
 		if !tkn.Valid {
-			c.JSON(401, gin.H{"error": http.StatusUnauthorized})
+			c.JSON(401, gin.H{"error": "token is not Valid"})
 			c.Abort()
 			return
 		}
