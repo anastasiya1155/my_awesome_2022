@@ -58,6 +58,11 @@ func Initialize(r *gin.Engine) {
 		api.PUT("/lt/:id", controllers.UpdateLt)
 		api.DELETE("/lt/:id", controllers.DeleteLt)
 
+		api.GET("/periods", controllers.GetPeriods)
+		api.POST("/periods", controllers.CreatePeriod)
+		api.PUT("/periods/:id", controllers.UpdatePeriod)
+		api.DELETE("/periods/:id", controllers.DeletePeriod)
+
 	}
 
 	r.Use(cors.Default())

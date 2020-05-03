@@ -67,11 +67,7 @@ func CreateProject(c *gin.Context) {
 		return
 	}
 
-	if !vote(c, project) {
-		c.JSON(403, "you dont have permissions")
-		c.Abort()
-		return
-	}
+	project.UserId = middleware.UserInstance(c).ID
 
 	project.CreatedAt = time.Now()
 	if err := db.Create(&project).Error; err != nil {

@@ -87,11 +87,7 @@ func CreateLabel(c *gin.Context) {
 		return
 	}
 
-	if !vote(c, label) {
-		c.JSON(403, "you dont have permissions")
-		c.Abort()
-		return
-	}
+	label.UserId = middleware.UserInstance(c).ID
 
 	if err := db.Create(&label).Error; err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})

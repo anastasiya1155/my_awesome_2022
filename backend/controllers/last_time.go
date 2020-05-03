@@ -25,11 +25,8 @@ func CreateLt(c *gin.Context) {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
-	if !vote(c, lt) {
-		c.JSON(403, "you dont have permissions")
-		c.Abort()
-		return
-	}
+	lt.UserId = middleware.UserInstance(c).ID
+
 	if err := db.Create(&lt).Error; err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return

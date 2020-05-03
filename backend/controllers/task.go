@@ -115,7 +115,7 @@ func CreateTask(c *gin.Context) {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
-	fmt.Print(task)
+
 	if !vote(c, task) {
 		c.JSON(403, "you dont have permissions")
 		c.Abort()
