@@ -1,5 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 import { Route, Switch, BrowserRouter as Router, Redirect } from 'react-router-dom';
+import CheckAuth from './Auth/CheckAuth';
 const Days = lazy(() => import(/* webpackChunkName: "days" */ './Days'));
 const Transactions = lazy(() => import(/* webpackChunkName: "transactions" */ './Transactions'));
 const Tasks = lazy(() => import(/* webpackChunkName: "tasks" */ './Tasks'));
@@ -21,23 +22,25 @@ function App() {
         <Switch>
           <Route path="/login" component={LoginPage} />
           <Route path="/register" component={RegistrationPage} />
-          <Layout>
-            <Suspense fallback={<div>Loading...</div>}>
-              <Switch>
-                <Route path="/days" component={Days} />
-                <Route path="/transactions" component={Transactions} />
-                <Route path="/tasks" component={Tasks} />
-                <Route path="/projects/:id" component={Project} />
-                <Route path="/projects" component={Projects} />
-                <Route path="/last-time" component={LastTime} exact />
-                <Route path="/sandbox" component={Sandbox} exact />
-                <Route path="/wishlist" component={Wishlist} />
-                <Route path="/" exact>
-                  <Redirect to="/days" />
-                </Route>
-              </Switch>
-            </Suspense>
-          </Layout>
+          <CheckAuth>
+            <Layout>
+              <Suspense fallback={<div>Loading...</div>}>
+                <Switch>
+                  <Route path="/days" component={Days} />
+                  <Route path="/transactions" component={Transactions} />
+                  <Route path="/tasks" component={Tasks} />
+                  <Route path="/projects/:id" component={Project} />
+                  <Route path="/projects" component={Projects} />
+                  <Route path="/last-time" component={LastTime} exact />
+                  <Route path="/sandbox" component={Sandbox} exact />
+                  <Route path="/wishlist" component={Wishlist} />
+                  <Route path="/" exact>
+                    <Redirect to="/days" />
+                  </Route>
+                </Switch>
+              </Suspense>
+            </Layout>
+          </CheckAuth>
         </Switch>
       </Suspense>
     </Router>

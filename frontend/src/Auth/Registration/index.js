@@ -19,8 +19,9 @@ const RegistrationPage = ({ history }) => {
   const handleSubmit = () => {
     if (password === confirmPassword) {
       sendRegistration({ email, password })
-        .then(() => {
-          history.push('/login');
+        .then(resp => {
+          localStorage.setItem('token', resp.data.Token)
+          history.push('/days');
         })
         .catch(err => {
           setError(err.message);

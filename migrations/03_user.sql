@@ -4,7 +4,7 @@ CREATE TABLE `user` (
   `password` VARCHAR(255) NULL,
   `firstname` VARCHAR(255) NULL,
   `lastname` VARCHAR(255) NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC));
 
 ALTER TABLE `labels`    ADD COLUMN `user_id` INT(11) NULL;

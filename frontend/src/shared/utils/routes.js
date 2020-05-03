@@ -2,17 +2,29 @@ import axios from 'axios';
 import { IP, PORT } from '../config/const';
 
 const FIREBASE = 'https://tranf-ae713.firebaseio.com/';
-const LOCAL = `http://${IP}:${PORT}/api`;
+const LOCAL = `http://${IP}:${PORT}`;
 
 const apiGetRequest = (url, config) => axios.get(url, config);
 const apiPostRequest = (url, data, config) => axios.post(url, data, config);
 const apiPutRequest = (url, data, config) => axios.put(url, data, config);
 const apiDeleteRequest = (url, config) => axios.delete(url, config);
 
-const apiLocalGetRequest = url => apiGetRequest(`${LOCAL}/${url}`);
-const apiLocalPostRequest = (url, data) => apiPostRequest(`${LOCAL}/${url}`, data);
-const apiLocalPutRequest = (url, data) => apiPutRequest(`${LOCAL}/${url}`, data);
-const apiLocalDeleteRequest = url => apiDeleteRequest(`${LOCAL}/${url}`);
+const apiLocalGetRequest = url =>
+  apiGetRequest(`${LOCAL}/api/${url}`, {
+    headers: { authorization: localStorage.getItem('token') },
+  });
+const apiLocalPostRequest = (url, data) =>
+  apiPostRequest(`${LOCAL}/api/${url}`, data, {
+    headers: { authorization: localStorage.getItem('token') },
+  });
+const apiLocalPutRequest = (url, data) =>
+  apiPutRequest(`${LOCAL}/api/${url}`, data, {
+    headers: { authorization: localStorage.getItem('token') },
+  });
+const apiLocalDeleteRequest = url =>
+  apiDeleteRequest(`${LOCAL}/api/${url}`, {
+    headers: { authorization: localStorage.getItem('token') },
+  });
 
 // FIREBASE TRANSACTION
 export const getTransactionsByMonthAndYear = (year, month) =>
@@ -71,11 +83,8 @@ export const getLts = () => apiLocalGetRequest(`lts?sort=-date`);
 export const postLT = data => apiLocalPostRequest(`lt`, data);
 export const putLT = (id, data) => apiLocalPutRequest(`lt/${id}`, data);
 
-export const sendLogin = data =>
-  apiLocalPostRequest(`login`, data).then(resp =>
-    localStorage.setItem('token', resp.headers.authorization),
-  );
-export const sendRegistration = data => apiLocalPostRequest(`register`, data);
+export const sendLogin = data => apiPostRequest(`${LOCAL}/login`, data);
+export const sendRegistration = data => apiPostRequest(`${LOCAL}/register`, data);
 
 export const getPeriods = () =>
   Promise.resolve({ data: [{ ID: 1, Name: 'Kyiv', Start: '2019-10-01', End: null }] });
