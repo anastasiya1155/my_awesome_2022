@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
-import { RELOAD_POST_LIST, TOGGLE_EDIT } from '../../../redux/actions';
-import { editPost } from '../../../utils/routes';
+import { RELOAD_POST_LIST, TOGGLE_EDIT } from '../../../shared/redux/actions';
+import { editPost } from '../../../shared/utils/routes';
 
 const styles = theme => ({
   textarea: {

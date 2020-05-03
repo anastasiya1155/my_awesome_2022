@@ -46,10 +46,13 @@ export const getYears = () => apiLocalGetRequest(`posts-months/`);
 export const getMonth = month => apiLocalGetRequest(`posts-by-month/?ym=${month}`);
 export const searchPosts = q => apiLocalGetRequest(`posts-search/?q=${q}`);
 
-export const getLabels = () => apiLocalGetRequest(`labels`);
-export const deleteLabel = (postId, labelId) =>
+export const getLabels = () => apiLocalGetRequest('labels');
+export const postLabel = data => apiLocalPostRequest('labels', data);
+export const deleteLabel = id => apiLocalDeleteRequest(`labels/${id}`);
+
+export const deleteLabelFromPost = (postId, labelId) =>
   apiLocalGetRequest(`posts-delete-label/?post_id=${postId}&label_id=${labelId}`);
-export const addLabel = (postId, labelId) =>
+export const addLabelToPost = (postId, labelId) =>
   apiLocalGetRequest(`posts-add-label/?post_id=${postId}&label_id=${labelId}`);
 
 export const getPins = () => apiLocalGetRequest(`pins`);
@@ -73,3 +76,9 @@ export const sendLogin = data =>
     localStorage.setItem('token', resp.headers.authorization),
   );
 export const sendRegistration = data => apiLocalPostRequest(`register`, data);
+
+export const getPeriods = () =>
+  Promise.resolve({ data: [{ ID: 1, Name: 'Kyiv', Start: '2019-10-01', End: null }] });
+export const postPeriod = data => Promise.resolve(data);
+export const deletePeriod = id => Promise.resolve(id);
+export const putPeriod = (id, data) => Promise.resolve({ id, data });

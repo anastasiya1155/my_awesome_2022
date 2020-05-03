@@ -12,10 +12,14 @@ const Tabs = ({ value, onChange, tabs }) => {
       onChange={onChange}
       indicatorColor="primary"
       textColor="primary"
-      variant={isMobile ? 'fullWidth' : 'standard'}
+      variant={isMobile ? (tabs.length > 3 ? 'scrollable' : 'fullWidth') : 'standard'}
     >
       {tabs.map(t => (
-        <Tab label={t.label} onClick={t.onClick} />
+        <Tab
+          label={isMobile ? t.mobile.label : t.label}
+          icon={isMobile ? t.mobile.icon : t.icon}
+          onClick={t.onClick}
+        />
       ))}
     </MuiTabs>
   );
@@ -27,6 +31,11 @@ Tabs.propTypes = {
   tabs: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string,
+      icon: PropTypes.node,
+      mobile: PropTypes.shape({
+        label: PropTypes.string,
+        icon: PropTypes.node,
+      }).isRequired,
       onClick: PropTypes.func,
     }),
   ),

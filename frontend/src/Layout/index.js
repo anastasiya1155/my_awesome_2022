@@ -14,7 +14,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import EventNoteIcon from '@material-ui/icons/EventNote';
 import ListItemText from '@material-ui/core/ListItemText';
-import HistoryIcon from '@material-ui/icons/History';
 import ViewWeekIcon from '@material-ui/icons/ViewWeek';
 import AlarmIcon from '@material-ui/icons/Alarm';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
@@ -92,14 +91,6 @@ const Layout = ({ children }) => {
                 <EventNoteIcon />
               </ListItemIcon>
               <ListItemText primary="Days" />
-            </ListItem>
-          </Link>
-          <Link to="/days/app">
-            <ListItem button>
-              <ListItemIcon>
-                <HistoryIcon />
-              </ListItemIcon>
-              <ListItemText primary="Days App" />
             </ListItem>
           </Link>
           <Link to="/projects">
