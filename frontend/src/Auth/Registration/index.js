@@ -20,7 +20,7 @@ const RegistrationPage = ({ history }) => {
     if (password === confirmPassword) {
       sendRegistration({ email, password })
         .then(resp => {
-          localStorage.setItem('token', resp.data.Token)
+          localStorage.setItem('token', resp.data.Token);
           history.push('/days');
         })
         .catch(err => {

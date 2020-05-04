@@ -1,7 +1,6 @@
 package router
 
 import (
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/vova/pa2020/backend/controllers"
 	"github.com/vova/pa2020/backend/middleware"
@@ -64,6 +63,4 @@ func Initialize(r *gin.Engine) {
 		api.DELETE("/periods/:id", controllers.DeletePeriod)
 
 	}
-
-	r.Use(cors.Default())
 }

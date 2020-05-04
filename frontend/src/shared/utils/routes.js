@@ -72,9 +72,9 @@ export const getPins = () => apiLocalGetRequest(`pins`);
 export const getProjects = () => apiLocalGetRequest(`projects`);
 export const getProject = id => apiLocalGetRequest(`projects/${id}`);
 export const postProject = data => apiLocalPostRequest(`projects`, data);
-export const getTasks = id => apiLocalGetRequest(`tasks?q[project_id]=${id}`);
+export const getTasks = id => apiLocalGetRequest(`/projects/${id}/tasks`);
 // todo: hardcode in_progress
-export const getInProgress = () => apiLocalGetRequest(`tasks?q[status]=in_progress`);
+export const getInProgress = () => apiLocalGetRequest(`tasks-in-progress`);
 export const editTask = (id, data) => apiLocalPutRequest(`tasks/${id}`, data);
 export const postTask = data => apiLocalPostRequest(`tasks`, data);
 

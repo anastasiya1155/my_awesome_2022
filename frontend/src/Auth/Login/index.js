@@ -12,9 +12,10 @@ const LoginPage = ({ history }) => {
   const classes = useStyles();
   const handleSubmit = () => {
     sendLogin({ email, password })
-      .then(() => {
-        history.push('/days');
-      })
+        .then(resp => {
+          localStorage.setItem('token', resp.data.Token);
+          history.push('/days');
+        })
       .catch(err => {
         setError(err.message);
       });

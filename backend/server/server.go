@@ -11,6 +11,7 @@ import (
 
 func Setup(db *gorm.DB) *gin.Engine {
 	r := gin.Default()
+	r.Use(middleware.Options)
 	r.Use(middleware.SetDBtoContext(db))
 	r.Use(cors.Default())
 	router.Initialize(r)
