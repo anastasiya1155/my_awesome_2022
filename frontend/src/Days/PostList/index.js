@@ -7,7 +7,7 @@ const PostList = ({ posts, labels }) => {
     <Grid container direction="column" spacing={4}>
       {posts.map(p => (
         <Grid item key={p.id}>
-          <PostShow post={p} labels={labels} />
+          <PostShow post={{...p, labels: p.labels || []}} labels={labels} />
         </Grid>
       ))}
     </Grid>

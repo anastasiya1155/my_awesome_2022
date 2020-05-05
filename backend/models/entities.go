@@ -26,12 +26,11 @@ func (u User) GetUserId(db *gorm.DB) int {
 }
 
 type Post struct {
-	ID     int       `gorm:"primary_key"`
-	Date   time.Time `sql:"type:date;"time_format:"2006-01-02"`
-	Body   string    `sql:"type:text"`
-	UserId int       `json:"-"`
-
-	Labels   []Label `gorm:"many2many:posts_labels";"ForeignKey:PostId"`
+	ID       int       `gorm:"primary_key"`
+	Date     time.Time `sql:"type:date;"time_format:"2006-01-02"`
+	Body     string    `sql:"type:text"`
+	UserId   int       `json:"-"`
+	Labels   []Label   `gorm:"many2many:posts_labels";"ForeignKey:PostId"`
 	Comments []Comment
 	Periods  []Period
 }

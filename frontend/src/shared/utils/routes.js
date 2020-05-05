@@ -72,22 +72,21 @@ export const getPins = () => apiLocalGetRequest(`pins`);
 export const getProjects = () => apiLocalGetRequest(`projects`);
 export const getProject = id => apiLocalGetRequest(`projects/${id}`);
 export const postProject = data => apiLocalPostRequest(`projects`, data);
-export const getTasks = id => apiLocalGetRequest(`/projects/${id}/tasks`);
+export const getTasks = id => apiLocalGetRequest(`projects/${id}/tasks`);
 // todo: hardcode in_progress
 export const getInProgress = () => apiLocalGetRequest(`tasks-in-progress`);
 export const editTask = (id, data) => apiLocalPutRequest(`tasks/${id}`, data);
 export const postTask = data => apiLocalPostRequest(`tasks`, data);
 
 export const deleteLt = id => apiLocalDeleteRequest(`${id}`);
-export const getLts = () => apiLocalGetRequest(`lts?sort=-date`);
+export const getLts = () => apiLocalGetRequest(`lts`);
 export const postLT = data => apiLocalPostRequest(`lt`, data);
 export const putLT = (id, data) => apiLocalPutRequest(`lt/${id}`, data);
 
 export const sendLogin = data => apiPostRequest(`${LOCAL}/login`, data);
 export const sendRegistration = data => apiPostRequest(`${LOCAL}/register`, data);
 
-export const getPeriods = () =>
-  Promise.resolve({ data: [{ ID: 1, Name: 'Kyiv', Start: '2019-10-01', End: null }] });
-export const postPeriod = data => Promise.resolve(data);
-export const deletePeriod = id => Promise.resolve(id);
-export const putPeriod = (id, data) => Promise.resolve({ id, data });
+export const getPeriods = () => apiLocalGetRequest(`periods`);
+export const postPeriod = data => apiLocalPostRequest(`periods`, data);
+export const deletePeriod = id => apiLocalDeleteRequest(`periods/${id}`);
+export const putPeriod = (id, data) => apiLocalPutRequest(`periods/${id}`, data);

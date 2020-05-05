@@ -32,7 +32,7 @@ func GetPosts(c *gin.Context) {
 
 	if err := db.
 		Select("*").
-		Where("user_id = ? ", middleware.UserInstance(c).ID).
+		Where("user_id = ?", middleware.UserInstance(c).ID).
 		Preload("Comments").
 		Preload("Labels").
 		Order("date DESC").
@@ -51,7 +51,7 @@ func GetPosts(c *gin.Context) {
 
 	if err := db.
 		Select("posts.id as id, periods.id as period_id,periods.name as period_name").
-		Where("user_id = ? ", middleware.UserInstance(c).ID).
+		Where("posts.user_id = ? ", middleware.UserInstance(c).ID).
 		Joins("LEFT JOIN periods ON posts.date BETWEEN periods.start AND IFNULL(periods.end, NOW())").
 		Order("date DESC").
 		Limit(25).
