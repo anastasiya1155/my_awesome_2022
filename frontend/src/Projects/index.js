@@ -3,6 +3,7 @@ import { IconButton, List, ListItem, ListItemText } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { getProjects, getTasks, postProject } from '../shared/utils/routes';
 import AddProject from './AddProject';
+import { Hidden } from '@material-ui/core';
 
 class Projects extends Component {
   state = {
@@ -33,48 +34,6 @@ class Projects extends Component {
       .catch(error => console.log(error));
   };
 
-  // handleDelete = (id) => {
-  //   axios
-  //     .delete(`http://${IP}:${PORT}/projects`)
-  //     .then((response) => {
-  //       this.fetchData();
-  //     })
-  //     .catch((error) => console.log(error));
-  // };
-
-  handleChange = e => {};
-
-  handleCreate = e => {};
-
-  handleRename(list) {
-    this.handleMenuClose();
-    this.props.onRenameList(this.state.pressedList);
-  }
-
-  handleMoreClick(list, element) {
-    this.setState({ pressedList: list, menuAnchorElement: element });
-  }
-
-  handleMenuClose() {
-    this.setState({ pressedList: undefined, menuAnchorElement: undefined });
-  }
-
-  handleListClick = projectId => {
-    this.setState({ pressedProject: projectId });
-    getTasks(projectId)
-      .then(response => {
-        const tasks = response.data.map(p => ({
-          id: p.id,
-          body: p.body,
-          status: p.status,
-          created_at: p.created_at,
-        }));
-
-        this.setState({ tasks: tasks });
-      })
-      .catch(error => console.log(error));
-  };
-
   handleSubmit = values => {
     postProject(values)
       .then(() => {
@@ -97,6 +56,9 @@ class Projects extends Component {
               onClick={() => this.props.history.push(`/projects/${list.id}`)}
             >
               <ListItemText primary={list.title} />
+                <Hidden smDown>
+                    <ListItemText secondary={list.description} />
+                </Hidden>
             </ListItem>
           ))}
         </List>

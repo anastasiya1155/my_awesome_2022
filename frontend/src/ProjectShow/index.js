@@ -8,8 +8,8 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { editTask, getProject, getTasks, postTask } from '../shared/utils/routes';
-
+import { editTask, getProject, getTasks, postTask, deleteTask } from '../shared/utils/routes';
+import Divider from "@material-ui/core/Divider";
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -78,12 +78,13 @@ class Project extends Component {
           in_progress: [],
           done: [],
         };
-        response.data.forEach(p => {
-          tasks[p.status].push({
-            id: p.id,
-            body: p.body,
-            status: p.status,
-            created_at: p.created_at,
+        response.data.forEach(task => {
+          tasks[task.status].push({
+            id: task.id,
+            body: task.body,
+            status: task.status,
+            created_at: task.created_at,
+            priority: task.priority,
           });
         });
 
@@ -103,6 +104,26 @@ class Project extends Component {
   handleStatusChange(task, status) {
     this.handleMenuClose();
     editTask(task.id, { status: status }).then(response => {
+      this.fetchData();
+    });
+  }
+
+  handleArchive(task){
+    this.handleMenuClose();
+    editTask(task.id, { archived: true }).then(response => {
+      this.fetchData();
+    });
+  }
+
+  handleDelete(task){
+    this.handleMenuClose();
+    deleteTask(task.id).then(response => {
+      this.fetchData();
+    });
+  }
+  handleChangePriority(task, increment){
+    this.handleMenuClose();
+    editTask(task.id, { priority: task.priority + increment }).then(response => {
       this.fetchData();
     });
   }
@@ -149,7 +170,7 @@ class Project extends Component {
 
         <Grid item xs={12} container spacing={1}>
           {Object.keys(this.state.tasks).map(key => (
-            <Grid item sm={3} xs={12} container direction="column" spacing={1}>
+            <Grid item sm={3} xs={12} container direction="column" spacing={1}  key={key}>
               <Grid item>
                 <Paper className={classes.paper}>
                   <Typography color="primary"> {key} </Typography>
@@ -177,6 +198,14 @@ class Project extends Component {
           open={Boolean(this.state.menuAnchorElement)}
           onClose={this.handleMenuClose.bind(this)}
         >
+          <ListItem onClick={e => this.handleChangePriority(this.state.pressedTask, 1)}>
+            Up priority
+          </ListItem>
+          <ListItem onClick={e => this.handleChangePriority(this.state.pressedTask, -1)}>
+            Down priority
+          </ListItem>
+
+          <Divider />
           <ListItem onClick={e => this.handleStatusChange(this.state.pressedTask, 'incoming')}>
             Incoming
           </ListItem>
@@ -188,6 +217,13 @@ class Project extends Component {
           </ListItem>
           <ListItem onClick={e => this.handleStatusChange(this.state.pressedTask, 'done')}>
             Done
+          </ListItem>
+          <Divider />
+          <ListItem onClick={e => this.handleArchive(this.state.pressedTask)}>
+            Archive
+          </ListItem>
+          <ListItem onClick={e => this.handleDelete(this.state.pressedTask)}>
+            Delete
           </ListItem>
         </Menu>
       </div>

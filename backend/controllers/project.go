@@ -15,7 +15,7 @@ import (
 func GetProjects(c *gin.Context) {
 	db := dbpkg.DBInstance(c)
 	var projects []models.Project
-	rawQuery := "SELECT * FROM projects where user_id = ? order by priority;"
+	rawQuery := "SELECT * FROM projects where user_id = ? and archived = false order by priority desc;"
 	db.Raw(rawQuery, middleware.UserInstance(c).ID).Scan(&projects)
 	c.JSON(201, projects)
 }

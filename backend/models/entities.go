@@ -72,6 +72,7 @@ type Task struct {
 	Priority  int       `json:"priority"`
 	CreatedAt time.Time `json:"created_at"`
 	ProjectId int       `json:"project_id"`
+	Archived  bool      `json:"archived"`
 }
 
 func (t Task) GetUserId(db *gorm.DB) int {

@@ -15,7 +15,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// voted
 func GetTasksInprogressForUser(c *gin.Context) {
 	db := dbpkg.DBInstance(c)
 
@@ -27,11 +26,9 @@ func GetTasksInprogressForUser(c *gin.Context) {
 		  where t.status = 'in_progress';
 		`
 	db.Raw(rawQuery, middleware.UserInstance(c).ID).Scan(&tasks)
-
 	c.JSON(201, tasks)
 }
 
-// voted
 func GetTasksByProject(c *gin.Context) {
 	db := dbpkg.DBInstance(c)
 
@@ -43,9 +40,8 @@ func GetTasksByProject(c *gin.Context) {
 	vote(c, models.Task{ProjectId: projectId})
 	tasks := []models.Task{}
 
-	rawQuery := "SELECT * FROM tasks  where project_id = ? order by priority desc"
+	rawQuery := "SELECT * FROM tasks where project_id = ? and archived = false order by priority desc"
 	db.Raw(rawQuery, projectId).Scan(&tasks)
-
 	c.JSON(201, tasks)
 }
 
@@ -126,7 +122,6 @@ func CreateTask(c *gin.Context) {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
-
 	c.JSON(201, task)
 }
 
