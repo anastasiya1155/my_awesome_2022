@@ -18,6 +18,8 @@ const isLocalhost = Boolean(
     window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/),
 );
 
+const messageNode = document.querySelector('#message');
+
 export function register(config) {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
     // The URL constructor is available in all browsers that support SW.
@@ -31,6 +33,19 @@ export function register(config) {
 
     window.addEventListener('load', () => {
       const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
+
+      function updateOnlineStatus() {
+        if (navigator.onLine) {
+          messageNode.innerHTML = '';
+          messageNode.className = '';
+        } else {
+          messageNode.innerHTML = 'No internet connection found. App is running in offline mode.';
+          messageNode.className = 'root-message';
+        }
+      }
+
+      window.addEventListener('online', updateOnlineStatus);
+      window.addEventListener('offline', updateOnlineStatus);
 
       if (isLocalhost) {
         // This is running on localhost. Let's check if a service worker still exists or not.
@@ -64,14 +79,6 @@ function registerValidSW(swUrl, config) {
         installingWorker.onstatechange = () => {
           if (installingWorker.state === 'installed') {
             if (navigator.serviceWorker.controller) {
-              // At this point, the updated precached content has been fetched,
-              // but the previous service worker will still serve the older
-              // content until all client tabs are closed.
-              console.log(
-                'New content is available and will be used when all ' +
-                  'tabs for this page are closed. See http://bit.ly/CRA-PWA.',
-              );
-
               // Execute callback
               if (config && config.onUpdate) {
                 config.onUpdate(registration);
@@ -118,6 +125,10 @@ function checkValidServiceWorker(swUrl, config) {
       }
     })
     .catch(() => {
+      if (messageNode) {
+        messageNode.innerHTML = 'No internet connection found. App is running in offline mode.';
+        messageNode.className = 'root-message';
+      }
       console.log('No internet connection found. App is running in offline mode.');
     });
 }

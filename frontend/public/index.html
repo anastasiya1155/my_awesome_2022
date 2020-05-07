@@ -9,11 +9,24 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/apple-touch-icon.png">
     <title>M2019 React & Go & Mysql & Material UI</title>
+    <style>
+      .root-message {
+        position: fixed;
+        bottom: 50px;
+        right: 50px;
+        z-index: 10000;
+        background-color: #424242;
+        width: 175px;
+        padding: 15px;
+        border: 1px solid #00796b;
+      }
+    </style>
   </head>
   <body>
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
     <div id="root"></div>
+    <div id="message"></div>
   </body>
 </html>

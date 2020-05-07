@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import {CssBaseline, Button, Typography} from '@material-ui/core';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
@@ -21,4 +21,32 @@ ReactDOM.render(
   document.getElementById('root'),
 );
 
-serviceWorker.register();
+serviceWorker.register({
+  onUpdate: registration => {
+    const waitingServiceWorker = registration.waiting;
+
+    if (waitingServiceWorker) {
+      waitingServiceWorker.addEventListener('statechange', event => {
+        if (event.target && event.target.state === 'activated') {
+          window.location.reload();
+        }
+      });
+      const messageNode = document.querySelector('#message');
+      const handleClick = () => {
+        waitingServiceWorker.postMessage({ type: 'SKIP_WAITING' });
+      };
+      if (messageNode) {
+        ReactDOM.render(
+          <div>
+            <Typography>Update is available.</Typography>
+            <Button onClick={handleClick} variant="contained" fullWidth>
+              Reload
+            </Button>
+          </div>,
+          messageNode,
+        );
+        messageNode.className = 'root-message';
+      }
+    }
+  },
+});
