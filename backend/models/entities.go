@@ -66,13 +66,15 @@ func (p Project) GetUserId(db *gorm.DB) int {
 }
 
 type Task struct {
-	ID        int       `json:"id"`
-	Body      string    `json:"body"`
-	Status    string    `json:"status"`
-	Priority  int       `json:"priority"`
-	CreatedAt time.Time `json:"created_at"`
-	ProjectId int       `json:"project_id"`
-	Archived  bool      `json:"archived"`
+	ID            int       `json:"id"`
+	Body          string    `json:"body"`
+	Status        string    `json:"status"`
+	Priority      int       `json:"priority"`
+	CreatedAt     time.Time `json:"created_at"`
+	ProjectId     int       `json:"project_id"`
+	Archived      bool      `json:"archived"`
+	TodayILearned bool      `json:"today_i_learned"`
+	Outcome       string    `json:"outcome"`
 }
 
 func (t Task) GetUserId(db *gorm.DB) int {

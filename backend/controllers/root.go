@@ -170,7 +170,5 @@ func createJwtToken(email string) string {
 
 func vote(c *gin.Context, entity models.EntityWithUser) bool {
 	user := middleware.UserInstance(c)
-	fmt.Println(user.ID, entity.GetUserId(dbpkg.DBInstance(c)))
-
 	return user.ID == entity.GetUserId(dbpkg.DBInstance(c))
 }

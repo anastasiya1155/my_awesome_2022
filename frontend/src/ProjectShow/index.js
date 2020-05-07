@@ -10,6 +10,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { editTask, getProject, getTasks, postTask, deleteTask } from '../shared/utils/routes';
 import Divider from "@material-ui/core/Divider";
+import Modal from "@material-ui/core/Modal";
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -40,6 +41,18 @@ const styles = theme => ({
   taskText: {
     marginRight: 20,
   },
+  modalPaper: {
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+
+    position: 'absolute',
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
 });
 
 class Project extends Component {
@@ -54,6 +67,13 @@ class Project extends Component {
     menuAnchorElement: undefined,
     pressedTask: null,
     newTaskName: '',
+    tilModalOpen: false,
+    taskForModal: {
+      id: 0,
+      body: "",
+      outcome: "",
+      today_i_learned: false
+    }
   };
 
   componentDidMount() {
@@ -85,6 +105,7 @@ class Project extends Component {
             status: task.status,
             created_at: task.created_at,
             priority: task.priority,
+            outcome: task.outcome,
           });
         });
 
@@ -128,8 +149,49 @@ class Project extends Component {
     });
   }
 
+  handleOpenTILModal= (task) => {
+    this.handleMenuClose();
+    this.setState({tilModalOpen: true, taskForModal:task });
+  };
+
+  handleCloseTILModal = () => {
+    this.setState({tilModalOpen: false, taskForModal:{id:0, body: "", description: "", today_i_learned: false}});
+  };
+
+  handleChangeTILModalDescription = (e) => {
+    this.setState(
+         {taskForModal: {...this.state.taskForModal, outcome: e.target.value} });
+  };
+
+  submitTIL= () => {
+    this.setState({tilModalOpen: false});
+
+    editTask(
+        this.state.taskForModal.id,
+        {
+          outcome: this.state.taskForModal.outcome,
+          today_i_learned: true }).
+    then(response => {
+
+    });
+  };
+
   render() {
     const { classes, match } = this.props;
+    const body = (
+        <div className={classes.modalPaper}>
+          <h2 id="simple-modal-title">{this.state.taskForModal.body}</h2>
+          <TextField
+              name="description"
+              fullWidth
+              label="Description"
+              value={this.state.taskForModal.outcome}
+              onChange={this.handleChangeTILModalDescription}
+          />
+          <Button onClick={this.submitTIL}>Submit</Button>
+        </div>
+    );
+
     return (
       <div className={classes.root}>
         <div>
@@ -192,19 +254,21 @@ class Project extends Component {
             </Grid>
           ))}
         </Grid>
-        {/*</Grid>*/}
         <Menu
           anchorEl={this.state.menuAnchorElement}
           open={Boolean(this.state.menuAnchorElement)}
           onClose={this.handleMenuClose.bind(this)}
         >
+          <ListItem onClick={e => this.handleOpenTILModal(this.state.pressedTask)}>
+            Today I learned
+          </ListItem>
+          <Divider />
           <ListItem onClick={e => this.handleChangePriority(this.state.pressedTask, 1)}>
             Up priority
           </ListItem>
           <ListItem onClick={e => this.handleChangePriority(this.state.pressedTask, -1)}>
             Down priority
           </ListItem>
-
           <Divider />
           <ListItem onClick={e => this.handleStatusChange(this.state.pressedTask, 'incoming')}>
             Incoming
@@ -226,6 +290,14 @@ class Project extends Component {
             Delete
           </ListItem>
         </Menu>
+        <Modal
+            open={Boolean(this.state.tilModalOpen)}
+            onClose={this.handleCloseTILModal}
+            aria-labelledby="simple-modal-title"
+            aria-describedby="simple-modal-description"
+        >
+          {body}
+        </Modal>
       </div>
     );
   }

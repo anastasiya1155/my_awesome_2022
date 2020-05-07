@@ -1,0 +1,4 @@
+ALTER TABLE `tasks`
+ADD COLUMN `today_i_learned` TINYINT(4) NULL DEFAULT 0,
+ADD COLUMN `outcome` LONGTEXT NULL;
+
