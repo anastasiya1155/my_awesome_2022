@@ -71,8 +71,12 @@ const Wishlist = ({ history, location }) => {
         value={activeTab}
         onChange={(e, newVal) => setActiveTab(newVal)}
         tabs={[
-          { label: 'List', onClick: () => history.push('/wishlist/list') },
-          { label: 'Add', onClick: () => history.push('/wishlist/add') },
+          {
+            label: 'List',
+            mobile: { label: 'List' },
+            onClick: () => history.push('/wishlist/list'),
+          },
+          { label: 'Add', mobile: { label: 'Add' }, onClick: () => history.push('/wishlist/add') },
         ]}
       />
       <br /> <br />

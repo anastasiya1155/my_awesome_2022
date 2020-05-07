@@ -29,10 +29,26 @@ function Transactions({ history, location }) {
         value={activeTab}
         onChange={(e, newVal) => setActiveTab(newVal)}
         tabs={[
-          { label: 'List', onClick: () => history.push('/transactions/list') },
-          { label: 'Add', onClick: () => history.push('/transactions/add') },
-          { label: 'Categories', onClick: () => history.push('/transactions/categories') },
-          { label: 'Statistics', onClick: () => history.push('/transactions/statistics') },
+          {
+            label: 'List',
+            mobile: { label: 'List' },
+            onClick: () => history.push('/transactions/list'),
+          },
+          {
+            label: 'Add',
+            mobile: { label: 'Add' },
+            onClick: () => history.push('/transactions/add'),
+          },
+          {
+            label: 'Categories',
+            mobile: { label: 'Cats' },
+            onClick: () => history.push('/transactions/categories'),
+          },
+          {
+            label: 'Statistics',
+            mobile: { label: 'Stats' },
+            onClick: () => history.push('/transactions/statistics'),
+          },
         ]}
       />
       <br /> <br />

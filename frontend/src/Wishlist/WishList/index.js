@@ -8,6 +8,7 @@ import {
   CardContent,
   CardMedia,
   Grid,
+  Dialog,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
@@ -22,9 +23,14 @@ const useStyles = makeStyles({
   media: {
     height: 170,
   },
+  fullImg: {
+    maxWidth: '90vw',
+    maxHeight: '90vh',
+  },
 });
 
 const WishList = ({ wishes, editWish, removeWish, openEditPopup }) => {
+  const [showImg, setShowImg] = React.useState(null);
   const classes = useStyles();
 
   return (
@@ -34,7 +40,12 @@ const WishList = ({ wishes, editWish, removeWish, openEditPopup }) => {
         return (
           <Grid key={w.id} item className={classes.root}>
             <Card raised={isMine}>
-              <CardMedia image={w.picture} title={w.name} className={classes.media} />
+              <CardMedia
+                image={w.picture}
+                title={w.name}
+                className={classes.media}
+                onClick={() => setShowImg(w.picture)}
+              />
               <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
                   {w.name}
@@ -61,6 +72,9 @@ const WishList = ({ wishes, editWish, removeWish, openEditPopup }) => {
           </Grid>
         );
       })}
+      <Dialog open={!!showImg} onClose={() => setShowImg(null)}>
+        <img src={showImg} className={classes.fullImg} alt="wish" />
+      </Dialog>
     </Grid>
   );
 };

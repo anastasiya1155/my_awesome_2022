@@ -9,8 +9,8 @@ import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { editTask, getProject, getTasks, postTask, deleteTask } from '../shared/utils/routes';
-import Divider from "@material-ui/core/Divider";
-import Modal from "@material-ui/core/Modal";
+import Divider from '@material-ui/core/Divider';
+import Modal from '@material-ui/core/Modal';
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -42,9 +42,9 @@ const styles = theme => ({
     marginRight: 20,
   },
   modalPaper: {
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
 
     position: 'absolute',
     width: 400,
@@ -70,10 +70,10 @@ class Project extends Component {
     tilModalOpen: false,
     taskForModal: {
       id: 0,
-      body: "",
-      outcome: "",
-      today_i_learned: false
-    }
+      body: '',
+      outcome: '',
+      today_i_learned: false,
+    },
   };
 
   componentDidMount() {
@@ -129,67 +129,65 @@ class Project extends Component {
     });
   }
 
-  handleArchive(task){
+  handleArchive(task) {
     this.handleMenuClose();
     editTask(task.id, { archived: true }).then(response => {
       this.fetchData();
     });
   }
 
-  handleDelete(task){
+  handleDelete(task) {
     this.handleMenuClose();
     deleteTask(task.id).then(response => {
       this.fetchData();
     });
   }
-  handleChangePriority(task, increment){
+  handleChangePriority(task, increment) {
     this.handleMenuClose();
     editTask(task.id, { priority: task.priority + increment }).then(response => {
       this.fetchData();
     });
   }
 
-  handleOpenTILModal= (task) => {
+  handleOpenTILModal = task => {
     this.handleMenuClose();
-    this.setState({tilModalOpen: true, taskForModal:task });
+    this.setState({ tilModalOpen: true, taskForModal: task });
   };
 
   handleCloseTILModal = () => {
-    this.setState({tilModalOpen: false, taskForModal:{id:0, body: "", description: "", today_i_learned: false}});
-  };
-
-  handleChangeTILModalDescription = (e) => {
-    this.setState(
-         {taskForModal: {...this.state.taskForModal, outcome: e.target.value} });
-  };
-
-  submitTIL= () => {
-    this.setState({tilModalOpen: false});
-
-    editTask(
-        this.state.taskForModal.id,
-        {
-          outcome: this.state.taskForModal.outcome,
-          today_i_learned: true }).
-    then(response => {
-
+    this.setState({
+      tilModalOpen: false,
+      taskForModal: { id: 0, body: '', description: '', today_i_learned: false },
     });
+  };
+
+  handleChangeTILModalDescription = e => {
+    this.setState({ taskForModal: { ...this.state.taskForModal, outcome: e.target.value } });
+  };
+
+  submitTIL = () => {
+    this.setState({ tilModalOpen: false });
+
+    editTask(this.state.taskForModal.id, {
+      outcome: this.state.taskForModal.outcome,
+      today_i_learned: true,
+    }).then(response => {});
   };
 
   render() {
     const { classes, match } = this.props;
     const body = (
-        <div className={classes.modalPaper}>
-          <h2 id="simple-modal-title">{this.state.taskForModal.body}</h2>
-          <TextField
-              name="description"
-              fullWidth
-              label="Description"
-              value={this.state.taskForModal.outcome}
-              onChange={this.handleChangeTILModalDescription}
-          />
-          <Button onClick={this.submitTIL}>Submit</Button>
-        </div>
+      <div className={classes.modalPaper}>
+        <h2 id="simple-modal-title">{this.state.taskForModal.body}</h2>
+        <TextField
+          name="description"
+          fullWidth
+          label="Description"
+          value={this.state.taskForModal.outcome}
+          onChange={this.handleChangeTILModalDescription}
+        />
+        <Button onClick={this.submitTIL}>Submit</Button>
+      </div>
     );
 
     return (
@@ -232,7 +230,7 @@ class Project extends Component {
 
         <Grid item xs={12} container spacing={1}>
           {Object.keys(this.state.tasks).map(key => (
-            <Grid item sm={3} xs={12} container direction="column" spacing={1}  key={key}>
+            <Grid item sm={3} xs={12} container direction="column" spacing={1} key={key}>
               <Grid item>
                 <Paper className={classes.paper}>
                   <Typography color="primary"> {key} </Typography>
@@ -283,18 +281,14 @@ class Project extends Component {
             Done
           </ListItem>
           <Divider />
-          <ListItem onClick={e => this.handleArchive(this.state.pressedTask)}>
-            Archive
-          </ListItem>
-          <ListItem onClick={e => this.handleDelete(this.state.pressedTask)}>
-            Delete
-          </ListItem>
+          <ListItem onClick={e => this.handleArchive(this.state.pressedTask)}>Archive</ListItem>
+          <ListItem onClick={e => this.handleDelete(this.state.pressedTask)}>Delete</ListItem>
         </Menu>
         <Modal
-            open={Boolean(this.state.tilModalOpen)}
-            onClose={this.handleCloseTILModal}
-            aria-labelledby="simple-modal-title"
-            aria-describedby="simple-modal-description"
+          open={Boolean(this.state.tilModalOpen)}
+          onClose={this.handleCloseTILModal}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
         >
           {body}
         </Modal>
