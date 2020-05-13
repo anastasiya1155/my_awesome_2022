@@ -60,6 +60,7 @@ export const searchPosts = q => apiLocalGetRequest(`posts-search/?q=${q}`);
 
 export const getLabels = () => apiLocalGetRequest('labels');
 export const postLabel = data => apiLocalPostRequest('labels', data);
+export const putLabel = (id, data) => apiLocalPutRequest(`labels/${id}`, data);
 export const deleteLabel = id => apiLocalDeleteRequest(`labels/${id}`);
 
 export const deleteLabelFromPost = (postId, labelId) =>

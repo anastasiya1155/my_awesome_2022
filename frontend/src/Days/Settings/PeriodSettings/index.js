@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import { Grid, IconButton, Typography } from '@material-ui/core';
 import { deletePeriod, getPeriods, postPeriod, putPeriod } from '../../../shared/utils/routes';
 import AddIcon from '@material-ui/icons/Add';
@@ -15,8 +16,8 @@ const PeriodSettings = () => {
         const p = response.data.map(c => ({
           id: c.ID,
           name: c.Name,
-          start: c.Start,
-          end: c.End,
+          start: moment(c.Start).format('YYYY-MM-DD'),
+          end: c.End === '0001-01-01T00:00:00Z' ? null : moment(c.End).format('YYYY-MM-DD'),
         }));
 
         setPeriods(p);
