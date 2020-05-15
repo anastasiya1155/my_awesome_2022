@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { IP, PORT } from './const';
+import {getItemFromStorage, TOKEN_KEY} from '../utils/storage';
 
 const FIREBASE = 'https://tranf-ae713.firebaseio.com/';
 const LOCAL = `http://${IP}:${PORT}`;
@@ -10,7 +11,7 @@ const apiPutRequest = (url, data, config) => axios.put(url, data, config);
 const apiDeleteRequest = (url, config) => axios.delete(url, config);
 
 const authConfig = {
-  headers: { authorization: localStorage.getItem('token') },
+  headers: { authorization: getItemFromStorage(TOKEN_KEY) },
 };
 
 const redirectUnauth = err => {

@@ -20,9 +20,9 @@ const styles = theme => ({
     padding: theme.spacing(2),
     textAlign: 'left',
     color: theme.palette.text.secondary,
+    wordBreak: 'break-word',
     '@media screen and (min-width: 600px) and (max-width: 700px)': {
       padding: theme.spacing(1),
-      wordBreak: 'break-all',
     },
   },
   inputContainer: {

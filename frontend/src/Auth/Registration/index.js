@@ -7,6 +7,7 @@ import { Button, Grid, Snackbar, TextField } from '@material-ui/core';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import VisibleIcon from '@material-ui/icons/VisibilityOutlined';
 import NotVisibleIcon from '@material-ui/icons/VisibilityOffOutlined';
+import { setItemToStorage, TOKEN_KEY } from '../../shared/utils/storage';
 
 const RegistrationPage = ({ history }) => {
   const [email, setEmail] = React.useState('');
@@ -20,7 +21,7 @@ const RegistrationPage = ({ history }) => {
     if (password === confirmPassword) {
       sendRegistration({ email, password })
         .then(resp => {
-          localStorage.setItem('token', resp.data.Token);
+          setItemToStorage(TOKEN_KEY, resp.data.Token);
           history.push('/days');
         })
         .catch(err => {

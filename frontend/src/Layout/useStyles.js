@@ -34,6 +34,7 @@ const useStyles = makeStyles(theme => ({
     width: drawerWidth,
     flexShrink: 0,
     whiteSpace: 'nowrap',
+    position: 'relative',
   },
   drawerOpen: {
     width: drawerWidth,
@@ -67,6 +68,12 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(3),
     },
+  },
+  bottomIcons: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    width: '100%',
   },
 }));
 

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Grid, TextField, Button, Snackbar } from '@material-ui/core';
 import { sendLogin } from '../../shared/config/routes';
 import useStyles from '../useStyles';
+import { setItemToStorage, TOKEN_KEY } from '../../shared/utils/storage';
 
 const LoginPage = ({ history }) => {
   const [email, setEmail] = React.useState('');
@@ -12,10 +13,10 @@ const LoginPage = ({ history }) => {
   const classes = useStyles();
   const handleSubmit = () => {
     sendLogin({ email, password })
-        .then(resp => {
-          localStorage.setItem('token', resp.data.Token);
-          history.push('/days');
-        })
+      .then(resp => {
+        setItemToStorage(TOKEN_KEY, resp.data.Token);
+        history.push('/days');
+      })
       .catch(err => {
         setError(err.message);
       });
