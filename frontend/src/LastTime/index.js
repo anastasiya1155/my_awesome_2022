@@ -20,8 +20,10 @@ import AddLastTime from './AddLastTime';
 const LastTime = () => {
   const [items, setItems] = React.useState([]);
   const [isAdd, setIsAdd] = React.useState(false);
+  const [isEdit, setIsEdit] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [itemToUpdate, setItemToUpdate] = React.useState(null);
+  const [itemToEdit, setItemToEdit] = React.useState(null);
   const [updateDate, setUpdateDate] = React.useState(moment().format('YYYY-MM-DDTHH:mm'));
 
   const fetchLastTimeItems = () => {
@@ -36,6 +38,7 @@ const LastTime = () => {
   }, []);
 
   const handleListItemClick = (e, item) => {
+    e.stopPropagation();
     setAnchorEl(e.currentTarget);
     setItemToUpdate(item);
   };
@@ -48,16 +51,45 @@ const LastTime = () => {
     });
   };
 
-  const handleSubmit = values =>
-    postLT(values)
-      .then(() => {
-        fetchLastTimeItems();
-        setIsAdd(false);
-      })
-      .catch(console.log);
+  const handleSubmit = values => {
+    if (isAdd) {
+      return postLT(values)
+        .then(() => {
+          fetchLastTimeItems();
+          setIsAdd(false);
+        })
+        .catch(console.log);
+    } else {
+      return putLT(itemToEdit.id, values)
+        .then(() => {
+          fetchLastTimeItems();
+          setIsEdit(false);
+          setItemToEdit(null);
+        })
+        .catch(console.log);
+    }
+  };
 
   const handleClose = () => {
     setAnchorEl(null);
+    setItemToUpdate(null);
+  };
+
+  const handleItemClicked = item => {
+    setIsEdit(true);
+    setIsAdd(false);
+    setItemToEdit(item);
+  };
+
+  const handleCancel = () => {
+    setIsEdit(false);
+    setIsAdd(false);
+    setItemToEdit(null);
+  };
+
+  const handleAdd = () => {
+    setIsAdd(true);
+    setIsEdit(false);
     setItemToUpdate(null);
   };
 
@@ -67,12 +99,34 @@ const LastTime = () => {
   return (
     <div>
       <h1>LastTime</h1>
+      <Grid container>
+        <Grid item xs={12} sm={1}>
+          <IconButton onClick={handleAdd}>
+            <AddIcon />
+          </IconButton>
+        </Grid>
+        {isAdd || isEdit ? (
+          <Grid item xs={12} sm={11}>
+            <AddLastTime
+              handleSubmit={handleSubmit}
+              initialValues={itemToEdit}
+              handleCancel={handleCancel}
+            />
+          </Grid>
+        ) : null}
+      </Grid>
       <List>
         {items.map(item => (
           <React.Fragment key={item.id}>
-            <ListItem button>
+            <ListItem button onClick={() => handleItemClicked(item)}>
               <ListItemIcon aria-describedby={id} onClick={e => handleListItemClick(e, item)}>
-                <BeenhereIcon />
+                <BeenhereIcon
+                  color={
+                    moment().diff(moment(item.date), 'days') > item.remind_after_days
+                      ? 'error'
+                      : 'default'
+                  }
+                />
               </ListItemIcon>
               <ListItemText primary={item.body} secondary={moment(item.date).fromNow(true)} />
             </ListItem>
@@ -109,10 +163,6 @@ const LastTime = () => {
           </Grid>
         </Grid>
       </Popover>
-      <IconButton onClick={() => setIsAdd(true)}>
-        <AddIcon />
-      </IconButton>
-      {isAdd ? <AddLastTime handleSubmit={handleSubmit} /> : null}
     </div>
   );
 };

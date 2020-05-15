@@ -8,6 +8,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Drawer from '@material-ui/core/Drawer';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
+import RemindIcon from '@material-ui/icons/Notifications';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import ListSubheader from '@material-ui/core/ListSubheader';
@@ -22,8 +23,10 @@ import EqualizerIcon from '@material-ui/icons/Equalizer';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import CardGiftcardIcon from '@material-ui/icons/CardGiftcard';
 import Grid from '@material-ui/core/Grid';
+import Hidden from '@material-ui/core/Hidden';
+import Badge from '@material-ui/core/Badge';
 import useStyles from './useStyles';
-import { getInProgress } from '../shared/config/routes';
+import { getExpiredLts, getInProgress } from '../shared/config/routes';
 import { clearStorage } from '../shared/utils/storage';
 
 const Layout = ({ children }) => {
@@ -31,13 +34,16 @@ const Layout = ({ children }) => {
   const [open, setOpen] = React.useState(false);
 
   const [inProgress, setInProgress] = React.useState([]);
+  const [reminder, setReminder] = React.useState([]);
 
   const history = useHistory();
 
   useEffect(() => {
     async function fetchData() {
       const result = await getInProgress();
+      const reminder = await getExpiredLts();
       setInProgress(result.data);
+      setReminder(reminder.data);
     }
     fetchData();
   }, []);
@@ -76,6 +82,28 @@ const Layout = ({ children }) => {
                 </Grid>
               ))}
             </Grid>
+          ) : null}
+          {reminder.length > 0 ? (
+            <>
+              <Hidden smUp>
+                <Badge
+                  color="error"
+                  badgeContent={reminder.length}
+                  onClick={() => history.push('/last-time')}
+                >
+                  <RemindIcon />
+                </Badge>
+              </Hidden>
+              <Hidden xsDown>
+                <Grid container>
+                  {reminder.map(lt => (
+                    <Grid item key={lt.id}>
+                      <b> !!! {lt.body} !!! </b>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Hidden>
+            </>
           ) : null}
         </Toolbar>
       </AppBar>

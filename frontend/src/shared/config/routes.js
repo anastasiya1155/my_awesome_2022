@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { IP, PORT } from './const';
-import {getItemFromStorage, TOKEN_KEY} from '../utils/storage';
+import { getItemFromStorage, TOKEN_KEY } from '../utils/storage';
 
 const FIREBASE = 'https://tranf-ae713.firebaseio.com/';
 const LOCAL = `http://${IP}:${PORT}`;
@@ -85,6 +85,7 @@ export const postTask = data => apiLocalPostRequest(`tasks`, data);
 export const deleteTask = id => apiLocalDeleteRequest(`tasks/${id}`);
 
 export const getLts = () => apiLocalGetRequest(`lts`);
+export const getExpiredLts = () => apiLocalGetRequest(`lts-expired`);
 export const postLT = data => apiLocalPostRequest(`lt`, data);
 export const putLT = (id, data) => apiLocalPutRequest(`lt/${id}`, data);
 
