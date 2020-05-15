@@ -2,8 +2,9 @@ import React from 'react';
 import { TextField, Button, Grid, Typography, IconButton, Popover } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Close';
+import EditIcon from '@material-ui/icons/Edit';
 import PostLabel from '../../PostShow/PostLabel';
-import { deleteLabel, getLabels, postLabel } from '../../../shared/utils/routes';
+import { deleteLabel, getLabels, postLabel, putLabel } from '../../../shared/config/routes';
 import ColorPicker from '../../../shared/components/ColorPicker';
 
 const LabelsSettings = () => {
@@ -15,6 +16,8 @@ const LabelsSettings = () => {
   const [newLabelColor, setNewLabelColor] = React.useState([]);
   const [isNewLabelActive, setIsNewLabelActive] = React.useState(false);
   const [labels, setLabels] = React.useState([]);
+  const [labelToEdit, setLabelToEdit] = React.useState(null);
+  const [isEdit, setIsEdit] = React.useState(false);
 
   const fetchLabels = () => {
     getLabels()
@@ -42,6 +45,24 @@ const LabelsSettings = () => {
     setActiveLabels(newLabels);
     setAnchorEl(e.currentTarget);
     setItemToDelete(labelId);
+    setLabelToEdit(labelId);
+  };
+
+  const handleLabelEdit = e => {
+    e.preventDefault();
+    putLabel(labelToEdit, {
+      name: newLabelName,
+      color: newLabelColor[0],
+      colorActive: newLabelColor[1],
+    })
+      .then(() => {
+        fetchLabels();
+        setIsEdit(false);
+        setNewLabelName('');
+        setNewLabelColor([]);
+        setIsNewLabelActive(false);
+      })
+      .catch(console.log);
   };
 
   const handleLabelAdd = e => {
@@ -71,6 +92,34 @@ const LabelsSettings = () => {
     setAnchorEl(null);
   };
 
+  const cancelForm = () => {
+    setItemToDelete(null);
+    setLabelToEdit(null);
+    setAnchorEl(null);
+    setIsAdd(false);
+    setIsEdit(false);
+    setNewLabelName('');
+    setNewLabelColor([]);
+    setIsNewLabelActive(false);
+  };
+
+  const handleLabelEditClick = () => {
+    const editLabel = labels.find(l => l.id === labelToEdit);
+    setIsEdit(true);
+    setIsAdd(false);
+    setNewLabelName(editLabel.name);
+    setNewLabelColor([editLabel.color, editLabel.colorActive]);
+  };
+
+  const handleAddClicked = () => {
+    setIsAdd(true);
+    setIsEdit(false);
+    setLabelToEdit(null);
+    setNewLabelName('');
+    setNewLabelColor([]);
+    setIsNewLabelActive(false);
+  };
+
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
@@ -86,7 +135,7 @@ const LabelsSettings = () => {
             onClick={(e, active) => handleLabelClick(e, active, l.id)}
           />
         ))}
-        <IconButton onClick={() => setIsAdd(true)}>
+        <IconButton onClick={handleAddClicked}>
           <AddIcon />
         </IconButton>
       </Grid>
@@ -107,10 +156,13 @@ const LabelsSettings = () => {
         <IconButton onClick={handleLabelDelete}>
           <DeleteIcon />
         </IconButton>
+        <IconButton onClick={handleLabelEditClick}>
+          <EditIcon />
+        </IconButton>
       </Popover>
-      {isAdd && (
+      {(isAdd || isEdit) && (
         <Grid item xs={12}>
-          <form onSubmit={handleLabelAdd}>
+          <form onSubmit={isAdd ? handleLabelAdd : handleLabelEdit}>
             <Grid container spacing={3} justify="space-between">
               <Grid item>
                 <TextField
@@ -140,6 +192,9 @@ const LabelsSettings = () => {
               <Grid item>
                 <Button type="submit" variant="outlined">
                   Submit
+                </Button>
+                <Button variant="outlined" onClick={cancelForm}>
+                  Cancel
                 </Button>
               </Grid>
             </Grid>

@@ -6,7 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { RELOAD_POST_LIST, TOGGLE_COMMENT } from '../../../shared/redux/actions';
-import { postComment } from '../../../shared/utils/routes';
+import { postComment } from '../../../shared/config/routes';
 
 class PostCommentEdit extends Component {
   state = {

@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Drawer from '@material-ui/core/Drawer';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import LogoutIcon from '@material-ui/icons/ExitToApp';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import ListSubheader from '@material-ui/core/ListSubheader';
@@ -21,13 +23,16 @@ import ListAltIcon from '@material-ui/icons/ListAlt';
 import CardGiftcardIcon from '@material-ui/icons/CardGiftcard';
 import Grid from '@material-ui/core/Grid';
 import useStyles from './useStyles';
-import { getInProgress } from '../shared/utils/routes';
+import { getInProgress } from '../shared/config/routes';
+import { clearStorage } from '../shared/utils/storage';
 
 const Layout = ({ children }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
   const [inProgress, setInProgress] = React.useState([]);
+
+  const history = useHistory();
 
   useEffect(() => {
     async function fetchData() {
@@ -44,6 +49,11 @@ const Layout = ({ children }) => {
   function handleDrawerClose() {
     setOpen(false);
   }
+
+  const handleLogout = () => {
+    clearStorage();
+    history.push('/login');
+  };
 
   return (
     <div className={classes.root}>
@@ -135,6 +145,15 @@ const Layout = ({ children }) => {
             </ListItem>
           </Link>
         </List>
+        <div className={classes.bottomIcons}>
+          <Divider />
+          <ListItem button>
+            <ListItemIcon onClick={handleLogout}>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText primary="Logout" />
+          </ListItem>
+        </div>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />

@@ -16,6 +16,7 @@ const Tabs = ({ value, onChange, tabs }) => {
     >
       {tabs.map(t => (
         <Tab
+          key={t.label}
           label={isMobile ? t.mobile.label : t.label}
           icon={isMobile ? t.mobile.icon : t.icon}
           onClick={t.onClick}

@@ -8,7 +8,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { editTask, getProject, getTasks, postTask, deleteTask } from '../shared/utils/routes';
+import { editTask, getProject, getTasks, postTask, deleteTask } from '../shared/config/routes';
 import Divider from '@material-ui/core/Divider';
 import Modal from '@material-ui/core/Modal';
 const styles = theme => ({
@@ -20,9 +20,9 @@ const styles = theme => ({
     padding: theme.spacing(2),
     textAlign: 'left',
     color: theme.palette.text.secondary,
+    wordBreak: 'break-word',
     '@media screen and (min-width: 600px) and (max-width: 700px)': {
       padding: theme.spacing(1),
-      wordBreak: 'break-all',
     },
   },
   inputContainer: {
