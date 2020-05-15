@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Grid, TextField, Button, Snackbar } from '@material-ui/core';
-import { sendLogin } from '../../shared/utils/routes';
+import { sendLogin } from '../../shared/config/routes';
 import useStyles from '../useStyles';
 
 const LoginPage = ({ history }) => {

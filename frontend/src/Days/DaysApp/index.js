@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Grid, Select, MenuItem, FormControl, InputLabel } from '@material-ui/core';
 import PostShow from '../PostShow';
-import { getLabels, getMonth, getYears } from '../../shared/utils/routes';
+import { getLabels, getMonth, getYears } from '../../shared/config/routes';
 
 class DaysApp extends Component {
   state = {

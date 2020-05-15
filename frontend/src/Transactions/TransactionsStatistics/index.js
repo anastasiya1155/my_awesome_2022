@@ -2,7 +2,7 @@ import React from 'react';
 import { Chart } from 'react-google-charts';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import { getTransactionsStatistics } from '../../shared/utils/routes';
+import { getTransactionsStatistics } from '../../shared/config/routes';
 import { CATEGORIES_ARRAY } from '../../shared/config/const';
 
 const TransactionsStatistics = () => {

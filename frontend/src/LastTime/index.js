@@ -1,5 +1,5 @@
 import React from 'react';
-import { getLts, postLT, putLT } from '../shared/utils/routes';
+import { getLts, postLT, putLT } from '../shared/config/routes';
 import {
   Divider,
   IconButton,

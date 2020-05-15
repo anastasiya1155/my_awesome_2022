@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { connect } from 'react-redux';
 import { RELOAD_TRANS_CATEGORIES_LIST } from '../../shared/redux/actions';
-import { postTransactionsCategories } from '../../shared/utils/routes';
+import { postTransactionsCategories } from '../../shared/config/routes';
 
 const styles = theme => ({
   textField: {

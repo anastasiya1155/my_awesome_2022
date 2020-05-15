@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getTransactionsCategories } from '../../shared/utils/routes';
+import { getTransactionsCategories } from '../../shared/config/routes';
 
 class TransactionsCategoriesUpdate extends Component {
   state = {

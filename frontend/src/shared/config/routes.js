@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IP, PORT } from '../config/const';
+import { IP, PORT } from './const';
 
 const FIREBASE = 'https://tranf-ae713.firebaseio.com/';
 const LOCAL = `http://${IP}:${PORT}`;
@@ -9,22 +9,24 @@ const apiPostRequest = (url, data, config) => axios.post(url, data, config);
 const apiPutRequest = (url, data, config) => axios.put(url, data, config);
 const apiDeleteRequest = (url, config) => axios.delete(url, config);
 
+const authConfig = {
+  headers: { authorization: localStorage.getItem('token') },
+};
+
+const redirectUnauth = err => {
+  if (err.message === 'Request failed with status code 401') {
+    window.location.replace('/login');
+  }
+};
+
 const apiLocalGetRequest = url =>
-  apiGetRequest(`${LOCAL}/api/${url}`, {
-    headers: { authorization: localStorage.getItem('token') },
-  });
+  apiGetRequest(`${LOCAL}/api/${url}`, authConfig).catch(redirectUnauth);
 const apiLocalPostRequest = (url, data) =>
-  apiPostRequest(`${LOCAL}/api/${url}`, data, {
-    headers: { authorization: localStorage.getItem('token') },
-  });
+  apiPostRequest(`${LOCAL}/api/${url}`, data, authConfig).catch(redirectUnauth);
 const apiLocalPutRequest = (url, data) =>
-  apiPutRequest(`${LOCAL}/api/${url}`, data, {
-    headers: { authorization: localStorage.getItem('token') },
-  });
+  apiPutRequest(`${LOCAL}/api/${url}`, data, authConfig).catch(redirectUnauth);
 const apiLocalDeleteRequest = url =>
-  apiDeleteRequest(`${LOCAL}/api/${url}`, {
-    headers: { authorization: localStorage.getItem('token') },
-  });
+  apiDeleteRequest(`${LOCAL}/api/${url}`, authConfig).catch(redirectUnauth);
 
 // FIREBASE TRANSACTION
 export const getTransactionsByMonthAndYear = (year, month) =>
@@ -70,9 +72,10 @@ export const addLabelToPost = (postId, labelId) =>
 
 export const getPins = () => apiLocalGetRequest(`pins`);
 
-export const getProjects = () => apiLocalGetRequest(`projects`);
+export const getProjects = () => apiLocalGetRequest('projects');
 export const getProject = id => apiLocalGetRequest(`projects/${id}`);
-export const postProject = data => apiLocalPostRequest(`projects`, data);
+export const postProject = data => apiLocalPostRequest('projects', data);
+export const putProject = (id, data) => apiLocalPutRequest(`projects/${id}`, data);
 export const getTasks = id => apiLocalGetRequest(`projects/${id}/tasks`);
 
 export const getInProgress = () => apiLocalGetRequest(`tasks-in-progress`);

@@ -10,7 +10,7 @@ import PostComment from './PostComment';
 import PostCommentEdit from './PostCommentEdit';
 import { TOGGLE_COMMENT, TOGGLE_EDIT, RELOAD_POST_LIST } from '../../shared/redux/actions';
 import moment from 'moment';
-import { addLabelToPost, deleteLabelFromPost, deletePost } from '../../shared/utils/routes';
+import { addLabelToPost, deleteLabelFromPost, deletePost } from '../../shared/config/routes';
 
 const styles = theme => ({
   container: {

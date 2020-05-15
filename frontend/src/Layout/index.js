@@ -21,7 +21,7 @@ import ListAltIcon from '@material-ui/icons/ListAlt';
 import CardGiftcardIcon from '@material-ui/icons/CardGiftcard';
 import Grid from '@material-ui/core/Grid';
 import useStyles from './useStyles';
-import { getInProgress } from '../shared/utils/routes';
+import { getInProgress } from '../shared/config/routes';
 
 const Layout = ({ children }) => {
   const classes = useStyles();

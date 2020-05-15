@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import SettingsIcon from '@material-ui/icons/Settings';
 import SearchIcon from '@material-ui/icons/Search';
 import { RELOAD_POST_LIST } from '../shared/redux/actions';
-import { getLabels, getPosts } from '../shared/utils/routes';
+import { getLabels, getPosts } from '../shared/config/routes';
 import Tabs from '../shared/components/Tabs';
 import PostList from './PostList';
 import DaysSettings from './Settings';

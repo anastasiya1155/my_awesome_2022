@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { Grid, IconButton, Typography } from '@material-ui/core';
-import { deletePeriod, getPeriods, postPeriod, putPeriod } from '../../../shared/utils/routes';
+import { deletePeriod, getPeriods, postPeriod, putPeriod } from '../../../shared/config/routes';
 import AddIcon from '@material-ui/icons/Add';
 import PeriodsTable from './PeriodsTable';
 

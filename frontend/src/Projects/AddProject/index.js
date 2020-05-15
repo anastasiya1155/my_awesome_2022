@@ -2,8 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TextField, Button, Grid } from '@material-ui/core';
 
-const AddProject = ({ handleSubmit }) => {
-  const [values, setValues] = React.useState({ title: '', description: '' });
+const AddProject = ({ handleSubmit, initialValues, handleCancel }) => {
+  const [values, setValues] = React.useState(initialValues || { title: '', description: '' });
+
+  React.useEffect(() => {
+    setValues(initialValues || { title: '', description: '' });
+  }, [initialValues]);
 
   return (
     <form
@@ -22,7 +26,7 @@ const AddProject = ({ handleSubmit }) => {
             onChange={e => setValues({ ...values, title: e.target.value })}
           />
         </Grid>
-        <Grid item md={6} xs={12}>
+        <Grid item md={5} xs={12}>
           <TextField
             name="description"
             fullWidth
@@ -31,8 +35,9 @@ const AddProject = ({ handleSubmit }) => {
             onChange={e => setValues({ ...values, description: e.target.value })}
           />
         </Grid>
-        <Grid item md={2} xs={12}>
+        <Grid item md={3} xs={12}>
           <Button type="submit">Submit</Button>
+          <Button onClick={handleCancel}>Cancel</Button>
         </Grid>
       </Grid>
     </form>

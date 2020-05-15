@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Grid, TextField } from '@material-ui/core';
 import PostList from '../PostList';
-import { searchPosts } from '../../shared/utils/routes';
+import { searchPosts } from '../../shared/config/routes';
 
 const Search = ({ labels }) => {
   const [searchQuery, setSearchQuery] = React.useState('');

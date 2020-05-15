@@ -4,7 +4,7 @@ import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Close';
 import EditIcon from '@material-ui/icons/Edit';
 import PostLabel from '../../PostShow/PostLabel';
-import { deleteLabel, getLabels, postLabel, putLabel } from '../../../shared/utils/routes';
+import { deleteLabel, getLabels, postLabel, putLabel } from '../../../shared/config/routes';
 import ColorPicker from '../../../shared/components/ColorPicker';
 
 const LabelsSettings = () => {

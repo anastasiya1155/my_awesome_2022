@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { IconButton, List, ListItem, ListItemText } from '@material-ui/core';
+import { IconButton, List, ListItem, ListItemText, ListItemIcon } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import { getProjects, postProject } from '../shared/utils/routes';
+import EditIcon from '@material-ui/icons/Edit';
+import { getProjects, postProject, putProject } from '../shared/config/routes';
 import AddProject from './AddProject';
 import { Hidden } from '@material-ui/core';
 
@@ -13,6 +14,8 @@ class Projects extends Component {
     menuAnchorElement: undefined,
     pressedProject: null,
     isAdd: false,
+    isEdit: false,
+    projectToEdit: null,
   };
 
   componentDidMount() {
@@ -35,16 +38,34 @@ class Projects extends Component {
   };
 
   handleSubmit = values => {
-    postProject(values)
-      .then(() => {
-        this.fetchData();
-        this.setState({ isAdd: false });
-      })
-      .catch(console.log);
+    if (this.state.isAdd) {
+      postProject(values)
+        .then(() => {
+          this.fetchData();
+          this.setState({ isAdd: false });
+        })
+        .catch(console.log);
+    } else {
+      putProject(this.state.projectToEdit.id, values)
+        .then(() => {
+          this.fetchData();
+          this.setState({ isEdit: false, projectToEdit: null });
+        })
+        .catch(console.log);
+    }
+  };
+
+  handleEditClick = (e, project) => {
+    e.stopPropagation();
+    this.setState({ isEdit: true, isAdd: false, projectToEdit: project });
+  };
+
+  handleCancel = () => {
+    this.setState({ isEdit: false, isAdd: false, projectToEdit: null });
   };
 
   render() {
-    const { projects, isAdd } = this.state;
+    const { projects, isAdd, isEdit, projectToEdit } = this.state;
     return (
       <div>
         <h1>Projects</h1>
@@ -56,16 +77,29 @@ class Projects extends Component {
               onClick={() => this.props.history.push(`/projects/${list.id}`)}
             >
               <ListItemText primary={list.title} />
-                <Hidden smDown>
-                    <ListItemText secondary={list.description} />
-                </Hidden>
+              <Hidden smDown>
+                <ListItemText secondary={list.description} />
+              </Hidden>
+              <ListItemIcon>
+                <IconButton onClick={e => this.handleEditClick(e, list)}>
+                  <EditIcon />
+                </IconButton>
+              </ListItemIcon>
             </ListItem>
           ))}
         </List>
-        <IconButton onClick={() => this.setState({ isAdd: true })}>
+        <IconButton
+          onClick={() => this.setState({ isAdd: true, isEdit: false, projectToEdit: null })}
+        >
           <AddIcon />
         </IconButton>
-        {isAdd ? <AddProject handleSubmit={this.handleSubmit} /> : null}
+        {isAdd || isEdit ? (
+          <AddProject
+            handleSubmit={this.handleSubmit}
+            initialValues={projectToEdit}
+            handleCancel={this.handleCancel}
+          />
+        ) : null}
       </div>
     );
   }
