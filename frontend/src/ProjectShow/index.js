@@ -180,6 +180,7 @@ class Project extends Component {
       <div className={classes.modalPaper}>
         <h2 id="simple-modal-title">{this.state.taskForModal.body}</h2>
         <TextField
+          multiline
           name="description"
           fullWidth
           label="Description"

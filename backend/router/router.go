@@ -53,6 +53,7 @@ func Initialize(r *gin.Engine) {
 		api.DELETE("/projects/:id", controllers.DeleteProject)
 
 		api.GET("/lts", controllers.GetLts)
+		api.GET("/lts-expired", controllers.ExpiredLt)
 		api.POST("/lt", controllers.CreateLt)
 		api.PUT("/lt/:id", controllers.UpdateLt)
 		api.DELETE("/lt/:id", controllers.DeleteLt)

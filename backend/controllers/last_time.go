@@ -85,3 +85,11 @@ func DeleteLt(c *gin.Context) {
 	}
 	c.Writer.WriteHeader(http.StatusNoContent)
 }
+
+func ExpiredLt(c *gin.Context) {
+	db := dbpkg.DBInstance(c)
+	var lts []models.Lt
+	rawQuery := "SELECT * FROM last_time WHERE  user_id = ? AND DATEDIFF(NOW(), date) > remind_after_days;"
+	db.Raw(rawQuery, middleware.UserInstance(c).ID).Scan(&lts)
+	c.JSON(201, lts)
+}

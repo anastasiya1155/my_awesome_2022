@@ -109,10 +109,11 @@ func (p Period) GetUserId(db *gorm.DB) int {
 }
 
 type Lt struct {
-	ID     int       `json:"id"`
-	Date   time.Time `json:"date"`
-	Body   string    `json:"body"`
-	UserId int       `json:"-"`
+	ID              int       `json:"id"`
+	Date            time.Time `json:"date"`
+	Body            string    `json:"body"`
+	UserId          int       `json:"-"`
+	RemindAfterDays int       `json:"remind_after_days"`
 }
 
 func (l Lt) GetUserId(db *gorm.DB) int {
