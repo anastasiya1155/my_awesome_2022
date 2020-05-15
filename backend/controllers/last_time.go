@@ -11,7 +11,11 @@ import (
 func GetLts(c *gin.Context) {
 	db := dbpkg.DBInstance(c)
 	var lts []models.Lt
-	rawQuery := "SELECT * FROM last_time where user_id = ? order by date desc;"
+	rawQuery :=
+	  `SELECT *, DATEDIFF(NOW(), date) > remind_after_days as expired FROM last_time
+	  WHERE user_id = ?
+	  ORDER BY expired desc, date desc;
+	  `
 	db.Raw(rawQuery, middleware.UserInstance(c).ID).Scan(&lts)
 	c.JSON(201, lts)
 }
