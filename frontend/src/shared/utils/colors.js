@@ -33,27 +33,27 @@ export const colorsDark = [
 
 export const colorPairs = [
   [
-    [red['A100'], red['A700']],
-    [pink['A100'], pink['A700']],
-    [purple['A100'], purple['A700']],
-    [deepPurple['A100'], deepPurple['A700']],
+    [red['100'], red['A700']],
+    [pink['100'], pink['A700']],
+    [purple['100'], purple['A700']],
+    [deepPurple['100'], deepPurple['A700']],
   ],
   [
-    [indigo['A100'], indigo['A700']],
-    [lightBlue['A100'], lightBlue['A700']],
-    [cyan['A100'], cyan['A700']],
-    [green['A100'], green['A700']],
+    [indigo['100'], indigo['A700']],
+    [lightBlue['100'], lightBlue['A700']],
+    [cyan['100'], cyan['A700']],
+    [green['100'], green['A700']],
   ],
   [
-    [lightGreen['A100'], lightGreen['A700']],
-    [lime['A100'], lime['A700']],
-    [yellow['A100'], yellow['A700']],
-    [amber['A100'], amber['A700']],
+    [lightGreen['100'], lightGreen['A700']],
+    [lime['100'], lime['A700']],
+    [yellow['100'], yellow['A700']],
+    [amber['100'], amber['A700']],
   ],
   [
-    [orange['A100'], orange['A700']],
-    [deepOrange['A100'], deepOrange['A700']],
-    [brown[200], brown[800]],
-    [blueGrey[200], blueGrey[800]],
+    [orange['100'], orange['A700']],
+    [deepOrange['100'], deepOrange['A700']],
+    [brown[100], brown[800]],
+    [blueGrey[100], blueGrey[800]],
   ],
 ];
