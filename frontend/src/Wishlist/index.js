@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { deleteWish, getWishes, postWish, putWish } from '../shared/config/routes';
+import { deleteWish, getWishes, postWish, putWish } from '../shared/api/routes';
 import Tabs from '../shared/components/Tabs';
 const WishCreate = lazy(() => import(/* webpackChunkName: "wish-add" */ './WishCreate'));
 const WishList = lazy(() => import(/* webpackChunkName: "wish-list" */ './WishList'));

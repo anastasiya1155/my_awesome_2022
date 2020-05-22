@@ -5,7 +5,7 @@ import List from '@material-ui/core/List';
 import TransactionsCategoriesShow from './show';
 import TransactionsCategoriesCreate from './create';
 import { RELOAD_TRANS_CATEGORIES_LIST } from '../../shared/redux/actions';
-import { getTransactionsCategories } from '../../shared/config/routes';
+import { getTransactionsCategories } from '../../shared/api/routes';
 
 class TransactionsCategories extends Component {
   state = {

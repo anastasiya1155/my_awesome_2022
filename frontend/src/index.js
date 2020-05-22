@@ -1,18 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import {CssBaseline, Button, Typography} from '@material-ui/core';
+import { CssBaseline, Button, Typography } from '@material-ui/core';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import reducer from './shared/redux/reducer';
+import reduxStore from './shared/redux/config';
 import theme from './shared/config/theme';
 
-const store = createStore(reducer);
-
 ReactDOM.render(
-  <Provider store={store}>
+  <Provider store={reduxStore}>
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
       <App />

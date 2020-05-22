@@ -1,8 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles';
 
-const PostLabel = ({ isActive, label, classes, onClick }) => {
+const useStyles = makeStyles(() => ({
+  dot: {
+    height: 22,
+    width: 22,
+    borderRadius: '50%',
+    display: 'inline-block',
+    margin: '0 4px -6px',
+    backgroundColor: 'white',
+    cursor: 'pointer',
+    textAlign: 'center',
+  },
+}));
+
+const PostLabel = ({ isActive, label, onClick }) => {
+  const classes = useStyles();
   return (
     <span
       className={classes.dot}
@@ -18,19 +32,6 @@ const PostLabel = ({ isActive, label, classes, onClick }) => {
   );
 };
 
-const styles = () => ({
-  dot: {
-    height: 22,
-    width: 22,
-    borderRadius: '50%',
-    display: 'inline-block',
-    margin: '0 4px -6px',
-    backgroundColor: 'white',
-    cursor: 'pointer',
-    textAlign: 'center',
-  },
-});
-
 PostLabel.propTypes = {
   isActive: PropTypes.bool,
   label: PropTypes.shape({
@@ -43,4 +44,4 @@ PostLabel.propTypes = {
   onClick: PropTypes.func,
 };
 
-export default withStyles(styles)(PostLabel);
+export default PostLabel;

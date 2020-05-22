@@ -1,81 +1,54 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import TextField from '@material-ui/core/TextField';
-import { withStyles } from '@material-ui/core/styles';
-import { RELOAD_POST_LIST, TOGGLE_EDIT } from '../../../shared/redux/actions';
-import { editPost } from '../../../shared/config/routes';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { TextField, Button, Grid } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { editPostAction } from '../../../shared/api/handlers';
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
   textarea: {
     width: '100%',
     padding: theme.spacing(2),
   },
-});
+}));
 
-class PostEdit extends Component {
-  state = {
-    updatedPostBody: '',
+const PostEdit = ({ body, post, onCancel }) => {
+  const [updatedValue, setUpdatedValue] = React.useState(body);
+  const dispatch = useDispatch();
+
+  const classes = useStyles();
+
+  React.useEffect(() => {
+    setUpdatedValue(body);
+  }, [body]);
+
+  const handleText = e => {
+    setUpdatedValue(e.target.value);
   };
 
-  componentDidMount() {
-    this.setState({ updatedPostBody: this.props.body });
-  }
-
-  handleText = e => {
-    this.setState({ updatedPostBody: e.target.value });
+  const handleSubmit = () => {
+    editPostAction(dispatch, { postId: post.id, value: { body: updatedValue } }).then(() => {
+      onCancel();
+    });
   };
 
-  handleSubmit = () => {
-    editPost(this.props.post.id, {
-      body: this.state.updatedPostBody,
-    })
-      .then(response => {
-        this.props.reloadPostList(true);
-        this.props.toggleEdit(true);
-      })
-      .catch(error => console.log(error));
-  };
-
-  render() {
-    return (
-      <form style={{ marginBottom: '30px' }} className="PostCreate">
-        <TextField
-          multiline
-          className={this.props.classes.textarea}
-          value={this.state.updatedPostBody}
-          onChange={this.handleText}
-        />
-        <div
-          className="MyAwesomeButton"
-          style={{ textAlign: 'center', width: '95%' }}
-          onClick={this.handleSubmit}
-        >
-          Send
-        </div>
-      </form>
-    );
-  }
-}
-
-const mapDispatchToProps = function(dispatch, ownProps) {
-  return {
-    toggleEdit: () => {
-      dispatch({
-        type: TOGGLE_EDIT,
-        payload: {
-          postId: ownProps.post.id,
-        },
-      });
-    },
-    reloadPostList: reload => {
-      dispatch({
-        type: RELOAD_POST_LIST,
-        payload: {
-          reload,
-        },
-      });
-    },
-  };
+  return (
+    <form style={{ marginBottom: '30px' }}>
+      <Grid container justify="center">
+        <Grid item xs={12}>
+          <TextField
+            multiline
+            className={classes.textarea}
+            value={updatedValue}
+            onChange={handleText}
+          />
+        </Grid>
+        <Grid item>
+          <Button onClick={onCancel}>Cancel</Button>
+          <Button onClick={handleSubmit}>Submit</Button>
+        </Grid>
+      </Grid>
+    </form>
+  );
 };
 
-export default withStyles(styles)(connect(null, mapDispatchToProps)(PostEdit));
+export default PostEdit;

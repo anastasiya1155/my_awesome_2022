@@ -5,7 +5,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormGroup from '@material-ui/core/FormGroup';
 import Grid from '@material-ui/core/Grid';
-import { postTransactionsToMonthAndYear } from '../../shared/config/routes';
+import { postTransactionsToMonthAndYear } from '../../shared/api/routes';
 
 import moment from 'moment';
 import { CATEGORIES } from '../../shared/config/const';

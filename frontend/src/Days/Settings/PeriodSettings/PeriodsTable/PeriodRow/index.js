@@ -8,11 +8,16 @@ const PeriodRow = ({ period, onEditClicked, onDeleteSubmit }) => {
   const [isDelete, setIsDelete] = React.useState(false);
   return isDelete ? (
     <TableRow>
-      <TableCell colSpan={4}>
+      <TableCell colSpan={2}>
+        <Button fullWidth variant="contained" onClick={() => setIsDelete(false)}>
+          CANCEL
+        </Button>
+      </TableCell>
+      <TableCell colSpan={2}>
         <Button
           fullWidth
           variant="contained"
-          onClick={() => onDeleteSubmit().then(() => setIsDelete(false))}
+          onClick={() => onDeleteSubmit(period.id).then(() => setIsDelete(false))}
         >
           DELETE
         </Button>

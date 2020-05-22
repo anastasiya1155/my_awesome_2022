@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getTransactionsCategories } from '../../shared/config/routes';
+import { getTransactionsCategories } from '../../shared/api/routes';
 
 class TransactionsCategoriesDelete extends Component {
   state = {

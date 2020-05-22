@@ -12,7 +12,7 @@ import {
   Button,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { postTodo, deleteTodo, getTodos } from '../shared/config/routes';
+import { postTodo, deleteTodo, getTodos } from '../shared/api/routes';
 
 class Tasks extends Component {
   state = {

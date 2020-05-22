@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core';
+import React from 'react';
+import { makeStyles } from '@material-ui/core';
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
   comment: {
     color: theme.palette.primary.light,
     paddingLeft: 10,
@@ -9,17 +9,16 @@ const styles = theme => ({
   date: {
     color: theme.palette.secondary.light,
   },
-});
+}));
 
-class PostComment extends Component {
-  render() {
-    return (
-      <div className={this.props.classes.comment}>
-        <span className={this.props.classes.date}>{this.props.comment.Date.substr(0, 10)}</span>
-        <span> {this.props.comment.Body}</span>
-      </div>
-    );
-  }
-}
+const PostComment = ({ comment }) => {
+  const classes = useStyles();
+  return (
+    <div className={classes.comment}>
+      <span className={classes.date}>{comment.Date.substr(0, 10)}</span>
+      <span> {comment.Body}</span>
+    </div>
+  );
+};
 
-export default withStyles(styles)(PostComment);
+export default PostComment;

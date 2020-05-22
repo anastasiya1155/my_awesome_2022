@@ -66,9 +66,9 @@ const PeriodEditRow = ({ period, onSubmit, onCancel }) => {
         <IconButton
           onClick={() =>
             onSubmit({
-              newPeriodEnd: isNewPeriodInProgress ? null : newPeriodEnd,
-              newPeriodStart,
-              newPeriodName,
+              End: isNewPeriodInProgress ? null : moment.utc(newPeriodEnd).format(),
+              Start: moment.utc(newPeriodStart).format(),
+              Name: newPeriodName,
             })
           }
         >

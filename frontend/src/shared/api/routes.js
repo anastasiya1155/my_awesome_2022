@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IP, PORT } from './const';
+import { IP, PORT } from '../config/const';
 import { getItemFromStorage, TOKEN_KEY } from '../utils/storage';
 
 const FIREBASE = 'https://tranf-ae713.firebaseio.com/';
@@ -17,6 +17,8 @@ const authConfig = {
 const redirectUnauth = err => {
   if (err.message === 'Request failed with status code 401') {
     window.location.replace('/login');
+  } else {
+    throw err;
   }
 };
 
@@ -51,7 +53,8 @@ export const postWish = data => apiPostRequest(`${FIREBASE}wish.json`, data);
 export const putWish = (id, data) => apiPutRequest(`${FIREBASE}wish/${id}.json`, data);
 export const deleteWish = id => apiDeleteRequest(`${FIREBASE}wish/${id}.json`);
 
-export const getPosts = link => apiLocalGetRequest(`posts${link}`);
+export const getPosts = () => apiLocalGetRequest(`posts?sort=-date`);
+export const getPostsHistory = () => apiLocalGetRequest(`posts-history`);
 export const deletePost = id => apiLocalDeleteRequest(`posts/${id}`);
 export const editPost = (id, data) => apiLocalPutRequest(`posts/${id}`, data);
 export const postComment = data => apiLocalPostRequest(`comments`, data);

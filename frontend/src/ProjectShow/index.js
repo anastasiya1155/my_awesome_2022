@@ -8,7 +8,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { editTask, getProject, getTasks, postTask, deleteTask } from '../shared/config/routes';
+import { editTask, getProject, getTasks, postTask, deleteTask } from '../shared/api/routes';
 import Divider from '@material-ui/core/Divider';
 import Modal from '@material-ui/core/Modal';
 const styles = theme => ({

@@ -1,11 +1,12 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { TextField, Button, Grid, Typography, IconButton, Popover } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Close';
 import EditIcon from '@material-ui/icons/Edit';
 import PostLabel from '../../PostShow/PostLabel';
-import { deleteLabel, getLabels, postLabel, putLabel } from '../../../shared/config/routes';
 import ColorPicker from '../../../shared/components/ColorPicker';
+import { addLabelAction, deleteLabelAction, editLabelAction } from '../../../shared/api/handlers';
 
 const LabelsSettings = () => {
   const [activeLabels, setActiveLabels] = React.useState([]);
@@ -15,28 +16,10 @@ const LabelsSettings = () => {
   const [newLabelName, setNewLabelName] = React.useState('');
   const [newLabelColor, setNewLabelColor] = React.useState([]);
   const [isNewLabelActive, setIsNewLabelActive] = React.useState(false);
-  const [labels, setLabels] = React.useState([]);
   const [labelToEdit, setLabelToEdit] = React.useState(null);
   const [isEdit, setIsEdit] = React.useState(false);
-
-  const fetchLabels = () => {
-    getLabels()
-      .then(response => {
-        const l = response.data.map(c => ({
-          id: c.ID,
-          name: c.Name,
-          color: c.Color,
-          colorActive: c.ColorActive,
-        }));
-
-        setLabels(l);
-      })
-      .catch(console.log);
-  };
-
-  React.useEffect(() => {
-    fetchLabels();
-  }, []);
+  const labels = useSelector(state => state.post.labels);
+  const dispatch = useDispatch();
 
   const handleLabelClick = (e, isActive, labelId) => {
     const newLabels = isActive
@@ -50,38 +33,38 @@ const LabelsSettings = () => {
 
   const handleLabelEdit = e => {
     e.preventDefault();
-    putLabel(labelToEdit, {
-      name: newLabelName,
-      color: newLabelColor[0],
-      colorActive: newLabelColor[1],
-    })
-      .then(() => {
-        fetchLabels();
-        setIsEdit(false);
-        setNewLabelName('');
-        setNewLabelColor([]);
-        setIsNewLabelActive(false);
-      })
-      .catch(console.log);
+    editLabelAction(dispatch, {
+      labelId: labelToEdit,
+      data: {
+        name: newLabelName,
+        color: newLabelColor[0],
+        colorActive: newLabelColor[1],
+      },
+    }).then(() => {
+      setIsEdit(false);
+      setNewLabelName('');
+      setNewLabelColor([]);
+      setIsNewLabelActive(false);
+    });
   };
 
   const handleLabelAdd = e => {
     e.preventDefault();
-    postLabel({ name: newLabelName, color: newLabelColor[0], colorActive: newLabelColor[1] })
-      .then(() => {
-        fetchLabels();
-        setIsAdd(false);
-        setNewLabelName('');
-        setNewLabelColor([]);
-        setIsNewLabelActive(false);
-      })
-      .catch(console.log);
+    addLabelAction(dispatch, {
+      name: newLabelName,
+      color: newLabelColor[0],
+      colorActive: newLabelColor[1],
+    }).then(() => {
+      setIsAdd(false);
+      setNewLabelName('');
+      setNewLabelColor([]);
+      setIsNewLabelActive(false);
+    });
   };
 
   const handleLabelDelete = () => {
-    deleteLabel(itemToDelete)
+    deleteLabelAction(dispatch, itemToDelete)
       .then(() => {
-        fetchLabels();
         handleClose();
       })
       .catch(console.log);

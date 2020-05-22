@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { IconButton, List, ListItem, ListItemText, ListItemIcon } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
-import { getProjects, postProject, putProject } from '../shared/config/routes';
+import { getProjects, postProject, putProject } from '../shared/api/routes';
 import AddProject from './AddProject';
 import { Hidden } from '@material-ui/core';
 
