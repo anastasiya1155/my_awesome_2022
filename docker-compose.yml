@@ -17,16 +17,16 @@ services:
       context: frontend
     ports:
       - "${FRONT_PORT}:80"
-#  pa:
-#    build:
-#      context: personal_assist
-#    ports:
-#      - "${PA_PORT}:8887"
-##    restart: always
-#    depends_on:
-#      - mysql
-#    volumes:
-#      - "./personal_assist/cmd:/cmd"
+  pa:
+    build:
+      context: personal_assist
+    ports:
+      - "${PA_PORT}:8887"
+#    restart: always
+    depends_on:
+      - mysql
+    volumes:
+      - "./personal_assist/cmd:/cmd"
   app:
     build:
       context: backend
