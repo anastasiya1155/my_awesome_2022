@@ -6,8 +6,8 @@ import {
   POSTS_HISTORY_LOADED,
   POSTS_LOADED,
 } from '../redux/postReducer';
-
-const handleError = () => {};
+import { LAST_TIMES_LOADED, REMINDER_LOADED } from '../redux/lastTimeReducer';
+import { IN_PROGRESS_LOADED, PROJECT_LOADED, TASKS_LOADED } from '../redux/projectsReducer';
 
 const safeAction = (action, callback, dispatch) => {
   return action()
@@ -54,6 +54,26 @@ export function getPeriodsAction(dispatch) {
     api.getPeriods,
     json => {
       dispatch({ type: PERIODS_LOADED, payload: json });
+    },
+    dispatch,
+  );
+}
+
+export function getInProgressAction(dispatch) {
+  return safeAction(
+    api.getInProgress,
+    json => {
+      dispatch({ type: IN_PROGRESS_LOADED, payload: json });
+    },
+    dispatch,
+  );
+}
+
+export function getReminderAction(dispatch) {
+  return safeAction(
+    api.getExpiredLts,
+    json => {
+      dispatch({ type: REMINDER_LOADED, payload: json });
     },
     dispatch,
   );
@@ -131,12 +151,13 @@ export function addLabelAction(dispatch, data) {
 }
 
 export function deleteLabelAction(dispatch, id) {
-  return api
-    .deleteLabel(id)
-    .then(() => {
+  return safeAction(
+    () => api.deleteLabel(id),
+    () => {
       getLabelsAction(dispatch);
-    })
-    .catch(handleError);
+    },
+    dispatch,
+  );
 }
 
 export function createPeriodAction(dispatch, data) {
@@ -167,6 +188,84 @@ export function editPeriodAction(dispatch, { id, data }) {
     () => {
       getPeriodsAction(dispatch);
       getPostsAction(dispatch);
+    },
+    dispatch,
+  );
+}
+
+const updateProjectTasks = (dispatch, id) => {
+  return safeAction(
+    () => api.getTasks(id),
+    json => dispatch({ type: TASKS_LOADED, payload: { ...json, id } }),
+    dispatch,
+  );
+};
+
+export function getProjectAction(dispatch, id) {
+  return Promise.all([
+    safeAction(
+      () => api.getProject(id),
+      json => dispatch({ type: PROJECT_LOADED, payload: json }),
+      dispatch,
+    ),
+    updateProjectTasks(dispatch, id),
+  ]);
+}
+
+export function editTaskAction(dispatch, { id, data, projectId }) {
+  return safeAction(
+    () => api.editTask(id, data),
+    () => {
+      updateProjectTasks(dispatch, projectId);
+      getInProgressAction(dispatch);
+    },
+    dispatch,
+  );
+}
+
+export function deleteTaskAction(dispatch, { id, projectId }) {
+  return safeAction(
+    () => api.deleteTask(id),
+    () => {
+      updateProjectTasks(dispatch, projectId);
+      getInProgressAction(dispatch);
+    },
+    dispatch,
+  );
+}
+
+export function createTaskAction(dispatch, { data, projectId }) {
+  return safeAction(
+    () => api.postTask(data),
+    () => updateProjectTasks(dispatch, projectId),
+    dispatch,
+  );
+}
+
+export function getLastTimeAction(dispatch) {
+  return safeAction(
+    api.getLts,
+    json => dispatch({ type: LAST_TIMES_LOADED, payload: json }),
+    dispatch,
+  );
+}
+
+export function editLastTimeAction(dispatch, { id, data }) {
+  return safeAction(
+    () => api.putLT(id, data),
+    () => {
+      getReminderAction(dispatch);
+      getLastTimeAction(dispatch);
+    },
+    dispatch,
+  );
+}
+
+export function addLastTimeAction(dispatch, data) {
+  return safeAction(
+    () => api.postLT(data),
+    () => {
+      getLastTimeAction(dispatch);
     },
     dispatch,
   );

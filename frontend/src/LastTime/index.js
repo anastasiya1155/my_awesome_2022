@@ -1,5 +1,5 @@
 import React from 'react';
-import { getLts, postLT, putLT } from '../shared/api/routes';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Divider,
   IconButton,
@@ -16,25 +16,20 @@ import BeenhereIcon from '@material-ui/icons/Beenhere';
 import moment from 'moment';
 import AddIcon from '@material-ui/icons/Add';
 import AddLastTime from './AddLastTime';
+import { addLastTimeAction, editLastTimeAction, getLastTimeAction } from '../shared/api/handlers';
 
 const LastTime = () => {
-  const [items, setItems] = React.useState([]);
   const [isAdd, setIsAdd] = React.useState(false);
   const [isEdit, setIsEdit] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [itemToUpdate, setItemToUpdate] = React.useState(null);
   const [itemToEdit, setItemToEdit] = React.useState(null);
   const [updateDate, setUpdateDate] = React.useState(moment().format('YYYY-MM-DDTHH:mm'));
+  const dispatch = useDispatch();
+  const items = useSelector(state => state.lastTime.lastTimes);
 
-  const fetchLastTimeItems = () => {
-    getLts().then(response => {
-      if (response.data) {
-        setItems(response.data);
-      }
-    });
-  };
   React.useEffect(() => {
-    fetchLastTimeItems();
+    getLastTimeAction(dispatch);
   }, []);
 
   const handleListItemClick = (e, item) => {
@@ -44,30 +39,23 @@ const LastTime = () => {
   };
 
   const handleUpdate = () => {
-    putLT(itemToUpdate.id, { ...itemToUpdate, date: moment(updateDate) }).then(() => {
+    editLastTimeAction(dispatch, {
+      id: itemToUpdate.id,
+      data: { ...itemToUpdate, date: moment(updateDate) },
+    }).then(() => {
       setItemToUpdate(null);
       setAnchorEl(null);
-      fetchLastTimeItems();
     });
   };
 
   const handleSubmit = values => {
-    if (isAdd) {
-      return postLT(values)
-        .then(() => {
-          fetchLastTimeItems();
-          setIsAdd(false);
-        })
-        .catch(console.log);
-    } else {
-      return putLT(itemToEdit.id, values)
-        .then(() => {
-          fetchLastTimeItems();
-          setIsEdit(false);
-          setItemToEdit(null);
-        })
-        .catch(console.log);
-    }
+    const action = isAdd
+      ? () => addLastTimeAction(dispatch, values)
+      : () => editLastTimeAction(dispatch, { id: itemToEdit.id, data: values });
+    action().then(() => {
+      setIsEdit(false);
+      setItemToEdit(null);
+    });
   };
 
   const handleClose = () => {

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import { ListItem, Menu } from '@material-ui/core';
@@ -8,294 +8,166 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { editTask, getProject, getTasks, postTask, deleteTask } from '../shared/api/routes';
 import Divider from '@material-ui/core/Divider';
-import Modal from '@material-ui/core/Modal';
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-  },
-  paper: {
-    position: 'relative',
-    padding: theme.spacing(2),
-    textAlign: 'left',
-    color: theme.palette.text.secondary,
-    wordBreak: 'break-word',
-    '@media screen and (min-width: 600px) and (max-width: 700px)': {
-      padding: theme.spacing(1),
-    },
-  },
-  inputContainer: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-  },
-  moreIcon: {
-    padding: theme.spacing(0.5),
-    position: 'absolute',
-    bottom: 8,
-    right: 0,
-    '@media screen and (min-width: 600px) and (max-width: 700px)': {
-      bottom: 2,
-    },
-  },
-  taskText: {
-    marginRight: 20,
-  },
-  modalPaper: {
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
+import {
+  createTaskAction,
+  deleteTaskAction,
+  editTaskAction,
+  getProjectAction,
+} from '../shared/api/handlers';
+import useStyles from './useStyles';
+import AddTIL from './AddTIL';
 
-    position: 'absolute',
-    width: 400,
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
-});
+const Project = ({ match }) => {
+  const [menuAnchorElement, setMenuAnchorElement] = React.useState(null);
+  const [pressedTask, setPressedTask] = React.useState(null);
+  const [newTaskName, setNewTaskName] = React.useState('');
+  const [taskForModal, setTaskForModal] = React.useState(null);
+  const project = useSelector(state => state.projects.projects[match.params.id] || {});
+  const tasks = useSelector(state => state.projects.tasksByStatus[match.params.id] || []);
+  const dispatch = useDispatch();
 
-class Project extends Component {
-  state = {
-    project: {},
-    tasks: {
-      incoming: [],
-      todo: [],
-      in_progress: [],
-      done: [],
-    },
-    menuAnchorElement: undefined,
-    pressedTask: null,
-    newTaskName: '',
-    tilModalOpen: false,
-    taskForModal: {
-      id: 0,
-      body: '',
-      outcome: '',
-      today_i_learned: false,
-    },
+  const classes = useStyles();
+
+  React.useEffect(() => {
+    getProjectAction(dispatch, match.params.id);
+  }, []);
+
+  const handleMenuClose = () => {
+    setPressedTask(null);
+    setMenuAnchorElement(null);
   };
 
-  componentDidMount() {
-    this.fetchData();
-  }
-
-  fetchData = () => {
-    const { id } = this.props.match.params;
-    getProject(id)
-      .then(response => {
-        const project = response.data;
-
-        this.setState({ project: project });
-      })
-      .catch(error => console.log(error));
-
-    getTasks(id)
-      .then(response => {
-        const tasks = {
-          incoming: [],
-          todo: [],
-          in_progress: [],
-          done: [],
-        };
-        response.data.forEach(task => {
-          tasks[task.status].push({
-            id: task.id,
-            body: task.body,
-            status: task.status,
-            created_at: task.created_at,
-            priority: task.priority,
-            outcome: task.outcome,
-          });
-        });
-
-        this.setState({ tasks: tasks });
-      })
-      .catch(error => console.log(error));
+  const handleMoreClick = (task, element) => {
+    setPressedTask(task);
+    setMenuAnchorElement(element);
   };
 
-  handleMenuClose() {
-    this.setState({ pressedTask: undefined, menuAnchorElement: undefined });
-  }
-
-  handleMoreClick(task, element) {
-    this.setState({ pressedTask: task, menuAnchorElement: element });
-  }
-
-  handleStatusChange(task, status) {
-    this.handleMenuClose();
-    editTask(task.id, { status: status }).then(response => {
-      this.fetchData();
-    });
-  }
-
-  handleArchive(task) {
-    this.handleMenuClose();
-    editTask(task.id, { archived: true }).then(response => {
-      this.fetchData();
-    });
-  }
-
-  handleDelete(task) {
-    this.handleMenuClose();
-    deleteTask(task.id).then(response => {
-      this.fetchData();
-    });
-  }
-  handleChangePriority(task, increment) {
-    this.handleMenuClose();
-    editTask(task.id, { priority: task.priority + increment }).then(response => {
-      this.fetchData();
-    });
-  }
-
-  handleOpenTILModal = task => {
-    this.handleMenuClose();
-    this.setState({ tilModalOpen: true, taskForModal: task });
+  const handleStatusChange = (task, status) => {
+    handleMenuClose();
+    editTaskAction(dispatch, { id: task.id, data: { status: status }, projectId: match.params.id });
   };
 
-  handleCloseTILModal = () => {
-    this.setState({
-      tilModalOpen: false,
-      taskForModal: { id: 0, body: '', description: '', today_i_learned: false },
+  const handleArchive = task => {
+    handleMenuClose();
+    editTaskAction(dispatch, { id: task.id, data: { archived: true }, projectId: match.params.id });
+  };
+
+  const handleDelete = task => {
+    handleMenuClose();
+    deleteTaskAction(dispatch, { id: task.id, projectId: match.params.id });
+  };
+
+  const handleChangePriority = (task, increment) => {
+    handleMenuClose();
+    editTaskAction(dispatch, {
+      id: task.id,
+      data: { priority: task.priority + increment },
+      projectId: match.params.id,
     });
   };
 
-  handleChangeTILModalDescription = e => {
-    this.setState({ taskForModal: { ...this.state.taskForModal, outcome: e.target.value } });
+  const handleOpenTILModal = task => {
+    handleMenuClose();
+    setTaskForModal(task);
   };
 
-  submitTIL = () => {
-    this.setState({ tilModalOpen: false });
-
-    editTask(this.state.taskForModal.id, {
-      outcome: this.state.taskForModal.outcome,
-      today_i_learned: true,
-    }).then(response => {});
+  const handleCloseTILModal = () => {
+    setTaskForModal(null);
   };
 
-  render() {
-    const { classes, match } = this.props;
-    const body = (
-      <div className={classes.modalPaper}>
-        <h2 id="simple-modal-title">{this.state.taskForModal.body}</h2>
-        <TextField
-          multiline
-          name="description"
-          fullWidth
-          label="Description"
-          value={this.state.taskForModal.outcome}
-          onChange={this.handleChangeTILModalDescription}
-        />
-        <Button onClick={this.submitTIL}>Submit</Button>
+  return (
+    <div className={classes.root}>
+      <div>
+        <Typography variant="h4"> {project.title} </Typography>
+        <Typography variant="subtitle2"> {project.description} </Typography>
       </div>
-    );
-
-    return (
-      <div className={classes.root}>
-        <div>
-          <Typography variant="h4"> {this.state.project.title} </Typography>
-          <Typography variant="subtitle2"> {this.state.project.description} </Typography>
-        </div>
-        <Grid container className={classes.inputContainer} spacing={1}>
-          <Grid item>
-            <TextField
-              name="time"
-              type="text"
-              value={this.state.newTaskName}
-              onChange={e => {
-                this.setState({ newTaskName: e.target.value });
-              }}
-            />
-          </Grid>
-          <Grid item>
-            <Button
-              variant="contained"
-              color="primary"
-              size="small"
-              onClick={e => {
-                postTask({
-                  body: this.state.newTaskName,
+      <Grid container className={classes.inputContainer} spacing={1}>
+        <Grid item>
+          <TextField
+            name="time"
+            type="text"
+            value={newTaskName}
+            onChange={e => {
+              setNewTaskName(e.target.value);
+            }}
+          />
+        </Grid>
+        <Grid item>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() => {
+              createTaskAction(dispatch, {
+                data: {
+                  body: newTaskName,
                   project_id: parseInt(match.params.id),
                   status: 'incoming',
-                }).then(() => {
-                  this.setState({ newTaskName: '' });
-                  this.fetchData();
-                });
-              }}
-            >
-              add
-            </Button>
-          </Grid>
+                },
+                projectId: match.params.id,
+              }).then(() => {
+                setNewTaskName('');
+              });
+            }}
+          >
+            add
+          </Button>
         </Grid>
+      </Grid>
 
-        <Grid item xs={12} container spacing={1}>
-          {Object.keys(this.state.tasks).map(key => (
-            <Grid item sm={3} xs={12} container direction="column" spacing={1} key={key}>
-              <Grid item>
+      <Grid item xs={12} container spacing={1}>
+        {Object.keys(tasks).map(key => (
+          <Grid item sm={3} xs={12} container direction="column" spacing={1} key={key}>
+            <Grid item>
+              <Paper className={classes.paper}>
+                <Typography color="primary"> {key} </Typography>
+              </Paper>
+            </Grid>
+            {tasks[key].map(task => (
+              <Grid item key={task.id}>
                 <Paper className={classes.paper}>
-                  <Typography color="primary"> {key} </Typography>
+                  <Typography className={classes.taskText}>{task.body}</Typography>
+                  <IconButton
+                    onClick={event => handleMoreClick(task, event.currentTarget)}
+                    className={classes.moreIcon}
+                  >
+                    <MoreVertIcon />
+                  </IconButton>
                 </Paper>
               </Grid>
-              {this.state.tasks[key].map(task => (
-                <Grid item key={task.id}>
-                  <Paper className={classes.paper}>
-                    <Typography className={classes.taskText}>{task.body}</Typography>
-                    <IconButton
-                      onClick={event => this.handleMoreClick(task, event.currentTarget)}
-                      className={classes.moreIcon}
-                    >
-                      <MoreVertIcon />
-                    </IconButton>
-                  </Paper>
-                </Grid>
-              ))}
-            </Grid>
-          ))}
-        </Grid>
-        <Menu
-          anchorEl={this.state.menuAnchorElement}
-          open={Boolean(this.state.menuAnchorElement)}
-          onClose={this.handleMenuClose.bind(this)}
-        >
-          <ListItem onClick={e => this.handleOpenTILModal(this.state.pressedTask)}>
-            Today I learned
-          </ListItem>
-          <Divider />
-          <ListItem onClick={e => this.handleChangePriority(this.state.pressedTask, 1)}>
-            Up priority
-          </ListItem>
-          <ListItem onClick={e => this.handleChangePriority(this.state.pressedTask, -1)}>
-            Down priority
-          </ListItem>
-          <Divider />
-          <ListItem onClick={e => this.handleStatusChange(this.state.pressedTask, 'incoming')}>
-            Incoming
-          </ListItem>
-          <ListItem onClick={e => this.handleStatusChange(this.state.pressedTask, 'todo')}>
-            Todo
-          </ListItem>
-          <ListItem onClick={e => this.handleStatusChange(this.state.pressedTask, 'in_progress')}>
-            InProgress
-          </ListItem>
-          <ListItem onClick={e => this.handleStatusChange(this.state.pressedTask, 'done')}>
-            Done
-          </ListItem>
-          <Divider />
-          <ListItem onClick={e => this.handleArchive(this.state.pressedTask)}>Archive</ListItem>
-          <ListItem onClick={e => this.handleDelete(this.state.pressedTask)}>Delete</ListItem>
-        </Menu>
-        <Modal
-          open={Boolean(this.state.tilModalOpen)}
-          onClose={this.handleCloseTILModal}
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
-        >
-          {body}
-        </Modal>
-      </div>
-    );
-  }
-}
+            ))}
+          </Grid>
+        ))}
+      </Grid>
+      <Menu
+        anchorEl={menuAnchorElement}
+        open={Boolean(menuAnchorElement)}
+        onClose={handleMenuClose.bind(this)}
+      >
+        <ListItem onClick={() => handleOpenTILModal(pressedTask)}>Today I learned</ListItem>
+        <Divider />
+        <ListItem onClick={() => handleChangePriority(pressedTask, 1)}>Up priority</ListItem>
+        <ListItem onClick={() => handleChangePriority(pressedTask, -1)}>Down priority</ListItem>
+        <Divider />
+        <ListItem onClick={() => handleStatusChange(pressedTask, 'incoming')}>Incoming</ListItem>
+        <ListItem onClick={() => handleStatusChange(pressedTask, 'todo')}>Todo</ListItem>
+        <ListItem onClick={() => handleStatusChange(pressedTask, 'in_progress')}>
+          InProgress
+        </ListItem>
+        <ListItem onClick={() => handleStatusChange(pressedTask, 'done')}>Done</ListItem>
+        <Divider />
+        <ListItem onClick={() => handleArchive(pressedTask)}>Archive</ListItem>
+        <ListItem onClick={() => handleDelete(pressedTask)}>Delete</ListItem>
+      </Menu>
+      <AddTIL
+        isOpen={Boolean(taskForModal)}
+        handleClose={handleCloseTILModal}
+        task={taskForModal}
+        projectId={match.params.id}
+      />
+    </div>
+  );
+};
 
-export default withStyles(styles)(Project);
+export default Project;

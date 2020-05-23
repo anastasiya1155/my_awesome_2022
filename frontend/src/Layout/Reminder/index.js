@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import { Badge, Grid, Hidden } from '@material-ui/core';
 import { Notifications } from '@material-ui/icons';
 
-const Reminder = ({ reminder, history }) => {
+const Reminder = ({ history }) => {
+  const reminder = useSelector(state => state.lastTime.reminder);
+
   return reminder.length > 0 ? (
     <>
       <Hidden smUp>

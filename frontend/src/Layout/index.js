@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Menu, ChevronLeft, ExitToApp } from '@material-ui/icons';
 import {
@@ -15,40 +15,25 @@ import {
   Drawer,
 } from '@material-ui/core';
 import useStyles from './useStyles';
-import { getExpiredLts, getInProgress } from '../shared/api/routes';
 import { clearStorage } from '../shared/utils/storage';
 import LayoutToolbar from './LayoutToolbar';
 import TasksInProgress from './TasksInProgress';
 import Reminder from './Reminder';
+import { getInProgressAction, getReminderAction } from '../shared/api/handlers';
 
 const Layout = ({ children }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
-  const [inProgress, setInProgress] = React.useState([]);
-  const [reminder, setReminder] = React.useState([]);
-
   const error = useSelector(state => state.root.error);
+  const dispatch = useDispatch();
 
   const history = useHistory();
 
   useEffect(() => {
-    async function fetchData() {
-      const result = await getInProgress();
-      const reminder = await getExpiredLts();
-      setInProgress(result.data);
-      setReminder(reminder.data);
-    }
-    fetchData();
+    getInProgressAction(dispatch);
+    getReminderAction(dispatch);
   }, []);
-
-  function handleDrawerOpen() {
-    setOpen(true);
-  }
-
-  function handleDrawerClose() {
-    setOpen(false);
-  }
 
   const handleLogout = () => {
     clearStorage();
@@ -62,14 +47,14 @@ const Layout = ({ children }) => {
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            onClick={handleDrawerOpen}
+            onClick={() => setOpen(true)}
             edge="start"
             className={`${classes.menuButton} ${open ? classes.hide : ''}`}
           >
             <Menu />
           </IconButton>
-          <TasksInProgress inProgress={inProgress} />
-          <Reminder reminder={reminder} history={history} />
+          <TasksInProgress />
+          <Reminder history={history} />
         </Toolbar>
       </AppBar>
       <Drawer
@@ -81,7 +66,7 @@ const Layout = ({ children }) => {
         open={open}
       >
         <div className={classes.toolbar}>
-          <IconButton onClick={handleDrawerClose}>
+          <IconButton onClick={() => setOpen(false)}>
             <ChevronLeft />
           </IconButton>
         </div>
