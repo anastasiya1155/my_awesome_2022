@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import post from './postReducer';
 import projects from './projectsReducer';
 import lastTime from './lastTimeReducer';
+import transactions from './transactionsReducer';
 
 export const SET_ERROR = '@root/SET_ERROR';
 
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   post,
   projects,
   lastTime,
+  transactions,
 });
 
 export default rootReducer;

@@ -8,6 +8,7 @@ import {
 } from '../redux/postReducer';
 import { LAST_TIMES_LOADED, REMINDER_LOADED } from '../redux/lastTimeReducer';
 import { IN_PROGRESS_LOADED, PROJECT_LOADED, TASKS_LOADED } from '../redux/projectsReducer';
+import { TRANS_CATEGORIES_LOADED } from '../redux/transactionsReducer';
 
 const safeAction = (action, callback, dispatch) => {
   return action()
@@ -266,6 +267,24 @@ export function addLastTimeAction(dispatch, data) {
     () => api.postLT(data),
     () => {
       getLastTimeAction(dispatch);
+    },
+    dispatch,
+  );
+}
+
+export function getTransCategoriesAction(dispatch) {
+  return safeAction(
+    api.getTransactionsCategories,
+    json => dispatch({ type: TRANS_CATEGORIES_LOADED, payload: json }),
+    dispatch,
+  );
+}
+
+export function addTransCategoryAction(dispatch, data) {
+  return safeAction(
+    () => api.postTransactionsCategories(data),
+    () => {
+      getTransCategoriesAction(dispatch);
     },
     dispatch,
   );

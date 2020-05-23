@@ -110,7 +110,7 @@ const LastTime = () => {
               <ListItemIcon aria-describedby={id} onClick={e => handleListItemClick(e, item)}>
                 <BeenhereIcon
                   color={
-                    moment().diff(moment(item.date), 'days') > item.remind_after_days
+                    moment().diff(moment(item.date), 'days') >= item.remind_after_days
                       ? 'error'
                       : 'default'
                   }
