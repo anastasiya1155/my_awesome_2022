@@ -5,9 +5,16 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { createPostAction } from '../../../shared/api/handlers';
 
+const today = moment().format('YYYY-MM-DD');
+const yesterday = moment()
+  .subtract(1, 'days')
+  .format('YYYY-MM-DD');
+
 const PostCreate = () => {
   const [value, setValue] = React.useState('');
-  const [date, setDate] = React.useState(moment().format('YYYY-MM-DD'));
+  const [date, setDate] = React.useState(
+    process.env.REACT_APP_USER_ID === 'Anastasiia' ? yesterday : today,
+  );
   const dispatch = useDispatch();
 
   const handleText = e => {
@@ -36,7 +43,14 @@ const PostCreate = () => {
         value={value}
         onChange={handleText}
       />
-      <TextField type="date" value={date} onChange={handleDate} />
+      <Button
+        style={{ marginRight: 15 }}
+        onClick={() => handleDate({ target: { value: yesterday } })}
+      >
+        Yesterday
+      </Button>
+      <TextField style={{ marginRight: 15 }} type="date" value={date} onChange={handleDate} />
+      <Button onClick={() => handleDate({ target: { value: today } })}>Today</Button>
       <Button fullWidth variant="contained" color="primary" onClick={handleSubmit}>
         Send
       </Button>
