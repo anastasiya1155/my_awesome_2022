@@ -49,6 +49,18 @@ class TransactionsCreate extends Component {
     return (
       <form>
         <Grid container spacing={3}>
+          <Grid item xs={12} container justify="space-between">
+            {[31, 34, 11, 12, 52, 22, 14].map(id => (
+              <Grid item>
+                <Button
+                  variant="outlined"
+                  onClick={() => this.handleCategory({ target: { value: id } })}
+                >
+                  {CATEGORIES[id].name}
+                </Button>
+              </Grid>
+            ))}
+          </Grid>
           <Grid item xs={12}>
             <FormGroup>
               <Select
@@ -72,7 +84,12 @@ class TransactionsCreate extends Component {
           </Grid>
           <Grid item xs={12}>
             <FormGroup>
-              <TextField type="number" value={this.state.amount} onChange={this.handleAmount} />
+              <TextField
+                type="number"
+                label="Amount"
+                value={this.state.amount}
+                onChange={this.handleAmount}
+              />
             </FormGroup>
           </Grid>
           <Grid item xs={12}>
@@ -87,7 +104,7 @@ class TransactionsCreate extends Component {
           </Grid>
           <Grid item xs={12}>
             <FormGroup>
-              <Button variant="outlined" onClick={this.submitTransaction}>
+              <Button variant="contained" onClick={this.submitTransaction}>
                 Submit
               </Button>
             </FormGroup>
