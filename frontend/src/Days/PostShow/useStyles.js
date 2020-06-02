@@ -73,6 +73,9 @@ const styles = makeStyles(theme => ({
   deleteBtn: {
     width: '40%',
   },
+  highlight: {
+    backgroundColor: theme.palette.secondary.dark,
+  },
 }));
 
 export default styles;

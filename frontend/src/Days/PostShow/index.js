@@ -11,7 +11,7 @@ import PostCommentEdit from './PostCommentEdit';
 import useStyles from './useStyles';
 import { deletePostAction, togglePostLabelAction } from '../../shared/api/handlers';
 
-const PostShow = ({ post, labels }) => {
+const PostShow = ({ post, labels, searchTerm }) => {
   const [deleteMode, setDeletedMode] = React.useState(false);
   const [isCommentOpen, setCommentOpen] = React.useState(false);
   const [isEdit, setIsEdit] = React.useState(false);
@@ -28,6 +28,23 @@ const PostShow = ({ post, labels }) => {
 
   const handleLabelClick = (isActive, labelId) => {
     togglePostLabelAction(dispatch, { postId: post.id, labelId, isActive });
+  };
+
+  const getHighlightedText = (text, highlight) => {
+    const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
+    return (
+      <span>
+        {' '}
+        {parts.map((part, i) => (
+          <span
+            key={i}
+            className={part.toLowerCase() === highlight.toLowerCase() ? classes.highlight : ''}
+          >
+            {part}
+          </span>
+        ))}{' '}
+      </span>
+    );
   };
 
   return (
@@ -80,7 +97,7 @@ const PostShow = ({ post, labels }) => {
             <p>
               {post.body.split('\n').map((item, key) => (
                 <Fragment key={key}>
-                  {item}
+                  {searchTerm ? getHighlightedText(item, searchTerm) : item}
                   <br />
                 </Fragment>
               ))}

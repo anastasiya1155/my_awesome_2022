@@ -33,7 +33,7 @@ const Search = ({ labels }) => {
         </form>
       </Grid>
       <Grid item>
-        <PostList labels={labels} posts={posts} />
+        <PostList labels={labels} searchResultPosts={posts} searchTerm={searchQuery} />
       </Grid>
     </Grid>
   );

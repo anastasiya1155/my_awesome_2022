@@ -14,9 +14,9 @@ const Tabs = ({ value, onChange, tabs }) => {
       textColor="primary"
       variant={isMobile ? (tabs.length > 3 ? 'scrollable' : 'fullWidth') : 'standard'}
     >
-      {tabs.map(t => (
+      {tabs.map((t, i) => (
         <Tab
-          key={t.label}
+          key={t.label || i}
           label={isMobile ? t.mobile.label : t.label}
           icon={isMobile ? t.mobile.icon : t.icon}
           onClick={t.onClick}

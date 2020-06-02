@@ -10,9 +10,9 @@ const apiPostRequest = (url, data, config) => axios.post(url, data, config);
 const apiPutRequest = (url, data, config) => axios.put(url, data, config);
 const apiDeleteRequest = (url, config) => axios.delete(url, config);
 
-const authConfig = {
+const authConfig = () => ({
   headers: { authorization: getItemFromStorage(TOKEN_KEY) },
-};
+});
 
 const redirectUnauth = err => {
   if (err.message === 'Request failed with status code 401') {
@@ -23,13 +23,13 @@ const redirectUnauth = err => {
 };
 
 const apiLocalGetRequest = url =>
-  apiGetRequest(`${LOCAL}/api/${url}`, authConfig).catch(redirectUnauth);
+  apiGetRequest(`${LOCAL}/api/${url}`, authConfig()).catch(redirectUnauth);
 const apiLocalPostRequest = (url, data) =>
-  apiPostRequest(`${LOCAL}/api/${url}`, data, authConfig).catch(redirectUnauth);
+  apiPostRequest(`${LOCAL}/api/${url}`, data, authConfig()).catch(redirectUnauth);
 const apiLocalPutRequest = (url, data) =>
-  apiPutRequest(`${LOCAL}/api/${url}`, data, authConfig).catch(redirectUnauth);
+  apiPutRequest(`${LOCAL}/api/${url}`, data, authConfig()).catch(redirectUnauth);
 const apiLocalDeleteRequest = url =>
-  apiDeleteRequest(`${LOCAL}/api/${url}`, authConfig).catch(redirectUnauth);
+  apiDeleteRequest(`${LOCAL}/api/${url}`, authConfig()).catch(redirectUnauth);
 
 // FIREBASE TRANSACTION
 export const getTransactionsByMonthAndYear = (year, month) =>
