@@ -42,8 +42,10 @@ func GetPosts(c *gin.Context) {
 		return
 	}
 	tochedPosts := make(map[int]models.Post)
+	var tochedPostsIds []int
 
 	for _, p := range modelPosts {
+		tochedPostsIds = append(tochedPostsIds, p.ID)
 		tochedPosts[p.ID] = p
 	}
 
@@ -52,9 +54,9 @@ func GetPosts(c *gin.Context) {
 	if err := db.
 		Select("posts.id as id, periods.id as period_id,periods.name as period_name").
 		Where("posts.user_id = ? ", middleware.UserInstance(c).ID).
+		Where("posts.id in (?)", tochedPostsIds).
 		Joins("LEFT JOIN periods ON posts.date BETWEEN periods.start AND IFNULL(periods.end, NOW())").
 		Order("date DESC").
-		Limit(25).
 		Find(&periodPosts).Error; err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return

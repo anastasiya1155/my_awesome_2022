@@ -1,0 +1,44 @@
+Last 25 (getPosts)
+
+DB queries BEFORE
+ SELECT * FROM `user` WHERE (email = 'solopvova@gmail.com') ORDER BY `user`.`id` ASC LIMIT 1
+[1 rows affected or returned ]
+
+(/Users/mac/go/src/github.com/vova/pa2020/backend/controllers/post.go:40)
+[2020-07-06 11:06:49]  [3.92ms]  SELECT * FROM `posts`  WHERE (user_id = 1) ORDER BY date DESC LIMIT 25
+[25 rows affected or returned ]
+
+(/Users/mac/go/src/github.com/vova/pa2020/backend/controllers/post.go:40)
+[2020-07-06 11:06:49]  [10.25ms]  SELECT * FROM `comments`
+WHERE (`post_id` IN (2935,2917,2938,2939,2936,2929,2928,2927,2921,2943,2934,2930,2922,2920,2944,2932,2923,2933,2931,2926,2924,2919,2941,2942,2937))
+[0 rows affected or returned ]
+
+(/Users/mac/go/src/github.com/vova/pa2020/backend/controllers/post.go:40)
+[2020-07-06 11:06:49]  [5.59ms]  SELECT * FROM `labels` INNER JOIN `posts_labels` ON `posts_labels`.`label_id` = `labels`.`id`
+WHERE (`posts_labels`.`post_id` IN (2944,2938,2942,2936,2931,2921,2917,2943,2937,2929,2928,2923,2919,2920,2934,2935,2930,2927,2924,2941,2939,2933,2932,2926,2922))
+[0 rows affected or returned ]
+
+(/Users/mac/go/src/github.com/vova/pa2020/backend/controllers/post.go:58)
+[2020-07-06 11:06:49]  [24.95ms]
+SELECT posts.id as id, periods.id as period_id,periods.name as period_name FROM `posts` LEFT JOIN periods ON posts.date BETWEEN periods.start AND IFNULL(periods.end, NOW())
+WHERE (posts.user_id = 1 ) ORDER BY date DESC LIMIT 25
+[25 rows affected or returned ]
+[GIN] 2020/07/06 - 11:06:49 | 200 |   50.996541ms |             ::1 | GET      /api/posts
+
+
+AFTER
+
+
+(/Users/mac/go/src/github.com/vova/pa2020/backend/controllers/post.go:58)
+[2020-07-06 11:06:49]  [24.95ms]
+SELECT posts.id as id, periods.id as period_id,periods.name as period_name
+ FROM `posts`
+LEFT JOIN periods ON posts.date BETWEEN periods.start AND IFNULL(periods.end, NOW())
+WHERE (posts.user_id = 1 )
+AND `post_id` IN (2944,2938,2942,2936,2931,2921,2917,2943,2937,2929,2928,2923,2919,2920,2934,2935,2930,2927,2924,2941,2939,2933,2932,2926,2922))
+ORDER BY date DESC
+
+
+
+
+

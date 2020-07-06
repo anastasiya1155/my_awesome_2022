@@ -1,5 +1,12 @@
 # API Server
 
+LOCAL=1 PORT=8822 go run main.go
+
+для постмана спочатку логін
+потім реквести з токеном
+
+
+
 Simple Rest API using gin(framework) & gorm(orm)
 
 ## Endpoint list
