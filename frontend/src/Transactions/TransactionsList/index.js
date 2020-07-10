@@ -20,7 +20,6 @@ const tableColumns = [
   {
     title: 'Category',
     field: 'category',
-    render: row => (row.category ? row.category : row),
   },
   { title: 'Description', field: 'description' },
   { title: 'Date', field: 'date', render: row => moment(row.date).format('YYYY-MM-DD') },
