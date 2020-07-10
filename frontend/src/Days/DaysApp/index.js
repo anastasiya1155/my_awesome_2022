@@ -104,7 +104,7 @@ class DaysApp extends Component {
         <Grid item xs={12} container direction="column" spacing={2}>
           {this.state.posts.map(p => (
             <Grid item key={p.id}>
-              <PostShow post={{...p, labels: p.labels || []}} labels={this.state.labels} />
+              <PostShow post={{ ...p, labels: p.labels || [] }} labels={this.state.labels} />
             </Grid>
           ))}
         </Grid>

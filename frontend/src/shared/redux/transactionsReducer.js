@@ -1,4 +1,4 @@
-export const TRANS_CATEGORIES_LOADED = '@transactions/TRANS_CATEGORIES_LOADED'
+export const TRANS_CATEGORIES_LOADED = '@transactions/TRANS_CATEGORIES_LOADED';
 
 const initialState = {
   categories: [],

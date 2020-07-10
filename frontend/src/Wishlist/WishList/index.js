@@ -9,16 +9,22 @@ import {
   CardMedia,
   Grid,
   Dialog,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   root: {
     width: 400,
     '@media screen and (max-width: 500px)': {
       width: '100%',
     },
+  },
+  done: {
+    border: `3px dotted ${theme.palette.secondary.main}`,
   },
   media: {
     height: 170,
@@ -27,55 +33,80 @@ const useStyles = makeStyles({
     maxWidth: '90vw',
     maxHeight: '90vh',
   },
-});
+}));
 
 const WishList = ({ wishes, editWish, removeWish, openEditPopup }) => {
   const [showImg, setShowImg] = React.useState(null);
+  const [shouldHideDone, setHideDone] = React.useState(true);
+  const [wishesToShow, setWishesToShow] = React.useState([]);
   const classes = useStyles();
 
+  React.useEffect(() => {
+    if (wishes) {
+      if (shouldHideDone) {
+        setWishesToShow(wishes.filter(w => !w.isDone));
+      } else {
+        setWishesToShow(wishes);
+      }
+    }
+  }, [wishes, shouldHideDone]);
+
   return (
-    <Grid container spacing={2}>
-      {wishes.map(w => {
-        const isMine = w.userId === process.env.REACT_APP_USER_ID;
-        return (
-          <Grid key={w.id} item className={classes.root}>
-            <Card raised={isMine}>
-              <CardMedia
-                image={w.picture}
-                title={w.name}
-                className={classes.media}
-                onClick={() => setShowImg(w.picture)}
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="h2">
-                  {w.name}
-                </Typography>
-                <Typography variant="body2" gutterBottom>
-                  {w.priceFrom} - {w.priceTo} грн.
-                </Typography>
-                <Typography variant="caption">
-                  {moment(w.createdAt).format('DD-MM-YYYY')}
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button onClick={() => openEditPopup(w)} disabled={!isMine}>
-                  Edit
-                </Button>
-                <Button onClick={() => editWish(w.id, { ...w, isDone: true })} disabled={!isMine}>
-                  Done
-                </Button>
-                <Button onClick={() => removeWish(w.id)} disabled={!isMine}>
-                  Delete
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        );
-      })}
-      <Dialog open={!!showImg} onClose={() => setShowImg(null)}>
-        <img src={showImg} className={classes.fullImg} alt="wish" />
-      </Dialog>
-    </Grid>
+    <div>
+      <FormControl>
+        <FormControlLabel
+          control={
+            <Checkbox checked={shouldHideDone} onChange={e => setHideDone(e.target.checked)} />
+          }
+          label="Hide done"
+        />
+      </FormControl>
+      <Grid container spacing={2}>
+        {wishesToShow.map(w => {
+          const isMine = w.userId === process.env.REACT_APP_USER_ID;
+          return (
+            <Grid key={w.id} item className={classes.root}>
+              <Card raised={isMine} className={w.isDone ? classes.done : ''}>
+                <CardMedia
+                  image={w.picture}
+                  title={w.name}
+                  className={classes.media}
+                  onClick={() => setShowImg(w.picture)}
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="h2">
+                    {w.name}
+                  </Typography>
+                  <Typography variant="body2" gutterBottom>
+                    {w.priceFrom} - {w.priceTo} грн.
+                  </Typography>
+                  <Typography variant="caption">
+                    {moment(w.createdAt).format('DD-MM-YYYY')}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button onClick={() => openEditPopup(w)} disabled={!isMine}>
+                    Edit
+                  </Button>
+                  <Button
+                    onClick={() => editWish(w.id, { ...w, isDone: true })}
+                    disabled={!isMine || w.isDone}
+                  >
+                    Done
+                  </Button>
+                  <Button onClick={() => removeWish(w.id)} disabled={!isMine}>
+                    Delete
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+          );
+        })}
+        <Dialog open={!!showImg} onClose={() => setShowImg(null)}>
+          <img src={showImg} className={classes.fullImg} alt="wish" />
+        </Dialog>
+      </Grid>
+    </div>
   );
 };
 
