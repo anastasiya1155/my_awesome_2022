@@ -41,61 +41,65 @@ const RegistrationPage = ({ history }) => {
     <Grid container justify="center" alignItems="center" className={classes.container}>
       <ErrorSnackbar handleClose={handleClose} error={error} />
       <Grid item container direction="column" spacing={2} className={classes.form}>
-        <Grid item>
-          <TextField
-            label="Email"
-            fullWidth
-            name="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-          />
-        </Grid>
-        <Grid item>
-          <TextField
-            label="Password"
-            type={visible ? 'text' : 'password'}
-            fullWidth
-            name="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end" className={classes.icon}>
-                  {visible ? (
-                    <NotVisibleIcon onClick={() => setVisible(false)} />
-                  ) : (
-                    <VisibleIcon onClick={() => setVisible(true)} />
-                  )}
-                </InputAdornment>
-              ),
-            }}
-          />
-        </Grid>
-        <Grid item>
-          <TextField
-            label="Confirm Password"
-            type={visible2 ? 'text' : 'password'}
-            fullWidth
-            name="confirmPassword"
-            value={confirmPassword}
-            onChange={e => setConfirmPassword(e.target.value)}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end" className={classes.icon}>
-                  {visible2 ? (
-                    <NotVisibleIcon onClick={() => setVisible2(false)} />
-                  ) : (
-                    <VisibleIcon onClick={() => setVisible2(true)} />
-                  )}
-                </InputAdornment>
-              ),
-            }}
-          />
-        </Grid>
-        <Grid item container justify="space-between" alignItems="center">
-          <Button onClick={handleSubmit}>Submit</Button>
-          <Link to="/login">Login</Link>
-        </Grid>
+        <form onSubmit={e => e.preventDefault()}>
+          <Grid item>
+            <TextField
+              label="Email"
+              fullWidth
+              name="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              label="Password"
+              type={visible ? 'text' : 'password'}
+              fullWidth
+              name="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end" className={classes.icon}>
+                    {visible ? (
+                      <NotVisibleIcon onClick={() => setVisible(false)} />
+                    ) : (
+                      <VisibleIcon onClick={() => setVisible(true)} />
+                    )}
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              label="Confirm Password"
+              type={visible2 ? 'text' : 'password'}
+              fullWidth
+              name="confirmPassword"
+              value={confirmPassword}
+              onChange={e => setConfirmPassword(e.target.value)}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end" className={classes.icon}>
+                    {visible2 ? (
+                      <NotVisibleIcon onClick={() => setVisible2(false)} />
+                    ) : (
+                      <VisibleIcon onClick={() => setVisible2(true)} />
+                    )}
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Grid>
+          <Grid item container justify="space-between" alignItems="center">
+            <Button type="submit" onClick={handleSubmit}>
+              Submit
+            </Button>
+            <Link to="/login">Login</Link>
+          </Grid>
+        </form>
       </Grid>
     </Grid>
   );

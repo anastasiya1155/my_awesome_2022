@@ -30,29 +30,33 @@ const LoginPage = ({ history }) => {
     <Grid container justify="center" alignItems="center" className={classes.container}>
       <ErrorSnackbar error={error} handleClose={handleClose} />
       <Grid item container direction="column" spacing={2} className={classes.form}>
-        <Grid item>
-          <TextField
-            label="Email"
-            fullWidth
-            name="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-          />
-        </Grid>
-        <Grid item>
-          <TextField
-            label="Password"
-            type="password"
-            fullWidth
-            name="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-          />
-        </Grid>
-        <Grid item container justify="space-between" alignItems="center">
-          <Button onClick={handleSubmit}>Submit</Button>
-          <Link to="/register">Register</Link>
-        </Grid>
+        <form onSubmit={e => e.preventDefault()}>
+          <Grid item>
+            <TextField
+              label="Email"
+              fullWidthx
+              name="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              label="Password"
+              type="password"
+              fullWidth
+              name="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+            />
+          </Grid>
+          <Grid item container justify="space-between" alignItems="center">
+            <Button type="submit" onClick={handleSubmit}>
+              Submit
+            </Button>
+            <Link to="/register">Register</Link>
+          </Grid>
+        </form>
       </Grid>
     </Grid>
   );
