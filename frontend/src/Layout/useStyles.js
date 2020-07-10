@@ -75,10 +75,6 @@ const useStyles = makeStyles(theme => ({
     left: 0,
     width: '100%',
   },
-  error: {
-    backgroundColor: theme.palette.error.main,
-    color: theme.palette.error.contrastText,
-  },
 }));
 
 export default useStyles;

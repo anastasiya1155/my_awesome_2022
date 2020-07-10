@@ -15,10 +15,6 @@ const useStyles = makeStyles(theme => ({
   form: {
     width: 300,
   },
-  error: {
-    backgroundColor: theme.palette.error.main,
-    color: theme.palette.error.contrastText,
-  },
 }));
 
 export default useStyles;

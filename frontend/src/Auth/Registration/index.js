@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import useStyles from '../useStyles';
 import { sendRegistration } from '../../shared/api/routes';
-import { Button, Grid, Snackbar, TextField } from '@material-ui/core';
+import { Button, Grid, TextField } from '@material-ui/core';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import VisibleIcon from '@material-ui/icons/VisibilityOutlined';
 import NotVisibleIcon from '@material-ui/icons/VisibilityOffOutlined';
 import { setItemToStorage, TOKEN_KEY } from '../../shared/utils/storage';
+import ErrorSnackbar from '../../shared/components/ErrorSnackbar';
 
 const RegistrationPage = ({ history }) => {
   const [email, setEmail] = React.useState('');
@@ -38,14 +39,7 @@ const RegistrationPage = ({ history }) => {
 
   return (
     <Grid container justify="center" alignItems="center" className={classes.container}>
-      <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        open={!!error}
-        autoHideDuration={5000}
-        onClose={handleClose}
-        ContentProps={{ className: classes.error }}
-        message={error}
-      />
+      <ErrorSnackbar handleClose={handleClose} error={error} />
       <Grid item container direction="column" spacing={2} className={classes.form}>
         <Grid item>
           <TextField

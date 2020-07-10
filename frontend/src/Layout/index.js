@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Menu, ChevronLeft, ExitToApp } from '@material-ui/icons';
 import {
-  Snackbar,
   AppBar,
   IconButton,
   Toolbar,
@@ -20,6 +19,8 @@ import LayoutToolbar from './LayoutToolbar';
 import TasksInProgress from './TasksInProgress';
 import Reminder from './Reminder';
 import { getInProgressAction, getReminderAction } from '../shared/api/handlers';
+import ErrorSnackbar from '../shared/components/ErrorSnackbar';
+import { SET_ERROR } from '../shared/redux/rootReducer';
 
 const Layout = ({ children }) => {
   const classes = useStyles();
@@ -38,6 +39,10 @@ const Layout = ({ children }) => {
   const handleLogout = () => {
     clearStorage();
     history.push('/login');
+  };
+
+  const handleClose = () => {
+    dispatch({ type: SET_ERROR, payload: '' });
   };
 
   return (
@@ -84,13 +89,7 @@ const Layout = ({ children }) => {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Snackbar
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-          open={!!error}
-          autoHideDuration={5000}
-          ContentProps={{ className: classes.error }}
-          message={error}
-        />
+        <ErrorSnackbar error={error} handleClose={handleClose} />
         <div>{children}</div>
       </main>
     </div>
