@@ -70,9 +70,14 @@ class TransactionsList extends Component {
     this.fetchData(thisMonth, thisYear);
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.categories !== this.props.categories) {
+      this.fetchData(thisMonth, thisYear);
+    }
+  }
+
   fetchData = (selectedMonth, selectedYear) => {
     const { categories } = this.props;
-    console.log(categories);
     const month = moment()
       .month(selectedMonth)
       .format('M');
