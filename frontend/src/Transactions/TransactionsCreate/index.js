@@ -1,4 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
+import moment from 'moment';
+import { useSelector } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
@@ -7,112 +9,92 @@ import FormGroup from '@material-ui/core/FormGroup';
 import Grid from '@material-ui/core/Grid';
 import { postTransactionsToMonthAndYear } from '../../shared/api/routes';
 
-import moment from 'moment';
-import { CATEGORIES } from '../../shared/config/const';
+const initialValues = { description: '', amount: '', category: 31 };
 
-class TransactionsCreate extends Component {
-  state = {
-    description: '',
-    amount: '',
-    category: 31,
+const TransactionsCreate = () => {
+  const [values, setValues] = React.useState(initialValues);
+  const categories = useSelector(state => state.transactions.categories);
+
+  const handleChange = e => {
+    setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-  handleCategory = e => {
-    this.setState({ category: e.target.value });
-  };
-
-  handleAmount = e => {
-    this.setState({ amount: e.target.value });
-  };
-
-  handleDescription = e => {
-    this.setState({ description: e.target.value });
-  };
-
-  submitTransaction = () => {
+  const submitTransaction = () => {
     const transaction = {
-      description: this.state.description,
-      amount: +this.state.amount,
-      category: this.state.category,
+      ...values,
+      amount: +values.amount,
       date: +new Date(),
     };
 
     const month = moment().month() + 1;
     postTransactionsToMonthAndYear(moment().year(), month, transaction)
       .then(() => {
-        this.setState({ description: '', amount: 1, category: 1 });
+        setValues(initialValues);
       })
-      .catch(error => console.log(error));
+      .catch(console.log);
   };
 
-  render() {
-    return (
-      <form>
-        <Grid container spacing={3}>
-          <Grid item xs={12} container justify="space-between">
-            {[31, 34, 11, 12, 52, 22, 14].map(id => (
-              <Grid item>
-                <Button
-                  variant="outlined"
-                  onClick={() => this.handleCategory({ target: { value: id } })}
-                >
-                  {CATEGORIES[id].name}
-                </Button>
-              </Grid>
-            ))}
-          </Grid>
-          <Grid item xs={12}>
-            <FormGroup>
-              <Select
-                value={this.state.category}
-                onChange={this.handleCategory}
-                inputProps={{
-                  name: 'age',
-                  id: 'age-simple',
-                }}
+  return (
+    <form onSubmit={e => e.preventDefault()}>
+      <Grid container spacing={3}>
+        <Grid item xs={12} container justify="space-between">
+          {[31, 34, 11, 12, 52, 22, 14].map(id => (
+            <Grid item>
+              <Button
+                variant="outlined"
+                onClick={() => handleChange({ target: { value: id, name: 'category' } })}
               >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                {Object.keys(CATEGORIES).map(c => (
-                  <MenuItem key={CATEGORIES[c].id} value={CATEGORIES[c].id}>
-                    {CATEGORIES[c].name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormGroup>
-          </Grid>
-          <Grid item xs={12}>
-            <FormGroup>
-              <TextField
-                type="number"
-                label="Amount"
-                value={this.state.amount}
-                onChange={this.handleAmount}
-              />
-            </FormGroup>
-          </Grid>
-          <Grid item xs={12}>
-            <FormGroup>
-              <TextField
-                type="text"
-                value={this.state.description}
-                onChange={this.handleDescription}
-                label="Comment"
-              />
-            </FormGroup>
-          </Grid>
-          <Grid item xs={12}>
-            <FormGroup>
-              <Button variant="contained" onClick={this.submitTransaction}>
-                Submit
+                {categories.find(c => c.id === id)?.name}
               </Button>
-            </FormGroup>
-          </Grid>
+            </Grid>
+          ))}
         </Grid>
-      </form>
-    );
-  }
-}
+        <Grid item xs={12}>
+          <FormGroup>
+            <Select value={values.category} onChange={handleChange} name="category">
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              {categories.map(c => (
+                <MenuItem key={c.id} value={c.id}>
+                  {c.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormGroup>
+        </Grid>
+        <Grid item xs={12}>
+          <FormGroup>
+            <TextField
+              type="number"
+              label="Amount"
+              name="amount"
+              value={values.amount}
+              onChange={handleChange}
+            />
+          </FormGroup>
+        </Grid>
+        <Grid item xs={12}>
+          <FormGroup>
+            <TextField
+              type="text"
+              value={values.description}
+              onChange={handleChange}
+              name="description"
+              label="Comment"
+            />
+          </FormGroup>
+        </Grid>
+        <Grid item xs={12}>
+          <FormGroup>
+            <Button type="submit" variant="contained" onClick={submitTransaction}>
+              Submit
+            </Button>
+          </FormGroup>
+        </Grid>
+      </Grid>
+    </form>
+  );
+};
 
 export default TransactionsCreate;

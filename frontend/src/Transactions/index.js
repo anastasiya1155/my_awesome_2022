@@ -1,6 +1,8 @@
 import React, { lazy, Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Tabs from '../shared/components/Tabs';
+import { getTransCategoriesAction } from '../shared/api/handlers';
+import { useDispatch } from 'react-redux';
 const TransactionsList = lazy(() =>
   import(/* webpackChunkName: "transactions-list" */ './TransactionsList'),
 );
@@ -23,6 +25,12 @@ const links = [
 
 function Transactions({ history, location }) {
   const [activeTab, setActiveTab] = React.useState(links.indexOf(location.pathname));
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    getTransCategoriesAction(dispatch);
+  }, []);
+
   return (
     <div>
       <Tabs

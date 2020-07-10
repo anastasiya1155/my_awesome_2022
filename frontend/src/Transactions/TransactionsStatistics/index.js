@@ -3,12 +3,13 @@ import { Chart } from 'react-google-charts';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { getTransactionsStatistics } from '../../shared/api/routes';
-import { CATEGORIES_ARRAY } from '../../shared/config/const';
+import { useSelector } from 'react-redux';
 
 const TransactionsStatistics = () => {
   const [selectedCategories, setSelectedCategories] = React.useState(['Продукты']);
   const [data, setData] = React.useState([]);
   const [chartData, setChartData] = React.useState([]);
+  const categories = useSelector(state => state.transactions.categories);
 
   const getChartData = (d, categories) => {
     const cD = [];
@@ -44,9 +45,9 @@ const TransactionsStatistics = () => {
         value={selectedCategories}
         onChange={handleSelect}
       >
-        {CATEGORIES_ARRAY.map(cat => (
-          <MenuItem key={cat} value={cat}>
-            {cat}
+        {categories.map(cat => (
+          <MenuItem key={cat.id} value={cat.name}>
+            {cat.name}
           </MenuItem>
         ))}
       </Select>
