@@ -8,15 +8,15 @@ const useStyles = makeStyles(() => ({
     width: 22,
     borderRadius: '50%',
     display: 'inline-block',
-    margin: '0 4px -6px',
+    margin: props => (props.noMargin ? '0' : '0 4px -6px'),
     backgroundColor: 'white',
     cursor: 'pointer',
     textAlign: 'center',
   },
 }));
 
-const PostLabel = ({ isActive, label, onClick }) => {
-  const classes = useStyles();
+const PostLabel = ({ isActive, label, onClick, noMargin }) => {
+  const classes = useStyles({ noMargin });
   return (
     <span
       className={classes.dot}
@@ -42,6 +42,7 @@ PostLabel.propTypes = {
   }),
   classes: PropTypes.object,
   onClick: PropTypes.func,
+  noMargin: PropTypes.bool,
 };
 
 export default PostLabel;

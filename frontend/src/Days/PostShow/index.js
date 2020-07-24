@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import Chip from '@material-ui/core/Chip';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import PostLabel from './PostLabel';
+import PostLabel from '../PostLabel';
 import PostEdit from './PostEdit';
 import PostComment from './PostComment';
 import PostCommentEdit from './PostCommentEdit';

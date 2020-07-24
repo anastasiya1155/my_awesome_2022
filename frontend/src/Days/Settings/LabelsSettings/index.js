@@ -4,7 +4,7 @@ import { TextField, Button, Grid, Typography, IconButton, Popover } from '@mater
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Close';
 import EditIcon from '@material-ui/icons/Edit';
-import PostLabel from '../../PostShow/PostLabel';
+import PostLabel from '../../PostLabel';
 import ColorPicker from '../../../shared/components/ColorPicker';
 import { addLabelAction, deleteLabelAction, editLabelAction } from '../../../shared/api/handlers';
 

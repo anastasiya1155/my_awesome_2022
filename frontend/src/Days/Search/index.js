@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Grid, TextField } from '@material-ui/core';
 import PostList from '../PostList';
 import { searchPosts } from '../../shared/api/routes';
+import { mapPost } from '../../shared/utils/mappers';
 
 const Search = ({ labels }) => {
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -11,14 +12,7 @@ const Search = ({ labels }) => {
     e.preventDefault();
     searchPosts(searchQuery)
       .then(response => {
-        const newPosts = response.data.map(c => ({
-          id: c.ID,
-          labels: c.Labels,
-          comments: c.Comments,
-          periods: c.Periods,
-          body: c.Body,
-          date: c.Date.slice(0, 10),
-        }));
+        const newPosts = response.data.map(mapPost);
 
         setPosts(newPosts);
       })

@@ -10,10 +10,10 @@ import {
   Paper,
 } from '@material-ui/core';
 
-const TransactionsTable = ({ columns, data }) => {
+const TransactionsTable = ({ columns, data, size }) => {
   return (
     <TableContainer component={Paper}>
-      <Table>
+      <Table size={size}>
         <TableHead>
           <TableRow>
             {columns.map(col => (
@@ -25,7 +25,7 @@ const TransactionsTable = ({ columns, data }) => {
           {data.map(row => (
             <TableRow key={row.id}>
               {columns.map(col => (
-                <TableCell>{col.render ? col.render(row) : row[col.field]}</TableCell>
+                <TableCell>{col.render ? col.render(row, col) : row[col.field]}</TableCell>
               ))}
             </TableRow>
           ))}
@@ -38,6 +38,7 @@ const TransactionsTable = ({ columns, data }) => {
 TransactionsTable.propTypes = {
   data: PropTypes.array,
   columns: PropTypes.array,
+  size: PropTypes.string,
 };
 
 export default TransactionsTable;

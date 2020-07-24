@@ -1,84 +1,58 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Grid, Select, MenuItem, FormControl, InputLabel } from '@material-ui/core';
 import PostShow from '../PostShow';
-import { getLabels, getMonth, getYears } from '../../shared/api/routes';
+import { getMonth, getYears } from '../../shared/api/routes';
+import Calendar from './Calendar';
+import useStyles from './useStyles';
+import { mapPost } from '../../shared/utils/mappers';
 
-class DaysApp extends Component {
-  state = {
-    years: [],
-    posts: [],
-    labels: [],
-    selectedMonth: '',
-    selectedYear: '',
-  };
+const DaysApp = ({ labels }) => {
+  const [years, setYears] = React.useState([]);
+  const [posts, setPosts] = React.useState([]);
+  const [selectedMonth, setSelectedMonth] = React.useState('');
+  const [selectedYear, setSelectedYear] = React.useState('');
+  const classes = useStyles();
 
-  componentDidMount() {
-    this.fetchYears();
-    this.fetchLabels();
-  }
+  React.useEffect(() => {
+    fetchYears();
+  }, []);
 
-  fetchLabels = () => {
-    getLabels()
-      .then(response => {
-        const labels = response.data.map(c => ({
-          id: c.ID,
-          name: c.Name,
-          color: c.Color,
-          colorActive: c.ColorActive,
-        }));
-
-        this.setState({ labels });
-      })
-      .catch(error => console.log(error));
-  };
-
-  fetchYears = () => {
+  const fetchYears = () => {
     getYears()
       .then(response => {
-        this.setState({ years: response.data });
+        setYears(response.data);
       })
-      .catch(error => console.log(error));
+      .catch(console.log);
   };
 
-  fetchmonth = ym => {
+  const fetchMonth = ym => {
     getMonth(ym)
       .then(response => {
-        const posts = response.data.map(c => ({
-          id: c.ID,
-          labels: c.Labels,
-          comments: c.Comments,
-          periods: c.Periods,
-          body: c.Body,
-          date: c.Date.slice(0, 10),
-        }));
+        const p = response.data.map(mapPost);
 
-        this.setState({
-          posts,
-          selectedMonth: ym,
-        });
+        setPosts(p);
+        setSelectedMonth(ym);
       })
-      .catch(error => console.log(error));
+      .catch(console.log);
   };
 
-  handleYearChange = e => {
-    this.setState({ selectedYear: e.target.value });
+  const handleYearChange = e => {
+    setSelectedYear(e.target.value);
   };
 
-  handleMonthChange = e => {
-    this.setState({ selectedMonth: e.target.value });
-    this.fetchmonth(e.target.value);
+  const handleMonthChange = e => {
+    setSelectedMonth(e.target.value);
+    fetchMonth(e.target.value);
   };
 
-  render() {
-    const { years, selectedYear, selectedMonth } = this.state;
-
-    return (
-      <Grid container spacing={3}>
-        <Grid item container xs={12} spacing={2}>
-          <Grid item xs={5} sm={4} md={2}>
+  return (
+    <Grid container spacing={3}>
+      <Grid item container xs={12} md={5} direction="column">
+        <Grid item container xs={12}>
+          <Grid item xs={4} sm={4} className={classes.marginRight}>
             <FormControl fullWidth>
               <InputLabel id="year-label">Year</InputLabel>
-              <Select labelId="year-label" value={selectedYear} onChange={this.handleYearChange}>
+              <Select labelId="year-label" value={selectedYear} onChange={handleYearChange}>
                 {Object.keys(years).map(y => (
                   <MenuItem key={y} value={y}>
                     {y}
@@ -87,10 +61,10 @@ class DaysApp extends Component {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={7} sm={6} md={3}>
+          <Grid item xs={7} sm={6}>
             <FormControl disabled={!selectedYear} fullWidth>
               <InputLabel id="month-label">Month</InputLabel>
-              <Select labelId="month-label" value={selectedMonth} onChange={this.handleMonthChange}>
+              <Select labelId="month-label" value={selectedMonth} onChange={handleMonthChange}>
                 {selectedYear &&
                   years[selectedYear].map(m => (
                     <MenuItem key={m.YM} value={m.YM}>
@@ -101,16 +75,24 @@ class DaysApp extends Component {
             </FormControl>
           </Grid>
         </Grid>
-        <Grid item xs={12} container direction="column" spacing={2}>
-          {this.state.posts.map(p => (
-            <Grid item key={p.id}>
-              <PostShow post={{ ...p, labels: p.labels || [] }} labels={this.state.labels} />
+        <Grid item xs={12} container direction="column">
+          {posts.map(p => (
+            <Grid item key={p.id} className={classes.marginTop}>
+              <PostShow post={{ ...p, labels: p.labels || [] }} labels={labels} />
             </Grid>
           ))}
         </Grid>
       </Grid>
-    );
-  }
-}
+      <Grid item xs={12} md={7}>
+        <Calendar
+          year={selectedYear}
+          month={selectedMonth?.slice(3)}
+          labels={labels}
+          posts={posts}
+        />
+      </Grid>
+    </Grid>
+  );
+};
 
 export default DaysApp;

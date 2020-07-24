@@ -74,7 +74,7 @@ const Days = ({ location, history }) => {
       <Suspense fallback={<div>Loading...</div>}>
         <Switch>
           <Route path="/days/app">
-            <DaysApp />
+            <DaysApp labels={labels} />
           </Route>
           <Route path="/days/settings">
             <DaysSettings />
