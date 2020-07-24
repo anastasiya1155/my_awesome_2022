@@ -84,12 +84,7 @@ const DaysApp = ({ labels }) => {
         </Grid>
       </Grid>
       <Grid item xs={12} md={7}>
-        <Calendar
-          year={selectedYear}
-          month={selectedMonth?.slice(3)}
-          labels={labels}
-          posts={posts}
-        />
+        <Calendar year={selectedYear} month={selectedMonth?.slice(3)} posts={posts} />
       </Grid>
     </Grid>
   );
