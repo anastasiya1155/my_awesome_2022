@@ -78,6 +78,7 @@ const DaysApp = ({ labels }) => {
         <Grid item xs={12} container direction="column">
           {posts.map(p => (
             <Grid item key={p.id} className={classes.marginTop}>
+              <span id={p.id} style={{ position: 'absolute', top: -100 }} />
               <PostShow post={{ ...p, labels: p.labels || [] }} labels={labels} />
             </Grid>
           ))}

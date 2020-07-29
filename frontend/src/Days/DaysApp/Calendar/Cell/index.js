@@ -5,9 +5,14 @@ import useStyles from './useStyles';
 
 const CalendarCell = (row, col) => {
   const data = row[col.field];
-  const classes = useStyles();
+  const classes = useStyles(data);
   return (
-    <div className={classes.container}>
+    <div
+      className={classes.container}
+      onClick={() => {
+        window.location.hash = `#${data.id}`;
+      }}
+    >
       <div className={classes.date}>{data.date}</div>
       {!data.isEmpty && (
         <div>

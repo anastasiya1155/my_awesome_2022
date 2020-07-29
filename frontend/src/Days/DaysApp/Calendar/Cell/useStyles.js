@@ -9,6 +9,7 @@ const useStyles = makeStyles(theme => ({
     margin: '0 -10px',
     alignItems: 'center',
     justifyContent: 'center',
+    cursor: props => !props.isEmpty && 'pointer',
   },
   date: {
     position: 'absolute',

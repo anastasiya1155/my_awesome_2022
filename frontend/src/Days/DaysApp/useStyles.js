@@ -6,6 +6,7 @@ const useStyles = makeStyles(theme => ({
   },
   marginTop: {
     marginTop: theme.spacing(3),
+    position: 'relative',
   },
 }));
 

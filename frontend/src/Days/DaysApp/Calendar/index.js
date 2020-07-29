@@ -26,7 +26,7 @@ const Calendar = ({ year, month, posts }) => {
     const dataToSet = calendar.map(week => {
       return week.map(d => {
         const post = posts.find(post => moment(post?.date).format('D') === d?.date?.toString());
-        return { ...d, labels: post?.labels, isEmpty: !post };
+        return { ...d, ...post, labels: post?.labels, isEmpty: !post };
       });
     });
     setData(dataToSet);
