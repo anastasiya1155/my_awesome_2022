@@ -21,11 +21,7 @@ const PeriodSettings = () => {
   }, []);
 
   const handlePeriodAdd = values => {
-    createPeriodAction(dispatch, {
-      Name: values.newPeriodName,
-      Start: moment.utc(values.newPeriodStart).format(),
-      End: values.newPeriodEnd ? moment.utc(values.newPeriodEnd).format() : null,
-    }).then(() => {
+    createPeriodAction(dispatch, values).then(() => {
       setIsAdd(false);
     });
   };
