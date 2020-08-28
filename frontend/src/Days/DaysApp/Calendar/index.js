@@ -5,6 +5,7 @@ import { Typography } from '@material-ui/core';
 import Table from '../../../shared/components/Table';
 import { getCalendar } from '../../../shared/utils/calendar';
 import CalendarCell from './Cell';
+import useStyles from './Cell/useStyles';
 
 const columns = [
   { title: 'Mon', field: 0, render: CalendarCell },
@@ -20,6 +21,7 @@ const Calendar = ({ year, month, posts }) => {
   const [data, setData] = React.useState([]);
   const yearToDisplay = year || new Date().getFullYear();
   const monthToDisplay = month || new Date().getMonth() + 1;
+  const cellStyles = useStyles();
 
   React.useEffect(() => {
     const calendar = getCalendar(monthToDisplay, yearToDisplay);
@@ -37,7 +39,7 @@ const Calendar = ({ year, month, posts }) => {
       <Typography variant="h6">
         {yearToDisplay}-{monthToDisplay}
       </Typography>
-      <Table columns={columns} data={data} size="small" />
+      <Table columns={columns} data={data} size="small" cellStyles={cellStyles} />
     </div>
   );
 };

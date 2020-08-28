@@ -45,7 +45,11 @@ const getYears = () => {
     const year = moment()
       .subtract(i, 'years')
       .format('YYYY');
-    years.push(<MenuItem value={year}>{year}</MenuItem>);
+    years.push(
+      <MenuItem value={year} key={year}>
+        {year}
+      </MenuItem>,
+    );
   }
   return years;
 };
@@ -146,7 +150,9 @@ class TransactionsList extends Component {
           <Grid item>
             <Select value={selectedMonth} onChange={this.onMonthChange}>
               {moment.months().map(m => (
-                <MenuItem value={m}>{m}</MenuItem>
+                <MenuItem value={m} key={m}>
+                  {m}
+                </MenuItem>
               ))}
             </Select>
           </Grid>
