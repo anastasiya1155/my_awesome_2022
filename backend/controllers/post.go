@@ -29,10 +29,10 @@ func GetPosts(c *gin.Context) {
 	db := dbpkg.DBInstance(c)
 
 	var modelPosts []models.Post
-
+	userId := middleware.UserInstance(c).ID
 	if err := db.
 		Select("*").
-		Where("user_id = ?", middleware.UserInstance(c).ID).
+		Where("user_id = ?", userId).
 		Preload("Comments").
 		Preload("Labels").
 		Order("date DESC").
@@ -53,9 +53,9 @@ func GetPosts(c *gin.Context) {
 
 	if err := db.
 		Select("posts.id as id, periods.id as period_id,periods.name as period_name").
-		Where("posts.user_id = ? ", middleware.UserInstance(c).ID).
+		Where("posts.user_id = ? ", userId).
 		Where("posts.id in (?)", tochedPostsIds).
-		Joins("LEFT JOIN periods ON posts.date BETWEEN periods.start AND IFNULL(periods.end, NOW())").
+		Joins("LEFT JOIN periods ON (posts.date BETWEEN periods.start AND IFNULL(periods.end, NOW())  AND periods.user_id = ?)", userId).
 		Order("date DESC").
 		Find(&periodPosts).Error; err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
@@ -303,10 +303,10 @@ func GetPostsByFilter(c *gin.Context, query interface{}, args ...interface{}) {
 	}
 
 	var periodPosts []Post
-
+	userId := middleware.UserInstance(c).ID
 	if err := db.
 		Select("posts.id as id, periods.id as period_id, periods.name as period_name").
-		Joins("LEFT JOIN periods ON posts.date BETWEEN periods.start AND IFNULL(periods.end, NOW())").
+		Joins("LEFT JOIN periods ON (posts.date BETWEEN periods.start AND IFNULL(periods.end, NOW()) AND periods.user_id = ?)", userId).
 		Where(query, args[0], args[1]).
 		Find(&periodPosts).Error; err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
