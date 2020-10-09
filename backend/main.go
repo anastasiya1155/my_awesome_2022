@@ -19,5 +19,5 @@ func main() {
 		}
 	}
 
-	s.Run(":" + port)
+	s.RunTLS(":" + port, "certificate.crt", "private.key")
 }
