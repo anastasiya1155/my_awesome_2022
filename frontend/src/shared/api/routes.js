@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { IP, PORT } from '../config/const';
+import { IP, PORT, PROTOCOL } from '../config/const';
 import { getItemFromStorage, TOKEN_KEY } from '../utils/storage';
 
 const FIREBASE = 'https://tranf-ae713.firebaseio.com/';
-const LOCAL = `http://${IP}:${PORT}`;
+const LOCAL = `${PROTOCOL}://${IP}:${PORT}`;
 
 const apiGetRequest = (url, config) => axios.get(url, config);
 const apiPostRequest = (url, data, config) => axios.post(url, data, config);
