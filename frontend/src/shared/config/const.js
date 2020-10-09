@@ -1,4 +1,4 @@
-export const IP = 'localhost';
+export const IP = process.env.NODE_ENV === 'production' ? 'pa2021.solop.cc' : 'localhost';
 // export const PORT = '8888';
 export const PORT = process.env.NODE_ENV === 'production' ? '8888' : '8822';
 
