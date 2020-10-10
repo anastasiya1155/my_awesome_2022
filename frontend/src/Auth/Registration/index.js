@@ -40,8 +40,8 @@ const RegistrationPage = ({ history }) => {
   return (
     <Grid container justify="center" alignItems="center" className={classes.container}>
       <ErrorSnackbar handleClose={handleClose} error={error} />
-      <Grid item container direction="column" spacing={2} className={classes.form}>
-        <form onSubmit={e => e.preventDefault()}>
+      <form onSubmit={e => e.preventDefault()}>
+        <Grid item container direction="column" spacing={2} className={classes.form}>
           <Grid item>
             <TextField
               label="Email"
@@ -99,8 +99,8 @@ const RegistrationPage = ({ history }) => {
             </Button>
             <Link to="/login">Login</Link>
           </Grid>
-        </form>
-      </Grid>
+        </Grid>
+      </form>
     </Grid>
   );
 };

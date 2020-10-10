@@ -29,12 +29,12 @@ const LoginPage = ({ history }) => {
   return (
     <Grid container justify="center" alignItems="center" className={classes.container}>
       <ErrorSnackbar error={error} handleClose={handleClose} />
-      <Grid item container direction="column" spacing={2} className={classes.form}>
-        <form onSubmit={e => e.preventDefault()}>
+      <form onSubmit={e => e.preventDefault()}>
+        <Grid item container direction="column" spacing={2} className={classes.form}>
           <Grid item>
             <TextField
               label="Email"
-              fullWidthx
+              fullWidth
               name="email"
               value={email}
               onChange={e => setEmail(e.target.value)}
@@ -56,8 +56,8 @@ const LoginPage = ({ history }) => {
             </Button>
             <Link to="/register">Register</Link>
           </Grid>
-        </form>
-      </Grid>
+        </Grid>
+      </form>
     </Grid>
   );
 };

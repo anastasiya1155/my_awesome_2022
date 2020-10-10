@@ -17,11 +17,11 @@ import {
 } from '../shared/api/handlers';
 import useStyles from './useStyles';
 import AddTIL from './AddTIL';
+import AddTask from './AddTask';
 
 const Project = ({ match }) => {
   const [menuAnchorElement, setMenuAnchorElement] = React.useState(null);
   const [pressedTask, setPressedTask] = React.useState(null);
-  const [newTaskName, setNewTaskName] = React.useState('');
   const [taskForModal, setTaskForModal] = React.useState(null);
   const project = useSelector(state => state.projects.projects[match.params.id] || {});
   const tasks = useSelector(state => state.projects.tasksByStatus[match.params.id] || []);
@@ -82,39 +82,7 @@ const Project = ({ match }) => {
         <Typography variant="h4"> {project.title} </Typography>
         <Typography variant="subtitle2"> {project.description} </Typography>
       </div>
-      <Grid container className={classes.inputContainer} spacing={1}>
-        <Grid item>
-          <TextField
-            name="time"
-            type="text"
-            value={newTaskName}
-            onChange={e => {
-              setNewTaskName(e.target.value);
-            }}
-          />
-        </Grid>
-        <Grid item>
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            onClick={() => {
-              createTaskAction(dispatch, {
-                data: {
-                  body: newTaskName,
-                  project_id: parseInt(match.params.id),
-                  status: 'incoming',
-                },
-                projectId: match.params.id,
-              }).then(() => {
-                setNewTaskName('');
-              });
-            }}
-          >
-            add
-          </Button>
-        </Grid>
-      </Grid>
+      <AddTask dispatch={dispatch} match={match} />
 
       <Grid item xs={12} container spacing={1}>
         {Object.keys(tasks).map(key => (
