@@ -26,6 +26,8 @@ func Connect() *gorm.DB {
 
 	db.LogMode(false)
 
+	//db.AutoMigrate(&models.Transaction{})
+
 	if gin.IsDebugging() {
 		db.LogMode(true)
 	}

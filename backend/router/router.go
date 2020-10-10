@@ -10,7 +10,9 @@ func Initialize(r *gin.Engine) {
 	r.GET("/", controllers.APIEndpoints)
 
 	r.POST("/login", controllers.Login)
+
 	r.POST("/register", controllers.Resister)
+	r.POST("/reset", controllers.Reset)
 
 	api := r.Group("api")
 	api.Use(middleware.CheckJwt())
@@ -62,6 +64,16 @@ func Initialize(r *gin.Engine) {
 		api.POST("/periods", controllers.CreatePeriod)
 		api.PUT("/periods/:id", controllers.UpdatePeriod)
 		api.DELETE("/periods/:id", controllers.DeletePeriod)
+
+		api.GET("/wishes", controllers.GetWishes)
+		api.POST("/wishes", controllers.CreateWish)
+		api.PUT("/wishes/:id", controllers.UpdateWish)
+		api.DELETE("/wishes/:id", controllers.DeleteWish)
+
+		api.GET("/transactions", controllers.GetTransactions)
+		api.POST("/transactions", controllers.CreateTransaction)
+		api.PUT("/transactions/:id", controllers.UpdateTransaction)
+		api.DELETE("/transactions/:id", controllers.DeleteTransaction)
 
 	}
 }

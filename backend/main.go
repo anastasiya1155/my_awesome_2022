@@ -10,6 +10,7 @@ import (
 // main ...
 func main() {
 	database := db.Connect()
+
 	s := server.Setup(database)
 	port := "8888"
 
@@ -19,5 +20,9 @@ func main() {
 		}
 	}
 
-	s.RunTLS(":" + port, "certificate.crt", "private.key")
+	if os.Getenv("LOCAL") == "1" {
+		s.Run(":" + port)
+	} else {
+		s.RunTLS(":"+port, "certificate.crt", "private.key")
+	}
 }

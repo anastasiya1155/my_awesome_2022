@@ -123,3 +123,39 @@ func (l Lt) GetUserId(db *gorm.DB) int {
 func (Lt) TableName() string {
 	return "last_time"
 }
+
+type Wish struct {
+	ID        int       `json:"id"`
+	CreatedAt time.Time `json:"createdAt"`
+	IsDone    bool      `json:"isDone"`
+	Name      string    `json:"name"`
+	Picture   string    `json:"picture"`
+	PriceFrom int       `json:"priceFrom"`
+	PriceTo   int       `json:"priceTo"`
+	UserId    int       `json:"-"`
+}
+
+func (l Wish) GetUserId(db *gorm.DB) int {
+	return l.UserId
+}
+
+func (Wish) TableName() string {
+	return "wish"
+}
+
+type Transaction struct {
+	ID          int    `json:"id"`
+	Date        string `json:"date"`
+	Description string `json:"description"`
+	Category    int    `json:"category"`
+	Amount      int    `json:"amount"`
+	UserId      int    `json:"-"`
+}
+
+func (t Transaction) GetUserId(db *gorm.DB) int {
+	return t.UserId
+}
+
+func (Transaction) TableName() string {
+	return "transaction"
+}

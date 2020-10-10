@@ -112,6 +112,11 @@ func Login(c *gin.Context) {
 	c.JSON(201, gin.H{"Result": "Login successful", "Token": tokenString})
 
 }
+
+func Reset(c *gin.Context) {
+	return
+}
+
 func Resister(c *gin.Context) {
 	var user models.User
 
