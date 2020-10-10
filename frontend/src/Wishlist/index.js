@@ -15,11 +15,7 @@ const Wishlist = ({ history, location }) => {
   const fetchWishes = () => {
     getWishes().then(response => {
       if (response.data) {
-        const wishesFromResponse = Object.keys(response.data)
-          .reverse()
-          .map(key => ({ ...response.data[key], id: key }));
-        // .filter(w => !w.isDone);
-        setWishes(wishesFromResponse);
+        setWishes(response.data);
       }
     });
   };
@@ -36,24 +32,18 @@ const Wishlist = ({ history, location }) => {
       createdAt: new Date(),
       isDone: false,
     })
-      .then(() => {
-        fetchWishes();
-      })
+      .then(fetchWishes)
       .catch(console.log);
   };
   const editWish = (id, data) => {
     return putWish(id, data)
-      .then(() => {
-        fetchWishes();
-      })
+      .then(fetchWishes)
       .catch(console.log);
   };
 
   const removeWish = id => {
     deleteWish(id)
-      .then(() => {
-        fetchWishes();
-      })
+      .then(fetchWishes)
       .catch(console.log);
   };
 

@@ -24,7 +24,7 @@ const Days = ({ location, history }) => {
     getLabelsAction(dispatch);
     getPostsHistoryAction(dispatch);
     getPostsAction(dispatch);
-  }, []);
+  }, [dispatch]);
 
   return (
     <div>

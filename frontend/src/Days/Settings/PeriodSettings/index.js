@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import { Grid, IconButton, Typography } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
@@ -18,7 +17,7 @@ const PeriodSettings = () => {
 
   React.useEffect(() => {
     getPeriodsAction(dispatch);
-  }, []);
+  }, [dispatch]);
 
   const handlePeriodAdd = values => {
     createPeriodAction(dispatch, values).then(() => {

@@ -17,14 +17,15 @@ const columns = [
   { title: 'Sun', field: 6, render: CalendarCell },
 ];
 
+const thisYear = new Date().getFullYear();
+const thisMonth = new Date().getMonth() + 1;
+
 const Calendar = ({ year, month, posts }) => {
   const [data, setData] = React.useState([]);
-  const yearToDisplay = year || new Date().getFullYear();
-  const monthToDisplay = month || new Date().getMonth() + 1;
   const cellStyles = useStyles();
 
   React.useEffect(() => {
-    const calendar = getCalendar(monthToDisplay, yearToDisplay);
+    const calendar = getCalendar(month || thisMonth, year || thisYear);
     const dataToSet = calendar.map(week => {
       return week.map(d => {
         const post = posts.find(post => moment(post?.date).format('D') === d?.date?.toString());
@@ -37,7 +38,7 @@ const Calendar = ({ year, month, posts }) => {
   return (
     <div>
       <Typography variant="h6">
-        {yearToDisplay}-{monthToDisplay}
+        {year || thisYear}-{month || thisMonth}
       </Typography>
       <Table columns={columns} data={data} size="small" cellStyles={cellStyles} />
     </div>

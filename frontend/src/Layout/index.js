@@ -34,7 +34,7 @@ const Layout = ({ children }) => {
   useEffect(() => {
     getInProgressAction(dispatch);
     getReminderAction(dispatch);
-  }, []);
+  }, [dispatch]);
 
   const handleLogout = () => {
     clearStorage();

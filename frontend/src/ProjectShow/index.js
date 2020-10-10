@@ -6,11 +6,8 @@ import { ListItem, Menu } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from '@material-ui/core/IconButton';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import {
-  createTaskAction,
   deleteTaskAction,
   editTaskAction,
   getProjectAction,
@@ -31,7 +28,7 @@ const Project = ({ match }) => {
 
   React.useEffect(() => {
     getProjectAction(dispatch, match.params.id);
-  }, []);
+  }, [match.params.id, dispatch]);
 
   const handleMenuClose = () => {
     setPressedTask(null);

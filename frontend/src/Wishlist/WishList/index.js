@@ -63,7 +63,7 @@ const WishList = ({ wishes, editWish, removeWish, openEditPopup }) => {
       </FormControl>
       <Grid container spacing={2}>
         {wishesToShow.map(w => {
-          const isMine = w.userId === process.env.REACT_APP_USER_ID;
+          const isMine = true;
           return (
             <Grid key={w.id} item className={classes.root}>
               <Card raised={isMine} className={w.isDone ? classes.done : ''}>

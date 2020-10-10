@@ -45,10 +45,10 @@ export const postTodo = data => apiPostRequest(`${FIREBASE}/todo.json`, data);
 export const putTodo = (id, data) => apiPutRequest(`${FIREBASE}/todo/${id}.json`, data);
 export const deleteTodo = id => apiDeleteRequest(`${FIREBASE}/todo/${id}.json`);
 
-export const getWishes = () => apiGetRequest(`${FIREBASE}/wish.json`);
-export const postWish = data => apiPostRequest(`${FIREBASE}/wish.json`, data);
-export const putWish = (id, data) => apiPutRequest(`${FIREBASE}/wish/${id}.json`, data);
-export const deleteWish = id => apiDeleteRequest(`${FIREBASE}/wish/${id}.json`);
+export const getWishes = () => apiLocalGetRequest('wishes');
+export const postWish = data => apiLocalPostRequest('wishes', data);
+export const putWish = (id, data) => apiLocalPutRequest(`wishes/${id}`, data);
+export const deleteWish = id => apiLocalDeleteRequest(`wishes/${id}`);
 
 export const getPosts = () => apiLocalGetRequest(`posts?sort=-date`);
 export const getPostsHistory = () => apiLocalGetRequest(`posts-history`);

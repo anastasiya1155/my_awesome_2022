@@ -30,7 +30,7 @@ const LastTime = () => {
 
   React.useEffect(() => {
     getLastTimeAction(dispatch);
-  }, []);
+  }, [dispatch]);
 
   const handleListItemClick = (e, item) => {
     e.stopPropagation();

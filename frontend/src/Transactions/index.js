@@ -29,7 +29,7 @@ function Transactions({ history, location }) {
 
   React.useEffect(() => {
     getTransCategoriesAction(dispatch);
-  }, []);
+  }, [dispatch]);
 
   return (
     <div>
