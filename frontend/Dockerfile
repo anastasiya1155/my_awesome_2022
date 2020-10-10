@@ -1,6 +1,5 @@
 # build phase
 FROM node:alpine
-RUN npm install -g serve
 WORKDIR /usr/app
 COPY package.json .
 RUN npm install
