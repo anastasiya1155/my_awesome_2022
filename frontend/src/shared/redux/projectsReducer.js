@@ -38,7 +38,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         tasks: { ...state.tasks, [action.payload.id]: action.payload.data },
-        tasksByStatus: { ...state.tasks, [action.payload.id]: tasksByStatus },
+        tasksByStatus: { ...state.tasksByStatus, [action.payload.id]: tasksByStatus },
       };
     default:
       return state;
