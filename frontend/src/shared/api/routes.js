@@ -1,9 +1,6 @@
 import axios from 'axios';
-import { IP, PORT, PROTOCOL } from '../config/const';
+import { LOCAL, FIREBASE } from '../config/const';
 import { getItemFromStorage, TOKEN_KEY } from '../utils/storage';
-
-const FIREBASE = 'https://tranf-ae713.firebaseio.com/';
-const LOCAL = `${PROTOCOL}://${IP}:${PORT}`;
 
 const apiGetRequest = (url, config) => axios.get(url, config);
 const apiPostRequest = (url, data, config) => axios.post(url, data, config);
@@ -33,25 +30,25 @@ const apiLocalDeleteRequest = url =>
 
 // FIREBASE TRANSACTION
 export const getTransactionsByMonthAndYear = (year, month) =>
-  apiGetRequest(`${FIREBASE}transaction/${year}/${month}.json`);
+  apiGetRequest(`${FIREBASE}/transaction/${year}/${month}.json`);
 export const postTransactionsToMonthAndYear = (year, month, data) =>
-  apiPostRequest(`${FIREBASE}transaction/${year}/${month}.json`, data);
+  apiPostRequest(`${FIREBASE}/transaction/${year}/${month}.json`, data);
 
-export const getTransactionsCategories = () => apiGetRequest(`${FIREBASE}cat.json`);
-export const postTransactionsCategories = data => apiPostRequest(`${FIREBASE}cat.json`, data);
+export const getTransactionsCategories = () => apiGetRequest(`${FIREBASE}/cat.json`);
+export const postTransactionsCategories = data => apiPostRequest(`${FIREBASE}/cat.json`, data);
 export const getTransactionsStatistics = () =>
-  apiGetRequest(`${FIREBASE}transactions-statistics.json`);
+  apiGetRequest(`${FIREBASE}/transactions-statistics.json`);
 
-export const getTodos = () => apiGetRequest(`${FIREBASE}todo.json`);
-export const getTodo = id => apiGetRequest(`${FIREBASE}todo/${id}.json`);
-export const postTodo = data => apiPostRequest(`${FIREBASE}todo.json`, data);
-export const putTodo = (id, data) => apiPutRequest(`${FIREBASE}todo/${id}.json`, data);
-export const deleteTodo = id => apiDeleteRequest(`${FIREBASE}todo/${id}.json`);
+export const getTodos = () => apiGetRequest(`${FIREBASE}/todo.json`);
+export const getTodo = id => apiGetRequest(`${FIREBASE}/todo/${id}.json`);
+export const postTodo = data => apiPostRequest(`${FIREBASE}/todo.json`, data);
+export const putTodo = (id, data) => apiPutRequest(`${FIREBASE}/todo/${id}.json`, data);
+export const deleteTodo = id => apiDeleteRequest(`${FIREBASE}/todo/${id}.json`);
 
-export const getWishes = () => apiGetRequest(`${FIREBASE}wish.json`);
-export const postWish = data => apiPostRequest(`${FIREBASE}wish.json`, data);
-export const putWish = (id, data) => apiPutRequest(`${FIREBASE}wish/${id}.json`, data);
-export const deleteWish = id => apiDeleteRequest(`${FIREBASE}wish/${id}.json`);
+export const getWishes = () => apiGetRequest(`${FIREBASE}/wish.json`);
+export const postWish = data => apiPostRequest(`${FIREBASE}/wish.json`, data);
+export const putWish = (id, data) => apiPutRequest(`${FIREBASE}/wish/${id}.json`, data);
+export const deleteWish = id => apiDeleteRequest(`${FIREBASE}/wish/${id}.json`);
 
 export const getPosts = () => apiLocalGetRequest(`posts?sort=-date`);
 export const getPostsHistory = () => apiLocalGetRequest(`posts-history`);
