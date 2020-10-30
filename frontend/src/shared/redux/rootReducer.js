@@ -3,6 +3,7 @@ import post from './postReducer';
 import projects from './projectsReducer';
 import lastTime from './lastTimeReducer';
 import transactions from './transactionsReducer';
+import photos from './photosReducer';
 
 export const SET_ERROR = '@root/SET_ERROR';
 
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   projects,
   lastTime,
   transactions,
+  photos,
 });
 
 export default rootReducer;

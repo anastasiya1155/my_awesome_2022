@@ -10,8 +10,9 @@ import PostComment from './PostComment';
 import PostCommentEdit from './PostCommentEdit';
 import useStyles from './useStyles';
 import { deletePostAction, togglePostLabelAction } from '../../shared/api/handlers';
+import PostPhotos from './PostPhotos';
 
-const PostShow = ({ post, labels, searchTerm }) => {
+const PostShow = ({ post, labels, searchTerm, oauthToken }) => {
   const [deleteMode, setDeletedMode] = React.useState(false);
   const [isCommentOpen, setCommentOpen] = React.useState(false);
   const [isEdit, setIsEdit] = React.useState(false);
@@ -115,6 +116,7 @@ const PostShow = ({ post, labels, searchTerm }) => {
               ))}
             </div>
           ) : null}
+          {oauthToken ? <PostPhotos oauthToken={oauthToken} date={post.date} /> : null}
           {post.comments.map(comment => (
             <PostComment key={comment.ID} comment={comment} />
           ))}

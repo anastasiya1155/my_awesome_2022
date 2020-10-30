@@ -109,7 +109,7 @@ const LabelsSettings = () => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <Typography>My labels: </Typography>
+        <Typography variant="h6">My labels: </Typography>
         {labels.map(l => (
           <PostLabel
             key={l.id}

@@ -29,12 +29,14 @@ const PeriodsTable = ({ periods, isAdd, onAddSubmit, onEditSubmit, onDeleteSubmi
           {periods.map((period, i) =>
             i === editRow ? (
               <PeriodEditRow
+                key={`edit=${period.id}`}
                 period={period}
                 onSubmit={values => onEditSubmit(period.id, values).then(() => setEditRow(null))}
                 onCancel={() => setEditRow(null)}
               />
             ) : (
               <PeriodRow
+                key={period.id}
                 period={period}
                 onEditClicked={() => setEditRow(i)}
                 onDeleteSubmit={onDeleteSubmit}

@@ -18,6 +18,7 @@ const getCurrentTab = path => (links.indexOf(path) >= 0 ? links.indexOf(path) : 
 const Days = ({ location, history }) => {
   const [activeTabIndex, setActiveTabIndex] = React.useState(getCurrentTab(location.pathname));
   const labels = useSelector(state => state.post.labels);
+  const oauthToken = useSelector(state => state.photos.token);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
@@ -87,7 +88,7 @@ const Days = ({ location, history }) => {
           </Route>
           <Route path="/days">
             <PostCreate />
-            <PostList labels={labels} tab="last" />
+            <PostList labels={labels} oauthToken={oauthToken} tab="last" />
           </Route>
         </Switch>
       </Suspense>
