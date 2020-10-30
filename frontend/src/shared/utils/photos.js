@@ -1,3 +1,5 @@
+import { USER_SIGN_IN } from '../redux/photosReducer';
+
 export const getPhotosOnDate = async (authToken, date) => {
   let photos = [];
   let error = null;
@@ -27,8 +29,30 @@ export const getPhotosOnDate = async (authToken, date) => {
     );
     photos = await response.json();
   } catch (err) {
-    console.error(err);
+    error = err;
   }
 
   return { photos, error };
+};
+
+export const photosSignIn = dispatch => {
+  const auth2 = window.gapi.auth2?.getAuthInstance();
+
+  if (auth2) {
+    auth2
+      .signIn({ scope: 'https://www.googleapis.com/auth/photoslibrary.readonly' })
+      .then(googleUser => {
+        const profile = googleUser.getBasicProfile();
+
+        dispatch({
+          type: USER_SIGN_IN,
+          payload: {
+            name: profile.getName(),
+            imageUrl: profile.getImageUrl(),
+            token: googleUser.getAuthResponse().access_token,
+          },
+        });
+      })
+      .catch(console.log);
+  }
 };

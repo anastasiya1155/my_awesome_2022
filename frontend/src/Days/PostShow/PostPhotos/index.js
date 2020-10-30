@@ -32,7 +32,7 @@ const PostPhotos = ({ oauthToken, date }) => {
       {isFetched && photos.length ? (
         <Grid container spacing={1}>
           {photos.map(p => (
-            <Grid item>
+            <Grid item key={p.id}>
               <div
                 className={classes.img}
                 style={{ backgroundImage: `url(${p.baseUrl})` }}

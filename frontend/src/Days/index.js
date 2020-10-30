@@ -75,7 +75,7 @@ const Days = ({ location, history }) => {
       <Suspense fallback={<div>Loading...</div>}>
         <Switch>
           <Route path="/days/app">
-            <DaysApp labels={labels} />
+            <DaysApp labels={labels} oauthToken={oauthToken} />
           </Route>
           <Route path="/days/settings">
             <DaysSettings />
@@ -84,7 +84,7 @@ const Days = ({ location, history }) => {
             <Search labels={labels} />
           </Route>
           <Route path="/days/history">
-            <PostList labels={labels} tab="history" />
+            <PostList labels={labels} oauthToken={oauthToken} tab="history" />
           </Route>
           <Route path="/days">
             <PostCreate />

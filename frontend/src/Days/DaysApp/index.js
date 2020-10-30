@@ -6,7 +6,7 @@ import Calendar from './Calendar';
 import useStyles from './useStyles';
 import { mapPost } from '../../shared/utils/mappers';
 
-const DaysApp = ({ labels }) => {
+const DaysApp = ({ labels, oauthToken }) => {
   const [years, setYears] = React.useState([]);
   const [posts, setPosts] = React.useState([]);
   const [selectedMonth, setSelectedMonth] = React.useState('');
@@ -79,7 +79,11 @@ const DaysApp = ({ labels }) => {
           {posts.map(p => (
             <Grid item key={p.id} className={classes.marginTop}>
               <span id={p.id} style={{ position: 'absolute', top: -100 }} />
-              <PostShow post={{ ...p, labels: p.labels || [] }} labels={labels} />
+              <PostShow
+                post={{ ...p, labels: p.labels || [] }}
+                oauthToken={oauthToken}
+                labels={labels}
+              />
             </Grid>
           ))}
         </Grid>
