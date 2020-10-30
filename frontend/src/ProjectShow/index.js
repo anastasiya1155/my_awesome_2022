@@ -7,11 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from '@material-ui/core/IconButton';
 import Divider from '@material-ui/core/Divider';
-import {
-  deleteTaskAction,
-  editTaskAction,
-  getProjectAction,
-} from '../shared/api/handlers';
+import {deleteTaskAction, editTaskAction, getProjectAction} from '../shared/api/handlers';
 import useStyles from './useStyles';
 import AddTIL from './AddTIL';
 import AddTask from './AddTask';
