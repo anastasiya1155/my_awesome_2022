@@ -34,12 +34,15 @@ serviceWorker.register({
       };
       if (messageNode) {
         ReactDOM.render(
-          <div>
-            <Typography>Update is available.</Typography>
-            <Button onClick={handleClick} variant="contained" fullWidth>
-              Reload
-            </Button>
-          </div>,
+          <MuiThemeProvider theme={theme}>
+            <CssBaseline />
+            <div>
+              <Typography>Update is available.</Typography>
+              <Button onClick={handleClick} variant="contained" fullWidth>
+                Reload
+              </Button>
+            </div>
+          </MuiThemeProvider>,
           messageNode,
         );
         messageNode.className = 'root-message';
