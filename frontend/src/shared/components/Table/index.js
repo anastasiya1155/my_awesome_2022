@@ -16,8 +16,8 @@ const TransactionsTable = ({ columns, data, size, cellStyles }) => {
       <Table size={size}>
         <TableHead>
           <TableRow>
-            {columns.map(col => (
-              <TableCell key={col.title}>{col.title}</TableCell>
+            {columns.map((col, i) => (
+              <TableCell key={`head-${i}`}>{col.title}</TableCell>
             ))}
           </TableRow>
         </TableHead>
@@ -26,8 +26,8 @@ const TransactionsTable = ({ columns, data, size, cellStyles }) => {
             <TableRow
               key={row.id || row.category || row.reduce((prev, cur) => prev + cur.date || 0, 0)}
             >
-              {columns.map(col => (
-                <TableCell key={col.title}>
+              {columns.map((col, i) => (
+                <TableCell key={`body-${i}`}>
                   {col.render ? col.render(row, col, cellStyles) : row[col.field]}
                 </TableCell>
               ))}

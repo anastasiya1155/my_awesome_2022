@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import moment from 'moment';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
-  Paper,
   Grid,
   MenuItem,
   Select,
@@ -10,9 +9,11 @@ import {
   FormControlLabel,
   Hidden,
   Button,
+  useMediaQuery,
 } from '@material-ui/core';
 import { getTransactionsByMonthAndYear } from '../../shared/api/routes';
 import Table from '../../shared/components/Table';
+import { useTheme } from '@material-ui/core/styles';
 
 const thisMonth = moment().format('MMMM');
 const thisYear = moment().year();
@@ -27,6 +28,35 @@ const tableColumns = [
   },
   { title: 'Description', field: 'description' },
   { title: 'Date', field: 'date', render: row => moment(row.date).format('YYYY-MM-DD') },
+];
+
+const mobileColumns = [
+  {
+    title: '',
+    field: 'amount',
+    render: row => (
+      <div>
+        <div>
+          <b>{row.amount}</b>
+        </div>
+        <div>
+          <sub>{row.description}</sub>
+        </div>
+      </div>
+    ),
+  },
+  {
+    title: '',
+    field: 'date',
+    render: row => (
+      <div>
+        <div>{row.category}</div>
+        <div>
+          <sub>{moment(row.date).format('ddd D MMM')}</sub>
+        </div>
+      </div>
+    ),
+  },
 ];
 
 const categoryColumns = [
@@ -64,65 +94,56 @@ const countSum = transactions => {
   return total;
 };
 
-class TransactionsList extends Component {
-  state = {
-    total: 0,
-    transactions: [],
-    categoryData: [],
-    selectedMonth: thisMonth,
-    selectedYear: thisYear,
-    groupByCategory: false,
-  };
+const TransactionsList = ({ history }) => {
+  const [total, setTotal] = React.useState(0);
+  const [transactions, setTransactions] = React.useState([]);
+  const [categoryData, setCategoryData] = React.useState([]);
+  const [selectedMonth, setSelectedMonth] = React.useState(thisMonth);
+  const [selectedYear, setSelectedYear] = React.useState(thisYear);
+  const [groupByCategory, setGroupByCategory] = React.useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const categories = useSelector(state => state.transactions.categories);
 
-  componentDidMount() {
-    this.fetchData(thisMonth, thisYear);
-  }
+  React.useEffect(() => {
+    fetchData(thisMonth, thisYear);
+  }, [categories]);
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.categories !== this.props.categories) {
-      this.fetchData(thisMonth, thisYear);
-    }
-  }
-
-  fetchData = (selectedMonth, selectedYear) => {
-    const { categories } = this.props;
+  const fetchData = (selectedMonth, selectedYear) => {
     const month = moment()
       .month(selectedMonth)
       .format('M');
     getTransactionsByMonthAndYear(selectedYear, month)
       .then(response => {
         if (response.data) {
-          const transactions = Object.keys(response.data)
+          const newTransactions = Object.keys(response.data)
             .reverse()
             .map(key => ({
               ...response.data[key],
               id: key,
               category: categories.find(c => c.id === response.data[key].category)?.name,
             }));
-          const total = countSum(transactions);
-          const categoryData = this.normalizeByCategory(transactions, total);
-          this.setState({ transactions, total, categoryData });
+          const newTotal = countSum(newTransactions);
+          const newCategoryData = normalizeByCategory(newTransactions, newTotal);
+          setTransactions(newTransactions);
+          setTotal(newTotal);
+          setCategoryData(newCategoryData);
         }
       })
-      .catch(error => console.log(error));
+      .catch(console.log);
   };
 
-  onMonthChange = e => {
-    const { selectedYear } = this.state;
-    const selectedMonth = e.target.value;
-    this.setState({ selectedMonth });
-    this.fetchData(selectedMonth, selectedYear);
+  const onMonthChange = e => {
+    setSelectedMonth(e.target.value);
+    fetchData(e.target.value, selectedYear);
   };
 
-  onYearChange = e => {
-    const { selectedMonth } = this.state;
-    const selectedYear = e.target.value;
-    this.setState({ selectedYear });
-    this.fetchData(selectedMonth, selectedYear);
+  const onYearChange = e => {
+    setSelectedYear(e.target.value);
+    fetchData(selectedMonth, e.target.value);
   };
 
-  normalizeByCategory = (transactions, total) => {
-    const { categories } = this.props;
+  const normalizeByCategory = (transactions, total) => {
     return categories
       .map(category => {
         const filtered = transactions.filter(tr => tr.category === category.name);
@@ -133,74 +154,58 @@ class TransactionsList extends Component {
       .sort((a, b) => (a.sum > b.sum ? -1 : 1));
   };
 
-  onGroupByChange = e => {
-    const { transactions, total } = this.state;
-    const categoryData = this.normalizeByCategory(transactions, total);
-    this.setState({ groupByCategory: e.target.checked, categoryData });
+  const onGroupByChange = e => {
+    const newCategoryData = normalizeByCategory(transactions, total);
+    setGroupByCategory(e.target.checked);
+    setCategoryData(newCategoryData);
   };
 
-  render() {
-    const {
-      selectedYear,
-      selectedMonth,
-      transactions,
-      total,
-      groupByCategory,
-      categoryData,
-    } = this.state;
-    const { history } = this.props;
-    return (
-      <div>
-        <Hidden smUp>
-          <Button
-            fullWidth
-            variant="contained"
-            style={{ marginBottom: 10 }}
-            onClick={() => history.push('/transactions/add')}
-          >
-            Add
-          </Button>
-        </Hidden>
-        <Grid container justify="space-around">
-          <Grid item>
-            <Select value={selectedMonth} onChange={this.onMonthChange}>
-              {moment.months().map(m => (
-                <MenuItem value={m} key={m}>
-                  {m}
-                </MenuItem>
-              ))}
-            </Select>
-          </Grid>
-          <Grid item>
-            <Select value={selectedYear} onChange={this.onYearChange}>
-              {getYears()}
-            </Select>
-          </Grid>
-          <Grid item>
-            <FormControlLabel
-              control={<Checkbox value={groupByCategory} onChange={this.onGroupByChange} />}
-              label="Group By Category"
-            />
-          </Grid>
+  return (
+    <div>
+      <Hidden smUp>
+        <Button
+          fullWidth
+          variant="contained"
+          style={{ marginBottom: 10 }}
+          onClick={() => history.push('/transactions/add')}
+        >
+          Add
+        </Button>
+      </Hidden>
+      <Grid container justify="space-around">
+        <Grid item>
+          <Select value={selectedMonth} onChange={onMonthChange}>
+            {moment.months().map(m => (
+              <MenuItem value={m} key={m}>
+                {m}
+              </MenuItem>
+            ))}
+          </Select>
         </Grid>
-        <p>
-          <b>
-            {selectedMonth} {selectedYear} ({total})
-          </b>
-        </p>
-        <Paper>
-          <Table
-            data={groupByCategory ? categoryData : transactions}
-            columns={groupByCategory ? categoryColumns : tableColumns}
+        <Grid item>
+          <Select value={selectedYear} onChange={onYearChange}>
+            {getYears()}
+          </Select>
+        </Grid>
+        <Grid item>
+          <FormControlLabel
+            control={<Checkbox value={groupByCategory} onChange={onGroupByChange} />}
+            label="Group By Category"
           />
-        </Paper>
-      </div>
-    );
-  }
-}
+        </Grid>
+      </Grid>
+      <p>
+        <b>
+          {selectedMonth} {selectedYear} ({total})
+        </b>
+      </p>
+      <Table
+        data={groupByCategory ? categoryData : transactions}
+        columns={groupByCategory ? categoryColumns : isMobile ? mobileColumns : tableColumns}
+        size={isMobile ? 'small' : undefined}
+      />
+    </div>
+  );
+};
 
-const mapStateToProps = state => ({
-  categories: state.transactions.categories,
-});
-
-export default connect(mapStateToProps)(TransactionsList);
+export default TransactionsList;
