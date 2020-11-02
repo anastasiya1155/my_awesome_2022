@@ -8,12 +8,16 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormGroup from '@material-ui/core/FormGroup';
 import Grid from '@material-ui/core/Grid';
 import { postTransactionsToMonthAndYear } from '../../shared/api/routes';
+import { useMediaQuery } from '@material-ui/core';
+import { useTheme } from '@material-ui/core/styles';
 
 const initialValues = { description: '', amount: '', category: 31 };
 
-const TransactionsCreate = () => {
+const TransactionsCreate = ({ history }) => {
   const [values, setValues] = React.useState(initialValues);
   const categories = useSelector(state => state.transactions.categories);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleChange = e => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -30,6 +34,9 @@ const TransactionsCreate = () => {
     postTransactionsToMonthAndYear(moment().year(), month, transaction)
       .then(() => {
         setValues(initialValues);
+        if (isMobile) {
+          history.push('/transactions/list');
+        }
       })
       .catch(console.log);
   };
@@ -39,7 +46,7 @@ const TransactionsCreate = () => {
       <Grid container spacing={3}>
         <Grid item xs={12} container justify="space-between">
           {[31, 34, 11, 12, 52, 22, 14].map(id => (
-            <Grid item>
+            <Grid item key={id}>
               <Button
                 variant="outlined"
                 onClick={() => handleChange({ target: { value: id, name: 'category' } })}

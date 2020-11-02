@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+import {
+  Paper,
+  Grid,
+  MenuItem,
+  Select,
+  Checkbox,
+  FormControlLabel,
+  Hidden,
+  Button,
+} from '@material-ui/core';
 import { getTransactionsByMonthAndYear } from '../../shared/api/routes';
 import Table from '../../shared/components/Table';
 
@@ -144,8 +148,19 @@ class TransactionsList extends Component {
       groupByCategory,
       categoryData,
     } = this.state;
+    const { history } = this.props;
     return (
       <div>
+        <Hidden smUp>
+          <Button
+            fullWidth
+            variant="contained"
+            style={{ marginBottom: 10 }}
+            onClick={() => history.push('/transactions/add')}
+          >
+            Add
+          </Button>
+        </Hidden>
         <Grid container justify="space-around">
           <Grid item>
             <Select value={selectedMonth} onChange={this.onMonthChange}>
