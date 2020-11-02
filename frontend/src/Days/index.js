@@ -11,12 +11,8 @@ const DaysApp = lazy(() => import(/* webpackChunkName: "days-app" */ './DaysApp'
 const DaysSettings = lazy(/* webpackChunkName: "days-settings" */ () => import('./Settings'));
 const Search = lazy(/* webpackChunkName: "days-search" */ () => import('./Search'));
 
-const links = ['/days', '/days/history', '/days/app', '/days/settings', '/days/search'];
-
-const getCurrentTab = path => (links.indexOf(path) >= 0 ? links.indexOf(path) : 0);
-
 const Days = ({ location, history }) => {
-  const [activeTabIndex, setActiveTabIndex] = React.useState(getCurrentTab(location.pathname));
+  const [activeTab, setActiveTab] = React.useState(location.pathname);
   const labels = useSelector(state => state.post.labels);
   const oauthToken = useSelector(state => state.photos.token);
   const dispatch = useDispatch();
@@ -30,29 +26,30 @@ const Days = ({ location, history }) => {
   return (
     <div>
       <Tabs
-        value={activeTabIndex}
-        onChange={(e, newVal) => setActiveTabIndex(newVal)}
+        value={activeTab}
+        onChange={setActiveTab}
+        history={history}
         tabs={[
           {
             label: 'Last 25 posts',
             mobile: {
               label: 'Last posts',
             },
-            onClick: () => history.push('/days'),
+            path: '/days',
           },
           {
             label: 'This day in history',
             mobile: {
               label: 'This day',
             },
-            onClick: () => history.push('/days/history'),
+            path: '/days/history',
           },
           {
             label: 'All posts',
             mobile: {
               label: 'All',
             },
-            onClick: () => history.push('/days/app'),
+            path: '/days/app',
           },
           {
             label: 'Settings',
@@ -60,14 +57,14 @@ const Days = ({ location, history }) => {
             mobile: {
               icon: <SettingsIcon />,
             },
-            onClick: () => history.push('/days/settings'),
+            path: '/days/settings',
           },
           {
             icon: <SearchIcon />,
             mobile: {
               icon: <SearchIcon />,
             },
-            onClick: () => history.push('/days/search'),
+            path: '/days/search',
           },
         ]}
       />

@@ -16,15 +16,8 @@ const TransactionsStatistics = lazy(() =>
   import(/* webpackChunkName: "transactions-stats" */ './TransactionsStatistics'),
 );
 
-const links = [
-  '/transactions/list',
-  '/transactions/add',
-  '/transactions/categories',
-  '/transactions/statistics',
-];
-
 function Transactions({ history, location }) {
-  const [activeTab, setActiveTab] = React.useState(links.indexOf(location.pathname));
+  const [activeTab, setActiveTab] = React.useState(location.pathname);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
@@ -35,27 +28,29 @@ function Transactions({ history, location }) {
     <div>
       <Tabs
         value={activeTab}
-        onChange={(e, newVal) => setActiveTab(newVal)}
+        onChange={setActiveTab}
+        history={history}
         tabs={[
           {
             label: 'List',
             mobile: { label: 'List' },
-            onClick: () => history.push('/transactions/list'),
+            path: '/transactions/list',
           },
           {
             label: 'Add',
             mobile: { label: 'Add' },
-            onClick: () => history.push('/transactions/add'),
+            path: '/transactions/add',
+            hideOnMobile: true,
           },
           {
             label: 'Categories',
             mobile: { label: 'Cats' },
-            onClick: () => history.push('/transactions/categories'),
+            path: '/transactions/categories',
           },
           {
             label: 'Statistics',
             mobile: { label: 'Stats' },
-            onClick: () => history.push('/transactions/statistics'),
+            path: '/transactions/statistics',
           },
         ]}
       />

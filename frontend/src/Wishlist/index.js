@@ -6,10 +6,8 @@ const WishCreate = lazy(() => import(/* webpackChunkName: "wish-add" */ './WishC
 const WishList = lazy(() => import(/* webpackChunkName: "wish-list" */ './WishList'));
 const WishEdit = lazy(() => import(/* webpackChunkName: "wish-edit" */ './WishEdit'));
 
-const links = ['/wishlist/list', '/wishlist/add'];
-
 const Wishlist = ({ history, location }) => {
-  const [activeTab, setActiveTab] = React.useState(links.indexOf(location.pathname));
+  const [activeTab, setActiveTab] = React.useState(location.pathname);
   const [wishes, setWishes] = React.useState([]);
   const [wishToEdit, setWishToEdit] = React.useState(null);
   const fetchWishes = () => {
@@ -59,14 +57,19 @@ const Wishlist = ({ history, location }) => {
     <div>
       <Tabs
         value={activeTab}
-        onChange={(e, newVal) => setActiveTab(newVal)}
+        onChange={setActiveTab}
+        history={history}
         tabs={[
           {
             label: 'List',
             mobile: { label: 'List' },
-            onClick: () => history.push('/wishlist/list'),
+            path: '/wishlist/list',
           },
-          { label: 'Add', mobile: { label: 'Add' }, onClick: () => history.push('/wishlist/add') },
+          {
+            label: 'Add',
+            mobile: { label: 'Add' },
+            path: '/wishlist/add',
+          },
         ]}
       />
       <br /> <br />
