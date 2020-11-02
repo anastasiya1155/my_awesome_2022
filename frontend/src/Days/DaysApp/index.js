@@ -48,7 +48,7 @@ const DaysApp = ({ labels, oauthToken }) => {
   return (
     <Grid container spacing={3}>
       <Grid item container xs={12} md={5} direction="column">
-        <Grid item container xs={12}>
+        <Grid item container>
           <Grid item xs={4} sm={4} className={classes.marginRight}>
             <FormControl fullWidth>
               <InputLabel id="year-label">Year</InputLabel>
@@ -75,7 +75,7 @@ const DaysApp = ({ labels, oauthToken }) => {
             </FormControl>
           </Grid>
         </Grid>
-        <Grid item xs={12} container direction="column">
+        <Grid item container direction="column">
           {posts.map(p => (
             <Grid item key={p.id} className={classes.marginTop}>
               <span id={p.id} style={{ position: 'absolute', top: -100 }} />
