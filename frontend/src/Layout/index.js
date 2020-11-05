@@ -14,13 +14,13 @@ import {
   Drawer,
 } from '@material-ui/core';
 import useStyles from './useStyles';
-import { clearStorage } from '../shared/utils/storage';
 import LayoutToolbar from './LayoutToolbar';
 import TasksInProgress from './TasksInProgress';
 import Reminder from './Reminder';
 import { getInProgressAction, getReminderAction } from '../shared/api/handlers';
 import ErrorSnackbar from '../shared/components/ErrorSnackbar';
 import { SET_ERROR } from '../shared/redux/rootReducer';
+import { USER_SIGN_OUT } from '../shared/redux/photosReducer';
 
 const Layout = ({ children }) => {
   const classes = useStyles();
@@ -37,13 +37,7 @@ const Layout = ({ children }) => {
   }, [dispatch]);
 
   const handleLogout = () => {
-    clearStorage();
-    const auth2 = window.gapi?.auth2?.getAuthInstance();
-    if (auth2) {
-      auth2.signOut().then(() => {
-        console.log('User signed out.');
-      });
-    }
+    dispatch({ type: USER_SIGN_OUT });
     history.push('/login');
   };
 

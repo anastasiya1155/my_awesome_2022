@@ -1,3 +1,5 @@
+import { clearStorage } from '../utils/storage';
+
 export const USER_SIGN_IN = '@photos/USER_SIGN_IN';
 export const USER_SIGN_OUT = '@photos/USER_SIGN_OUT';
 
@@ -23,16 +25,14 @@ const reducer = (state = initialState, action) => {
         token: user.token,
       };
     case USER_SIGN_OUT:
-      localStorage.removeItem('name');
-      localStorage.removeItem('imageUrl');
-      localStorage.removeItem('oauth_token');
-      return {
-        ...state,
-        isLoggedIn: false,
-        name: null,
-        imageUrl: null,
-        token: null,
-      };
+      const auth2 = window.gapi?.auth2?.getAuthInstance();
+      if (auth2) {
+        auth2.signOut().then(() => {
+          console.log('User signed out.');
+        });
+      }
+      clearStorage();
+      return {}; // empty state
     default:
       return state;
   }
