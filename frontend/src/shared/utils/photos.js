@@ -27,7 +27,12 @@ export const getPhotosOnDate = async (authToken, date) => {
         }),
       },
     );
-    photos = await response.json();
+    const result = await response.json();
+    if (result && !result.error) {
+      photos = result;
+    } else {
+      error = result.error;
+    }
   } catch (err) {
     error = err;
   }
@@ -39,19 +44,21 @@ export const photosSignIn = dispatch => {
   const auth2 = window.gapi.auth2?.getAuthInstance();
 
   if (auth2) {
-    auth2
+    return auth2
       .signIn({ scope: 'https://www.googleapis.com/auth/photoslibrary.readonly' })
       .then(googleUser => {
         const profile = googleUser.getBasicProfile();
+        const token = googleUser.getAuthResponse().access_token;
 
         dispatch({
           type: USER_SIGN_IN,
           payload: {
             name: profile.getName(),
             imageUrl: profile.getImageUrl(),
-            token: googleUser.getAuthResponse().access_token,
+            token,
           },
         });
+        return token;
       })
       .catch(console.log);
   }

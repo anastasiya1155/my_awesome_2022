@@ -116,7 +116,9 @@ const PostShow = ({ post, labels, searchTerm, oauthToken }) => {
               ))}
             </div>
           ) : null}
-          {oauthToken ? <PostPhotos oauthToken={oauthToken} date={post.date} /> : null}
+          {oauthToken ? (
+            <PostPhotos oauthToken={oauthToken} date={post.date} dispatch={dispatch} />
+          ) : null}
           {post.comments.map(comment => (
             <PostComment key={comment.ID} comment={comment} />
           ))}

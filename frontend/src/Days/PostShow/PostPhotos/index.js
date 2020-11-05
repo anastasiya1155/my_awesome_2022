@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import { Dialog, Grid, Typography } from '@material-ui/core';
-import { getPhotosOnDate } from '../../../shared/utils/photos';
+import { getPhotosOnDate, photosSignIn } from '../../../shared/utils/photos';
 import useStyles from './useStyles';
 
-const PostPhotos = ({ oauthToken, date }) => {
+const PostPhotos = ({ oauthToken, date, dispatch }) => {
   const [photos, setPhotos] = React.useState([]);
   const [isFetched, setFetched] = React.useState(false);
   const [showImg, setShowImg] = React.useState(null);
@@ -13,10 +13,19 @@ const PostPhotos = ({ oauthToken, date }) => {
 
   const getPhotos = () => {
     getPhotosOnDate(oauthToken, date)
-      .then(({ photos, error }) => {
+      .then(async ({ photos, error }) => {
         setFetched(true);
         if (error) {
-          console.log(error);
+          if (error.code === 401) {
+            const newToken = await photosSignIn(dispatch);
+            getPhotosOnDate(newToken, date)
+              .then(({ photos }) => {
+                if (photos?.mediaItems) {
+                  setPhotos(photos.mediaItems);
+                }
+              })
+              .catch(console.log);
+          }
         }
         if (photos?.mediaItems) {
           setPhotos(photos.mediaItems);
@@ -50,6 +59,7 @@ const PostPhotos = ({ oauthToken, date }) => {
 };
 
 PostPhotos.propTypes = {
+  dispatch: PropTypes.func.isRequired,
   date: PropTypes.string.isRequired,
   oauthToken: PropTypes.string.isRequired,
 };
