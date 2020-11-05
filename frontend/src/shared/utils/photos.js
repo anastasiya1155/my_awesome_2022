@@ -1,4 +1,4 @@
-import { USER_SIGN_IN } from '../redux/photosReducer';
+import { USER_SIGN_IN, USER_SIGN_OUT } from '../redux/photosReducer';
 
 export const getPhotosOnDate = async (authToken, date) => {
   let photos = [];
@@ -54,5 +54,17 @@ export const photosSignIn = dispatch => {
         });
       })
       .catch(console.log);
+  }
+};
+
+export const photosVerifyToken = async (token, dispatch) => {
+  if (token) {
+    const auth2 = window.gapi.auth2?.getAuthInstance();
+    if (auth2) {
+      const isValid = auth2.isSignedIn.get();
+      if (!isValid) {
+        dispatch({ type: USER_SIGN_OUT });
+      }
+    }
   }
 };

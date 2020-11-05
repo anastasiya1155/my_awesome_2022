@@ -1,4 +1,5 @@
 export const USER_SIGN_IN = '@photos/USER_SIGN_IN';
+export const USER_SIGN_OUT = '@photos/USER_SIGN_OUT';
 
 const initialState = {
   isLoggedIn: !!localStorage.getItem('oauth_token'),
@@ -20,6 +21,17 @@ const reducer = (state = initialState, action) => {
         name: user.name,
         imageUrl: user.imageUrl,
         token: user.token,
+      };
+    case USER_SIGN_OUT:
+      localStorage.removeItem('name');
+      localStorage.removeItem('imageUrl');
+      localStorage.removeItem('oauth_token');
+      return {
+        ...state,
+        isLoggedIn: false,
+        name: null,
+        imageUrl: null,
+        token: null,
       };
     default:
       return state;

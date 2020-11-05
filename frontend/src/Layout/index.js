@@ -38,6 +38,12 @@ const Layout = ({ children }) => {
 
   const handleLogout = () => {
     clearStorage();
+    const auth2 = window.gapi?.auth2?.getAuthInstance();
+    if (auth2) {
+      auth2.signOut().then(() => {
+        console.log('User signed out.');
+      });
+    }
     history.push('/login');
   };
 

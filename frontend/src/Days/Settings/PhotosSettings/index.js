@@ -2,11 +2,15 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Avatar, Grid, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import { photosSignIn } from '../../../shared/utils/photos';
+import { photosSignIn, photosVerifyToken } from '../../../shared/utils/photos';
 
 const PhotosSettings = () => {
   const googleUser = useSelector(state => state.photos);
   const dispatch = useDispatch();
+
+  React.useState(() => {
+    photosVerifyToken(googleUser.token, dispatch);
+  }, []);
 
   return (
     <Grid container spacing={2}>
