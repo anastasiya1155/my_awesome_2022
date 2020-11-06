@@ -17,7 +17,7 @@ import { useTheme } from '@material-ui/core/styles';
 
 const thisMonth = moment().format('MMMM');
 const thisYear = moment().year();
-const startDate = moment('01-06-2018');
+const startDate = moment('2018-06-01');
 const yearsSinceStart = thisYear - startDate.year();
 
 const tableColumns = [
@@ -105,33 +105,50 @@ const TransactionsList = ({ history }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const categories = useSelector(state => state.transactions.categories);
 
+  const normalizeByCategory = React.useCallback(
+    (trs, totalSum) => {
+      return categories
+        .map(category => {
+          const filtered = trs.filter(tr => tr.category === category.name);
+          const sum = countSum(filtered);
+          const percentage = ((sum / totalSum) * 100).toFixed(1);
+          return { sum, percentage, category: category.name };
+        })
+        .sort((a, b) => (a.sum > b.sum ? -1 : 1));
+    },
+    [categories],
+  );
+
+  const fetchData = React.useCallback(
+    (m, y) => {
+      const month = moment()
+        .month(m)
+        .format('M');
+      getTransactionsByMonthAndYear(y, month)
+        .then(response => {
+          if (response.data) {
+            const newTransactions = Object.keys(response.data)
+              .reverse()
+              .map(key => ({
+                ...response.data[key],
+                id: key,
+                category: categories.find(c => c.id === response.data[key].category)?.name,
+              }));
+            const newTotal = countSum(newTransactions);
+            const newCategoryData = normalizeByCategory(newTransactions, newTotal);
+            setTransactions(newTransactions);
+            setTotal(newTotal);
+            setCategoryData(newCategoryData);
+          }
+        })
+        .catch(console.log);
+    },
+    [categories, normalizeByCategory],
+  );
+
   React.useEffect(() => {
     fetchData(thisMonth, thisYear);
-  }, [categories]);
-
-  const fetchData = (selectedMonth, selectedYear) => {
-    const month = moment()
-      .month(selectedMonth)
-      .format('M');
-    getTransactionsByMonthAndYear(selectedYear, month)
-      .then(response => {
-        if (response.data) {
-          const newTransactions = Object.keys(response.data)
-            .reverse()
-            .map(key => ({
-              ...response.data[key],
-              id: key,
-              category: categories.find(c => c.id === response.data[key].category)?.name,
-            }));
-          const newTotal = countSum(newTransactions);
-          const newCategoryData = normalizeByCategory(newTransactions, newTotal);
-          setTransactions(newTransactions);
-          setTotal(newTotal);
-          setCategoryData(newCategoryData);
-        }
-      })
-      .catch(console.log);
-  };
+  }, [categories, fetchData]);
 
   const onMonthChange = e => {
     setSelectedMonth(e.target.value);
@@ -141,17 +158,6 @@ const TransactionsList = ({ history }) => {
   const onYearChange = e => {
     setSelectedYear(e.target.value);
     fetchData(selectedMonth, e.target.value);
-  };
-
-  const normalizeByCategory = (transactions, total) => {
-    return categories
-      .map(category => {
-        const filtered = transactions.filter(tr => tr.category === category.name);
-        const sum = countSum(filtered);
-        const percentage = ((sum / total) * 100).toFixed(1);
-        return { sum, percentage, category: category.name };
-      })
-      .sort((a, b) => (a.sum > b.sum ? -1 : 1));
   };
 
   const onGroupByChange = e => {
