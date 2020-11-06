@@ -5,14 +5,14 @@ import TransactionsCategoriesShow from './show';
 import TransactionsCategoriesCreate from './create';
 
 const TransactionsCategories = () => {
-  const categories = useSelector(state => state.transactions.categories);
+  const categories = useSelector((state) => state.transactions.categories);
 
   return (
     <div>
       <TransactionsCategoriesCreate />
       <br />
       <List component="nav">
-        {categories.map(c => (
+        {categories.map((c) => (
           <TransactionsCategoriesShow key={c.id} id={c.id} name={c.name} />
         ))}
       </List>

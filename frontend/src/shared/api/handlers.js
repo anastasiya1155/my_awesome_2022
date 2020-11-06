@@ -13,7 +13,7 @@ import { TRANS_CATEGORIES_LOADED } from '../redux/transactionsReducer';
 const safeAction = (action, callback, dispatch) => {
   return action()
     .then(callback)
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
       if (err.message === 'Network Error') {
         // TODO: add custom logic for each route
@@ -28,7 +28,7 @@ const safeAction = (action, callback, dispatch) => {
 export function getPostsAction(dispatch) {
   return safeAction(
     api.getPosts,
-    json => {
+    (json) => {
       dispatch({ type: POSTS_LOADED, payload: json });
     },
     dispatch,
@@ -38,7 +38,7 @@ export function getPostsAction(dispatch) {
 export function getPostsHistoryAction(dispatch) {
   return safeAction(
     api.getPostsHistory,
-    json => {
+    (json) => {
       dispatch({ type: POSTS_HISTORY_LOADED, payload: json });
     },
     dispatch,
@@ -48,7 +48,7 @@ export function getPostsHistoryAction(dispatch) {
 export function getLabelsAction(dispatch) {
   return safeAction(
     api.getLabels,
-    json => {
+    (json) => {
       dispatch({ type: LABELS_LOADED, payload: json });
     },
     dispatch,
@@ -58,7 +58,7 @@ export function getLabelsAction(dispatch) {
 export function getPeriodsAction(dispatch) {
   return safeAction(
     api.getPeriods,
-    json => {
+    (json) => {
       dispatch({ type: PERIODS_LOADED, payload: json });
     },
     dispatch,
@@ -68,7 +68,7 @@ export function getPeriodsAction(dispatch) {
 export function getInProgressAction(dispatch) {
   return safeAction(
     api.getInProgress,
-    json => {
+    (json) => {
       dispatch({ type: IN_PROGRESS_LOADED, payload: json });
     },
     dispatch,
@@ -78,7 +78,7 @@ export function getInProgressAction(dispatch) {
 export function getReminderAction(dispatch) {
   return safeAction(
     api.getExpiredLts,
-    json => {
+    (json) => {
       dispatch({ type: REMINDER_LOADED, payload: json });
     },
     dispatch,
@@ -202,7 +202,7 @@ export function editPeriodAction(dispatch, { id, data }) {
 const updateProjectTasks = (dispatch, id) => {
   return safeAction(
     () => api.getTasks(id),
-    json => dispatch({ type: TASKS_LOADED, payload: { ...json, id } }),
+    (json) => dispatch({ type: TASKS_LOADED, payload: { ...json, id } }),
     dispatch,
   );
 };
@@ -211,7 +211,7 @@ export function getProjectAction(dispatch, id) {
   return Promise.all([
     safeAction(
       () => api.getProject(id),
-      json => dispatch({ type: PROJECT_LOADED, payload: json }),
+      (json) => dispatch({ type: PROJECT_LOADED, payload: json }),
       dispatch,
     ),
     updateProjectTasks(dispatch, id),
@@ -251,7 +251,7 @@ export function createTaskAction(dispatch, { data, projectId }) {
 export function getLastTimeAction(dispatch) {
   return safeAction(
     api.getLts,
-    json => dispatch({ type: LAST_TIMES_LOADED, payload: json }),
+    (json) => dispatch({ type: LAST_TIMES_LOADED, payload: json }),
     dispatch,
   );
 }
@@ -280,7 +280,7 @@ export function addLastTimeAction(dispatch, data) {
 export function getTransCategoriesAction(dispatch) {
   return safeAction(
     api.getTransactionsCategories,
-    json => dispatch({ type: TRANS_CATEGORIES_LOADED, payload: json }),
+    (json) => dispatch({ type: TRANS_CATEGORIES_LOADED, payload: json }),
     dispatch,
   );
 }

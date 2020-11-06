@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import { photosSignIn, photosVerifyToken } from '../../../shared/utils/photos';
 
 const PhotosSettings = () => {
-  const googleUser = useSelector(state => state.photos);
+  const googleUser = useSelector((state) => state.photos);
   const dispatch = useDispatch();
 
   React.useState(() => {

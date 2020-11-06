@@ -9,14 +9,14 @@ const TransactionsStatistics = () => {
   const [selectedCategories, setSelectedCategories] = React.useState(['Продукты']);
   const [data, setData] = React.useState([]);
   const [chartData, setChartData] = React.useState([]);
-  const categories = useSelector(state => state.transactions.categories);
+  const categories = useSelector((state) => state.transactions.categories);
 
   const getChartData = (d, categories) => {
     const cD = [];
-    d.forEach(i => {
+    d.forEach((i) => {
       const row = [i[0].date];
-      categories.forEach(cat => {
-        row.push(i.find(mC => mC.category === cat).sum);
+      categories.forEach((cat) => {
+        row.push(i.find((mC) => mC.category === cat).sum);
       });
       cD.push(row);
     });
@@ -24,14 +24,14 @@ const TransactionsStatistics = () => {
   };
 
   React.useEffect(() => {
-    getTransactionsStatistics().then(resp => {
+    getTransactionsStatistics().then((resp) => {
       const d = Object.values(resp.data);
       setData(d);
       getChartData(d, ['Продукты']);
     });
   }, []);
 
-  const handleSelect = e => {
+  const handleSelect = (e) => {
     setSelectedCategories(e.target.value);
     getChartData(data, e.target.value);
   };
@@ -45,7 +45,7 @@ const TransactionsStatistics = () => {
         value={selectedCategories}
         onChange={handleSelect}
       >
-        {categories.map(cat => (
+        {categories.map((cat) => (
           <MenuItem key={cat.id} value={cat.name}>
             {cat.name}
           </MenuItem>

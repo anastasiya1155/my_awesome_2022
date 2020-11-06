@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-const getRange = len =>
+const getRange = (len) =>
   Array(len)
     .fill()
     .map((_, i) => i + 1);

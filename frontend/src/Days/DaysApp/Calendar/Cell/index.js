@@ -14,7 +14,7 @@ const CalendarCell = (row, col, classes) => {
       <div className={classes.date}>{data.date}</div>
       {!data.isEmpty && (
         <div>
-          {data.labels?.map(l => (
+          {data.labels?.map((l) => (
             <PostLabel key={l.ID} label={mapLabel(l)} isActive noMargin />
           ))}
         </div>

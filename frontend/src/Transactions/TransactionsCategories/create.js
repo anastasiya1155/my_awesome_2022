@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import { useSelector, useDispatch } from 'react-redux';
 import { addTransCategoryAction } from '../../shared/api/handlers';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
@@ -16,11 +16,11 @@ const useStyles = makeStyles(theme => ({
 const TransactionsCategoriesCreate = () => {
   const [showInput, setShowInput] = React.useState(false);
   const [value, setValue] = React.useState('');
-  const nextId = useSelector(state => state.transactions.nextId);
+  const nextId = useSelector((state) => state.transactions.nextId);
   const dispatch = useDispatch();
   const classes = useStyles();
 
-  const handleText = e => {
+  const handleText = (e) => {
     setValue(e.target.value);
   };
 

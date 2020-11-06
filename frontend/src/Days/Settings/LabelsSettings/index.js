@@ -18,12 +18,12 @@ const LabelsSettings = () => {
   const [isNewLabelActive, setIsNewLabelActive] = React.useState(false);
   const [labelToEdit, setLabelToEdit] = React.useState(null);
   const [isEdit, setIsEdit] = React.useState(false);
-  const labels = useSelector(state => state.post.labels);
+  const labels = useSelector((state) => state.post.labels);
   const dispatch = useDispatch();
 
   const handleLabelClick = (e, isActive, labelId) => {
     const newLabels = isActive
-      ? activeLabels.filter(l => l !== labelId)
+      ? activeLabels.filter((l) => l !== labelId)
       : [...activeLabels, labelId];
     setActiveLabels(newLabels);
     setAnchorEl(e.currentTarget);
@@ -31,7 +31,7 @@ const LabelsSettings = () => {
     setLabelToEdit(labelId);
   };
 
-  const handleLabelEdit = e => {
+  const handleLabelEdit = (e) => {
     e.preventDefault();
     editLabelAction(dispatch, {
       labelId: labelToEdit,
@@ -48,7 +48,7 @@ const LabelsSettings = () => {
     });
   };
 
-  const handleLabelAdd = e => {
+  const handleLabelAdd = (e) => {
     e.preventDefault();
     addLabelAction(dispatch, {
       name: newLabelName,
@@ -87,7 +87,7 @@ const LabelsSettings = () => {
   };
 
   const handleLabelEditClick = () => {
-    const editLabel = labels.find(l => l.id === labelToEdit);
+    const editLabel = labels.find((l) => l.id === labelToEdit);
     setIsEdit(true);
     setIsAdd(false);
     setNewLabelName(editLabel.name);
@@ -110,7 +110,7 @@ const LabelsSettings = () => {
     <Grid container spacing={2}>
       <Grid item xs={12}>
         <Typography variant="h6">My labels: </Typography>
-        {labels.map(l => (
+        {labels.map((l) => (
           <PostLabel
             key={l.id}
             label={l}
@@ -151,13 +151,13 @@ const LabelsSettings = () => {
                 <TextField
                   name="labelName"
                   value={newLabelName}
-                  onChange={e => setNewLabelName(e.target.value)}
+                  onChange={(e) => setNewLabelName(e.target.value)}
                   label="Name"
                 />
               </Grid>
               <Grid item>
                 <Typography>Color</Typography>
-                <ColorPicker value={newLabelColor} onChange={val => setNewLabelColor(val)} />
+                <ColorPicker value={newLabelColor} onChange={(val) => setNewLabelColor(val)} />
               </Grid>
               <Grid item>
                 <Typography>Preview</Typography>

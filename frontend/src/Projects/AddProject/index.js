@@ -11,7 +11,7 @@ const AddProject = ({ handleSubmit, initialValues, handleCancel }) => {
 
   return (
     <form
-      onSubmit={e => {
+      onSubmit={(e) => {
         e.preventDefault();
         handleSubmit(values);
       }}
@@ -23,7 +23,7 @@ const AddProject = ({ handleSubmit, initialValues, handleCancel }) => {
             fullWidth
             label="Title"
             value={values.title}
-            onChange={e => setValues({ ...values, title: e.target.value })}
+            onChange={(e) => setValues({ ...values, title: e.target.value })}
           />
         </Grid>
         <Grid item md={5} xs={12}>
@@ -32,7 +32,7 @@ const AddProject = ({ handleSubmit, initialValues, handleCancel }) => {
             fullWidth
             label="Description"
             value={values.description}
-            onChange={e => setValues({ ...values, description: e.target.value })}
+            onChange={(e) => setValues({ ...values, description: e.target.value })}
           />
         </Grid>
         <Grid item md={3} xs={12}>

@@ -40,7 +40,7 @@ const PostPhotos = ({ oauthToken, date, dispatch }) => {
       {isFetched && !photos.length ? <Typography>No photos found...</Typography> : null}
       {isFetched && photos.length ? (
         <Grid container spacing={1}>
-          {photos.map(p => (
+          {photos.map((p) => (
             <Grid item key={p.id}>
               <div
                 className={classes.img}

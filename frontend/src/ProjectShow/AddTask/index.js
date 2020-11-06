@@ -12,7 +12,7 @@ const AddTask = ({ match, dispatch }) => {
   return (
     <form
       className={classes.inputContainer}
-      onSubmit={e => {
+      onSubmit={(e) => {
         e.preventDefault();
         createTaskAction(dispatch, {
           data: {
@@ -32,7 +32,7 @@ const AddTask = ({ match, dispatch }) => {
             name="time"
             type="text"
             value={newTaskName}
-            onChange={e => {
+            onChange={(e) => {
               setNewTaskName(e.target.value);
             }}
           />

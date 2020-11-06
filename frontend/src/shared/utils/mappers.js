@@ -1,13 +1,13 @@
 import moment from 'moment';
 
-export const mapLabel = label => ({
+export const mapLabel = (label) => ({
   id: label.ID,
   name: label.Name,
   color: label.Color,
   colorActive: label.ColorActive,
 });
 
-export const mapPost = post => ({
+export const mapPost = (post) => ({
   id: post.ID,
   labels: post.Labels,
   comments: post.Comments,
@@ -16,7 +16,7 @@ export const mapPost = post => ({
   date: post.Date.slice(0, 10),
 });
 
-export const mapPeriod = period => ({
+export const mapPeriod = (period) => ({
   id: period.ID,
   name: period.Name,
   start: moment(period.Start).format('YYYY-MM-DD'),

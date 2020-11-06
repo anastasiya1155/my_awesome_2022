@@ -6,9 +6,9 @@ import { colorPairs } from '../../utils/colors';
 const ColorPicker = ({ value, onChange }) => {
   return (
     <Grid container direction="column" spacing={1}>
-      {colorPairs.map(row => (
+      {colorPairs.map((row) => (
         <Grid item container spacing={1}>
-          {row.map(c => (
+          {row.map((c) => (
             <Grid item>
               <div
                 onClick={() => onChange(c)}

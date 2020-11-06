@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   container: {
     width: 75,
     height: 75,
@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
     margin: '0 -10px',
     alignItems: 'center',
     justifyContent: 'center',
-    cursor: props => !props.isEmpty && 'pointer',
+    cursor: (props) => !props.isEmpty && 'pointer',
   },
   date: {
     position: 'absolute',

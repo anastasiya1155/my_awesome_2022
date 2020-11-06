@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core';
 
-const styles = makeStyles(theme => ({
+const styles = makeStyles((theme) => ({
   modalPaper: {
     top: '50%',
     left: '50%',

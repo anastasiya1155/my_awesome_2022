@@ -15,11 +15,11 @@ const initialValues = { description: '', amount: '', category: 31 };
 
 const TransactionsCreate = ({ history }) => {
   const [values, setValues] = React.useState(initialValues);
-  const categories = useSelector(state => state.transactions.categories);
+  const categories = useSelector((state) => state.transactions.categories);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
@@ -42,16 +42,16 @@ const TransactionsCreate = ({ history }) => {
   };
 
   return (
-    <form onSubmit={e => e.preventDefault()}>
+    <form onSubmit={(e) => e.preventDefault()}>
       <Grid container spacing={3}>
         <Grid item xs={12} container justify="space-between">
-          {[31, 34, 11, 12, 52, 22, 14].map(id => (
+          {[31, 34, 11, 12, 52, 22, 14].map((id) => (
             <Grid item key={id}>
               <Button
                 variant="outlined"
                 onClick={() => handleChange({ target: { value: id, name: 'category' } })}
               >
-                {categories.find(c => c.id === id)?.name}
+                {categories.find((c) => c.id === id)?.name}
               </Button>
             </Grid>
           ))}
@@ -62,7 +62,7 @@ const TransactionsCreate = ({ history }) => {
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              {categories.map(c => (
+              {categories.map((c) => (
                 <MenuItem key={c.id} value={c.id}>
                   {c.name}
                 </MenuItem>

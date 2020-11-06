@@ -6,9 +6,7 @@ import Button from '@material-ui/core/Button';
 import { createPostAction } from '../../../shared/api/handlers';
 
 const today = moment().format('YYYY-MM-DD');
-const yesterday = moment()
-  .subtract(1, 'days')
-  .format('YYYY-MM-DD');
+const yesterday = moment().subtract(1, 'days').format('YYYY-MM-DD');
 
 const PostCreate = () => {
   const [value, setValue] = React.useState('');
@@ -17,11 +15,11 @@ const PostCreate = () => {
   );
   const dispatch = useDispatch();
 
-  const handleText = e => {
+  const handleText = (e) => {
     setValue(e.target.value);
   };
 
-  const handleDate = e => {
+  const handleDate = (e) => {
     setDate(e.target.value);
   };
 

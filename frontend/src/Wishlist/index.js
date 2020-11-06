@@ -11,7 +11,7 @@ const Wishlist = ({ history, location }) => {
   const [wishes, setWishes] = React.useState([]);
   const [wishToEdit, setWishToEdit] = React.useState(null);
   const fetchWishes = () => {
-    getWishes().then(response => {
+    getWishes().then((response) => {
       if (response.data) {
         setWishes(response.data);
       }
@@ -21,7 +21,7 @@ const Wishlist = ({ history, location }) => {
     fetchWishes();
   }, []);
 
-  const handleAddWish = values => {
+  const handleAddWish = (values) => {
     return postWish({
       ...values,
       priceFrom: parseInt(values.priceFrom, 10),
@@ -34,18 +34,14 @@ const Wishlist = ({ history, location }) => {
       .catch(console.log);
   };
   const editWish = (id, data) => {
-    return putWish(id, data)
-      .then(fetchWishes)
-      .catch(console.log);
+    return putWish(id, data).then(fetchWishes).catch(console.log);
   };
 
-  const removeWish = id => {
-    deleteWish(id)
-      .then(fetchWishes)
-      .catch(console.log);
+  const removeWish = (id) => {
+    deleteWish(id).then(fetchWishes).catch(console.log);
   };
 
-  const openEditPopup = w => {
+  const openEditPopup = (w) => {
     setWishToEdit(w);
   };
 

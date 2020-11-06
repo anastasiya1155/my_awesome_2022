@@ -4,7 +4,7 @@ import { TextField, Button, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { editPostAction } from '../../../shared/api/handlers';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   textarea: {
     width: '100%',
     padding: theme.spacing(2),
@@ -21,7 +21,7 @@ const PostEdit = ({ body, post, onCancel }) => {
     setUpdatedValue(body);
   }, [body]);
 
-  const handleText = e => {
+  const handleText = (e) => {
     setUpdatedValue(e.target.value);
   };
 

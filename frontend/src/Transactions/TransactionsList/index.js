@@ -27,14 +27,14 @@ const tableColumns = [
     field: 'category',
   },
   { title: 'Description', field: 'description' },
-  { title: 'Date', field: 'date', render: row => moment(row.date).format('YYYY-MM-DD') },
+  { title: 'Date', field: 'date', render: (row) => moment(row.date).format('YYYY-MM-DD') },
 ];
 
 const mobileColumns = [
   {
     title: '',
     field: 'amount',
-    render: row => (
+    render: (row) => (
       <div>
         <div>
           <b>{row.amount}</b>
@@ -48,7 +48,7 @@ const mobileColumns = [
   {
     title: '',
     field: 'date',
-    render: row => (
+    render: (row) => (
       <div>
         <div>{row.category}</div>
         <div>
@@ -64,7 +64,7 @@ const categoryColumns = [
   {
     title: 'Percentage',
     field: 'percentage',
-    render: row => (
+    render: (row) => (
       <div style={{ width: `${row.percentage}%`, backgroundColor: '#af8f85' }}>
         {row.percentage}
       </div>
@@ -76,9 +76,7 @@ const categoryColumns = [
 const getYears = () => {
   const years = [];
   for (let i = 0; i <= yearsSinceStart; i++) {
-    const year = moment()
-      .subtract(i, 'years')
-      .format('YYYY');
+    const year = moment().subtract(i, 'years').format('YYYY');
     years.push(
       <MenuItem value={year} key={year}>
         {year}
@@ -88,9 +86,9 @@ const getYears = () => {
   return years;
 };
 
-const countSum = transactions => {
+const countSum = (transactions) => {
   let total = 0;
-  transactions.forEach(tr => (total += tr.amount));
+  transactions.forEach((tr) => (total += tr.amount));
   return total;
 };
 
@@ -103,13 +101,13 @@ const TransactionsList = ({ history }) => {
   const [groupByCategory, setGroupByCategory] = React.useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const categories = useSelector(state => state.transactions.categories);
+  const categories = useSelector((state) => state.transactions.categories);
 
   const normalizeByCategory = React.useCallback(
     (trs, totalSum) => {
       return categories
-        .map(category => {
-          const filtered = trs.filter(tr => tr.category === category.name);
+        .map((category) => {
+          const filtered = trs.filter((tr) => tr.category === category.name);
           const sum = countSum(filtered);
           const percentage = ((sum / totalSum) * 100).toFixed(1);
           return { sum, percentage, category: category.name };
@@ -121,18 +119,16 @@ const TransactionsList = ({ history }) => {
 
   const fetchData = React.useCallback(
     (m, y) => {
-      const month = moment()
-        .month(m)
-        .format('M');
+      const month = moment().month(m).format('M');
       getTransactionsByMonthAndYear(y, month)
-        .then(response => {
+        .then((response) => {
           if (response.data) {
             const newTransactions = Object.keys(response.data)
               .reverse()
-              .map(key => ({
+              .map((key) => ({
                 ...response.data[key],
                 id: key,
-                category: categories.find(c => c.id === response.data[key].category)?.name,
+                category: categories.find((c) => c.id === response.data[key].category)?.name,
               }));
             const newTotal = countSum(newTransactions);
             const newCategoryData = normalizeByCategory(newTransactions, newTotal);
@@ -150,17 +146,17 @@ const TransactionsList = ({ history }) => {
     fetchData(thisMonth, thisYear);
   }, [categories, fetchData]);
 
-  const onMonthChange = e => {
+  const onMonthChange = (e) => {
     setSelectedMonth(e.target.value);
     fetchData(e.target.value, selectedYear);
   };
 
-  const onYearChange = e => {
+  const onYearChange = (e) => {
     setSelectedYear(e.target.value);
     fetchData(selectedMonth, e.target.value);
   };
 
-  const onGroupByChange = e => {
+  const onGroupByChange = (e) => {
     const newCategoryData = normalizeByCategory(transactions, total);
     setGroupByCategory(e.target.checked);
     setCategoryData(newCategoryData);
@@ -181,7 +177,7 @@ const TransactionsList = ({ history }) => {
       <Grid container justify="space-around">
         <Grid item>
           <Select value={selectedMonth} onChange={onMonthChange}>
-            {moment.months().map(m => (
+            {moment.months().map((m) => (
               <MenuItem value={m} key={m}>
                 {m}
               </MenuItem>

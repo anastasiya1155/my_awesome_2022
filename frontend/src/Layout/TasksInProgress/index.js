@@ -6,13 +6,13 @@ import { Grid } from '@material-ui/core';
 import useStyles from './useStyles';
 
 const TasksInProgress = () => {
-  const inProgress = useSelector(state => state.projects.inProgress);
+  const inProgress = useSelector((state) => state.projects.inProgress);
   const history = useHistory();
   const classes = useStyles();
 
   return inProgress.length > 0 ? (
     <Grid container>
-      {inProgress.map(task => (
+      {inProgress.map((task) => (
         <Grid item key={task.id}>
           <b
             onClick={() => history.push(`/projects/${task.project_id}`)}

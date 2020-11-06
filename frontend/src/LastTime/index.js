@@ -26,7 +26,7 @@ const LastTime = () => {
   const [itemToEdit, setItemToEdit] = React.useState(null);
   const [updateDate, setUpdateDate] = React.useState(moment().format('YYYY-MM-DDTHH:mm'));
   const dispatch = useDispatch();
-  const items = useSelector(state => state.lastTime.lastTimes);
+  const items = useSelector((state) => state.lastTime.lastTimes);
 
   React.useEffect(() => {
     getLastTimeAction(dispatch);
@@ -48,7 +48,7 @@ const LastTime = () => {
     });
   };
 
-  const handleSubmit = values => {
+  const handleSubmit = (values) => {
     const action = isAdd
       ? () => addLastTimeAction(dispatch, values)
       : () => editLastTimeAction(dispatch, { id: itemToEdit.id, data: values });
@@ -63,7 +63,7 @@ const LastTime = () => {
     setItemToUpdate(null);
   };
 
-  const handleItemClicked = item => {
+  const handleItemClicked = (item) => {
     setIsEdit(true);
     setIsAdd(false);
     setItemToEdit(item);
@@ -104,10 +104,10 @@ const LastTime = () => {
         ) : null}
       </Grid>
       <List>
-        {items.map(item => (
+        {items.map((item) => (
           <React.Fragment key={item.id}>
             <ListItem button onClick={() => handleItemClicked(item)}>
-              <ListItemIcon aria-describedby={id} onClick={e => handleListItemClick(e, item)}>
+              <ListItemIcon aria-describedby={id} onClick={(e) => handleListItemClick(e, item)}>
                 <BeenhereIcon
                   color={
                     moment().diff(moment(item.date), 'days') >= item.remind_after_days
@@ -142,7 +142,7 @@ const LastTime = () => {
               fullWidth
               name="update Date"
               value={updateDate}
-              onChange={e => setUpdateDate(e.target.value)}
+              onChange={(e) => setUpdateDate(e.target.value)}
               type="datetime-local"
             />
           </Grid>

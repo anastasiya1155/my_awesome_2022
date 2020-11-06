@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, FormGroup, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   gutterBottom: {
     marginBottom: theme.spacing(3),
   },

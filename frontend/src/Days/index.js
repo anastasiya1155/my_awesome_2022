@@ -13,8 +13,8 @@ const Search = lazy(/* webpackChunkName: "days-search" */ () => import('./Search
 
 const Days = ({ location, history }) => {
   const [activeTab, setActiveTab] = React.useState(location.pathname);
-  const labels = useSelector(state => state.post.labels);
-  const oauthToken = useSelector(state => state.photos.token);
+  const labels = useSelector((state) => state.post.labels);
+  const oauthToken = useSelector((state) => state.photos.token);
   const dispatch = useDispatch();
 
   React.useEffect(() => {

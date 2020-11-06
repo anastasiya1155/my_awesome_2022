@@ -12,20 +12,20 @@ import {
 
 const PeriodSettings = () => {
   const [isAdd, setIsAdd] = React.useState(false);
-  const periods = useSelector(state => state.post.periods);
+  const periods = useSelector((state) => state.post.periods);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
     getPeriodsAction(dispatch);
   }, [dispatch]);
 
-  const handlePeriodAdd = values => {
+  const handlePeriodAdd = (values) => {
     createPeriodAction(dispatch, values).then(() => {
       setIsAdd(false);
     });
   };
 
-  const handlePeriodDelete = id => {
+  const handlePeriodDelete = (id) => {
     return deletePeriodAction(dispatch, id);
   };
 

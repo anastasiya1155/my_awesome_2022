@@ -41,7 +41,7 @@ const AddTIL = ({ isOpen, handleClose, task, projectId }) => {
           fullWidth
           label="Description"
           value={value}
-          onChange={e => setValue(e.target.value)}
+          onChange={(e) => setValue(e.target.value)}
         />
         <Button onClick={submitTIL} fullWidth>
           Submit

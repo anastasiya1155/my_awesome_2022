@@ -16,8 +16,8 @@ const Project = ({ match }) => {
   const [menuAnchorElement, setMenuAnchorElement] = React.useState(null);
   const [pressedTask, setPressedTask] = React.useState(null);
   const [taskForModal, setTaskForModal] = React.useState(null);
-  const project = useSelector(state => state.projects.projects[match.params.id] || {});
-  const tasks = useSelector(state => state.projects.tasksByStatus[match.params.id] || []);
+  const project = useSelector((state) => state.projects.projects[match.params.id] || {});
+  const tasks = useSelector((state) => state.projects.tasksByStatus[match.params.id] || []);
   const dispatch = useDispatch();
 
   const classes = useStyles();
@@ -41,12 +41,12 @@ const Project = ({ match }) => {
     editTaskAction(dispatch, { id: task.id, data: { status: status }, projectId: match.params.id });
   };
 
-  const handleArchive = task => {
+  const handleArchive = (task) => {
     handleMenuClose();
     editTaskAction(dispatch, { id: task.id, data: { archived: true }, projectId: match.params.id });
   };
 
-  const handleDelete = task => {
+  const handleDelete = (task) => {
     handleMenuClose();
     deleteTaskAction(dispatch, { id: task.id, projectId: match.params.id });
   };
@@ -60,7 +60,7 @@ const Project = ({ match }) => {
     });
   };
 
-  const handleOpenTILModal = task => {
+  const handleOpenTILModal = (task) => {
     handleMenuClose();
     setTaskForModal(task);
   };
@@ -78,19 +78,19 @@ const Project = ({ match }) => {
       <AddTask dispatch={dispatch} match={match} />
 
       <Grid item xs={12} container spacing={1}>
-        {Object.keys(tasks).map(key => (
+        {Object.keys(tasks).map((key) => (
           <Grid item sm={3} xs={12} container direction="column" spacing={1} key={key}>
             <Grid item>
               <Paper className={classes.paper}>
                 <Typography color="primary"> {key} </Typography>
               </Paper>
             </Grid>
-            {tasks[key].map(task => (
+            {tasks[key].map((task) => (
               <Grid item key={task.id}>
                 <Paper className={classes.paper}>
                   <Typography className={classes.taskText}>{task.body}</Typography>
                   <IconButton
-                    onClick={event => handleMoreClick(task, event.currentTarget)}
+                    onClick={(event) => handleMoreClick(task, event.currentTarget)}
                     className={classes.moreIcon}
                   >
                     <MoreVertIcon />

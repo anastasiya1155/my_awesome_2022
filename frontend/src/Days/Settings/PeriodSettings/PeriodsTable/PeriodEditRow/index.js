@@ -27,7 +27,7 @@ const PeriodEditRow = ({ period, onSubmit, onCancel }) => {
         <TextField
           name="periodName"
           value={newPeriodName}
-          onChange={e => setNewPeriodName(e.target.value)}
+          onChange={(e) => setNewPeriodName(e.target.value)}
           label="Name"
         />
       </TableCell>
@@ -36,7 +36,7 @@ const PeriodEditRow = ({ period, onSubmit, onCancel }) => {
           name="periodStart"
           type="date"
           value={newPeriodStart}
-          onChange={e => setNewPeriodStart(e.target.value)}
+          onChange={(e) => setNewPeriodStart(e.target.value)}
           label="Start date"
           InputLabelProps={{ shrink: true }}
         />
@@ -56,7 +56,7 @@ const PeriodEditRow = ({ period, onSubmit, onCancel }) => {
           name="periodEnd"
           type="date"
           value={newPeriodEnd}
-          onChange={e => setNewPeriodEnd(e.target.value)}
+          onChange={(e) => setNewPeriodEnd(e.target.value)}
           label="End date"
           disabled={isNewPeriodInProgress}
           InputLabelProps={{ shrink: true }}

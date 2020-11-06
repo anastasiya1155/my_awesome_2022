@@ -4,7 +4,7 @@ import { Dialog } from '@material-ui/core';
 import WishForm from '../WishForm';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   dialog: {
     padding: theme.spacing(4),
   },
@@ -16,7 +16,7 @@ const WishEdit = ({ isOpen, wish, onSubmit, handleClose }) => {
     setValues(wish || {});
   }, [wish]);
   const classes = useStyles();
-  const handleChange = e => {
+  const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
   return (
@@ -24,7 +24,7 @@ const WishEdit = ({ isOpen, wish, onSubmit, handleClose }) => {
       <WishForm
         values={values}
         handleChange={handleChange}
-        onSubmit={e => {
+        onSubmit={(e) => {
           e.preventDefault();
           onSubmit(wish.id, values)
             .then(() => {

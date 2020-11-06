@@ -21,11 +21,11 @@ const RegistrationPage = ({ history }) => {
   const handleSubmit = () => {
     if (password === confirmPassword) {
       sendRegistration({ email, password })
-        .then(resp => {
+        .then((resp) => {
           setItemToStorage(TOKEN_KEY, resp.data.Token);
           history.push('/days');
         })
-        .catch(err => {
+        .catch((err) => {
           setError(err.message);
         });
     } else {
@@ -40,7 +40,7 @@ const RegistrationPage = ({ history }) => {
   return (
     <Grid container justify="center" alignItems="center" className={classes.container}>
       <ErrorSnackbar handleClose={handleClose} error={error} />
-      <form onSubmit={e => e.preventDefault()}>
+      <form onSubmit={(e) => e.preventDefault()}>
         <Grid item container direction="column" spacing={2} className={classes.form}>
           <Grid item>
             <TextField
@@ -48,7 +48,7 @@ const RegistrationPage = ({ history }) => {
               fullWidth
               name="email"
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </Grid>
           <Grid item>
@@ -58,7 +58,7 @@ const RegistrationPage = ({ history }) => {
               fullWidth
               name="password"
               value={password}
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end" className={classes.icon}>
@@ -79,7 +79,7 @@ const RegistrationPage = ({ history }) => {
               fullWidth
               name="confirmPassword"
               value={confirmPassword}
-              onChange={e => setConfirmPassword(e.target.value)}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end" className={classes.icon}>

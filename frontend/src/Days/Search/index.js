@@ -8,10 +8,10 @@ const Search = ({ labels }) => {
   const [searchQuery, setSearchQuery] = React.useState('');
   const [posts, setPosts] = React.useState([]);
 
-  const handleSearch = e => {
+  const handleSearch = (e) => {
     e.preventDefault();
     searchPosts(searchQuery)
-      .then(response => {
+      .then((response) => {
         const newPosts = response.data.map(mapPost);
 
         setPosts(newPosts);
@@ -22,7 +22,7 @@ const Search = ({ labels }) => {
     <Grid container direction="column" spacing={3}>
       <Grid item>
         <form onSubmit={handleSearch}>
-          <TextField value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
+          <TextField value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
           <Button type="submit">search</Button>
         </form>
       </Grid>

@@ -27,29 +27,29 @@ class Tasks extends Component {
 
   fetchData = () => {
     getTodos()
-      .then(data => {
+      .then((data) => {
         const items = [];
         console.log(data);
         Object.entries(data.data).map(([key, value]) => items.push({ id: key, name: value.name }));
         this.setState({ toDoArr: items, isLoading: false, refreshing: false });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         this.setState({ isLoading: false, refreshing: false });
       });
   };
 
-  handleDelete = id => {
+  handleDelete = (id) => {
     deleteTodo(id)
       .then(this.fetchData)
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   };
 
-  handleChange = e => {
+  handleChange = (e) => {
     this.setState({ newTask: e.target.value });
   };
 
-  handleAdd = e => {
+  handleAdd = (e) => {
     const { newTask } = this.state;
     e.preventDefault();
     postTodo({ name: newTask })
@@ -59,7 +59,7 @@ class Tasks extends Component {
         });
         this.fetchData();
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   };
 
   render() {
@@ -78,7 +78,7 @@ class Tasks extends Component {
         </Grid>
         <List>
           {toDoArr.length > 0 ? (
-            toDoArr.map(todo => (
+            toDoArr.map((todo) => (
               <>
                 <ListItem>
                   <ListItemText>{todo.name}</ListItemText>

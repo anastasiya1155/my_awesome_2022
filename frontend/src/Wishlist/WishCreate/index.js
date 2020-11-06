@@ -10,13 +10,13 @@ const initialValues = {
 
 const WishCreate = ({ onSubmit }) => {
   const [values, setValues] = React.useState(initialValues);
-  const handleChange = e => {
+  const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
   return (
     <div>
       <WishForm
-        onSubmit={e => {
+        onSubmit={(e) => {
           e.preventDefault();
           onSubmit(values)
             .then(() => {

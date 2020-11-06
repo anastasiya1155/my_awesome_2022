@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Snackbar, makeStyles, IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   error: {
     backgroundColor: theme.palette.error.main,
     color: theme.palette.error.contrastText,

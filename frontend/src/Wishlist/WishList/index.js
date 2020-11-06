@@ -16,7 +16,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: 400,
     '@media screen and (max-width: 500px)': {
@@ -44,7 +44,7 @@ const WishList = ({ wishes, editWish, removeWish, openEditPopup }) => {
   React.useEffect(() => {
     if (wishes) {
       if (shouldHideDone) {
-        setWishesToShow(wishes.filter(w => !w.isDone));
+        setWishesToShow(wishes.filter((w) => !w.isDone));
       } else {
         setWishesToShow(wishes);
       }
@@ -56,13 +56,13 @@ const WishList = ({ wishes, editWish, removeWish, openEditPopup }) => {
       <FormControl>
         <FormControlLabel
           control={
-            <Checkbox checked={shouldHideDone} onChange={e => setHideDone(e.target.checked)} />
+            <Checkbox checked={shouldHideDone} onChange={(e) => setHideDone(e.target.checked)} />
           }
           label="Hide done"
         />
       </FormControl>
       <Grid container spacing={2}>
-        {wishesToShow.map(w => {
+        {wishesToShow.map((w) => {
           const isMine = true;
           return (
             <Grid key={w.id} item className={classes.root}>

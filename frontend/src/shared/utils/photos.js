@@ -40,13 +40,13 @@ export const getPhotosOnDate = async (authToken, date) => {
   return { photos, error };
 };
 
-export const photosSignIn = dispatch => {
+export const photosSignIn = (dispatch) => {
   const auth2 = window.gapi.auth2?.getAuthInstance();
 
   if (auth2) {
     return auth2
       .signIn({ scope: 'https://www.googleapis.com/auth/photoslibrary.readonly' })
-      .then(googleUser => {
+      .then((googleUser) => {
         const profile = googleUser.getBasicProfile();
         const token = googleUser.getAuthResponse().access_token;
 

@@ -22,7 +22,7 @@ const TransactionsTable = ({ columns, data, size, cellStyles }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map(row => (
+          {data.map((row) => (
             <TableRow
               key={row.id || row.category || row.reduce((prev, cur) => prev + cur.date || 0, 0)}
             >

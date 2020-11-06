@@ -53,12 +53,12 @@ const PostShow = ({ post, labels, searchTerm, oauthToken }) => {
       <Grid container justify="center" alignItems="center" className={classes.topActions}>
         <Grid item>{moment(post.date).format('dddd YYYY-MM-DD')}</Grid>
         <Grid item>
-          {labels.map(l => (
+          {labels.map((l) => (
             <PostLabel
               key={l.id}
               label={l}
               onClick={(e, active) => handleLabelClick(active, l.id)}
-              isActive={!!post.labels.find(pl => pl.ID === l.id)}
+              isActive={!!post.labels.find((pl) => pl.ID === l.id)}
             />
           ))}
         </Grid>
@@ -106,7 +106,7 @@ const PostShow = ({ post, labels, searchTerm, oauthToken }) => {
           )}
           {post.periods && post.periods.length > 0 ? (
             <div className={classes.periods}>
-              {post.periods.map(period => (
+              {post.periods.map((period) => (
                 <Chip
                   key={period.ID}
                   label={period.Name}
@@ -119,7 +119,7 @@ const PostShow = ({ post, labels, searchTerm, oauthToken }) => {
           {oauthToken ? (
             <PostPhotos oauthToken={oauthToken} date={post.date} dispatch={dispatch} />
           ) : null}
-          {post.comments.map(comment => (
+          {post.comments.map((comment) => (
             <PostComment key={comment.ID} comment={comment} />
           ))}
           {isCommentOpen ? (

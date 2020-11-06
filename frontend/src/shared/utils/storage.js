@@ -12,7 +12,7 @@ export const setItemToStorage = (key, value) => {
   }
 };
 
-export const getItemFromStorage = key => {
+export const getItemFromStorage = (key) => {
   try {
     return localStorage.getItem(key);
   } catch (err) {

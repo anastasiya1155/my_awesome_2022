@@ -14,11 +14,11 @@ const LoginPage = ({ history }) => {
   const classes = useStyles();
   const handleSubmit = () => {
     sendLogin({ email, password })
-      .then(resp => {
+      .then((resp) => {
         setItemToStorage(TOKEN_KEY, resp.data.Token);
         history.push('/days');
       })
-      .catch(err => {
+      .catch((err) => {
         setError(err.message);
       });
   };
@@ -29,7 +29,7 @@ const LoginPage = ({ history }) => {
   return (
     <Grid container justify="center" alignItems="center" className={classes.container}>
       <ErrorSnackbar error={error} handleClose={handleClose} />
-      <form onSubmit={e => e.preventDefault()}>
+      <form onSubmit={(e) => e.preventDefault()}>
         <Grid item container direction="column" spacing={2} className={classes.form}>
           <Grid item>
             <TextField
@@ -37,7 +37,7 @@ const LoginPage = ({ history }) => {
               fullWidth
               name="email"
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </Grid>
           <Grid item>
@@ -47,7 +47,7 @@ const LoginPage = ({ history }) => {
               fullWidth
               name="password"
               value={password}
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </Grid>
           <Grid item container justify="space-between" alignItems="center">

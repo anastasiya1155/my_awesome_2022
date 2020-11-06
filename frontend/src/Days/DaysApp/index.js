@@ -19,15 +19,15 @@ const DaysApp = ({ labels, oauthToken }) => {
 
   const fetchYears = () => {
     getYears()
-      .then(response => {
+      .then((response) => {
         setYears(response.data);
       })
       .catch(console.log);
   };
 
-  const fetchMonth = ym => {
+  const fetchMonth = (ym) => {
     getMonth(ym)
-      .then(response => {
+      .then((response) => {
         const p = response.data.map(mapPost);
 
         setPosts(p);
@@ -36,11 +36,11 @@ const DaysApp = ({ labels, oauthToken }) => {
       .catch(console.log);
   };
 
-  const handleYearChange = e => {
+  const handleYearChange = (e) => {
     setSelectedYear(e.target.value);
   };
 
-  const handleMonthChange = e => {
+  const handleMonthChange = (e) => {
     setSelectedMonth(e.target.value);
     fetchMonth(e.target.value);
   };
@@ -53,7 +53,7 @@ const DaysApp = ({ labels, oauthToken }) => {
             <FormControl fullWidth>
               <InputLabel id="year-label">Year</InputLabel>
               <Select labelId="year-label" value={selectedYear} onChange={handleYearChange}>
-                {Object.keys(years).map(y => (
+                {Object.keys(years).map((y) => (
                   <MenuItem key={y} value={y}>
                     {y}
                   </MenuItem>
@@ -66,7 +66,7 @@ const DaysApp = ({ labels, oauthToken }) => {
               <InputLabel id="month-label">Month</InputLabel>
               <Select labelId="month-label" value={selectedMonth} onChange={handleMonthChange}>
                 {selectedYear &&
-                  years[selectedYear].map(m => (
+                  years[selectedYear].map((m) => (
                     <MenuItem key={m.YM} value={m.YM}>
                       {m.M} ({m.Cnt})
                     </MenuItem>
@@ -76,7 +76,7 @@ const DaysApp = ({ labels, oauthToken }) => {
           </Grid>
         </Grid>
         <Grid item container direction="column">
-          {posts.map(p => (
+          {posts.map((p) => (
             <Grid item key={p.id} className={classes.marginTop}>
               <span id={p.id} style={{ position: 'absolute', top: -100 }} />
               <PostShow

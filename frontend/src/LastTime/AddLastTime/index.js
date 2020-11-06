@@ -14,7 +14,7 @@ const AddLastTime = ({ handleSubmit, initialValues, handleCancel }) => {
 
   return (
     <form
-      onSubmit={e => {
+      onSubmit={(e) => {
         e.preventDefault();
         handleSubmit({ ...lt, remind_after_days: parseInt(lt.remind_after_days, 10) });
       }}
@@ -26,7 +26,7 @@ const AddLastTime = ({ handleSubmit, initialValues, handleCancel }) => {
             fullWidth
             label="Title"
             value={lt.body}
-            onChange={e => setLt({ ...lt, body: e.target.value })}
+            onChange={(e) => setLt({ ...lt, body: e.target.value })}
           />
         </Grid>
         <Grid item md={3} xs={12}>
@@ -36,7 +36,7 @@ const AddLastTime = ({ handleSubmit, initialValues, handleCancel }) => {
             type="number"
             label="Remind after (days)"
             value={lt.remind_after_days}
-            onChange={e => setLt({ ...lt, remind_after_days: e.target.value })}
+            onChange={(e) => setLt({ ...lt, remind_after_days: e.target.value })}
           />
         </Grid>
         <Grid item md={3} xs={12}>

@@ -5,7 +5,7 @@ import { Badge, Grid, Hidden } from '@material-ui/core';
 import { Notifications } from '@material-ui/icons';
 
 const Reminder = ({ history }) => {
-  const reminder = useSelector(state => state.lastTime.reminder);
+  const reminder = useSelector((state) => state.lastTime.reminder);
 
   return reminder.length > 0 ? (
     <>
@@ -20,7 +20,7 @@ const Reminder = ({ history }) => {
       </Hidden>
       <Hidden xsDown>
         <Grid container>
-          {reminder.map(lt => (
+          {reminder.map((lt) => (
             <Grid item key={lt.id}>
               <b> !!! {lt.body} !!! </b>
             </Grid>

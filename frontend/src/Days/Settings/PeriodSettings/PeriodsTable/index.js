@@ -31,7 +31,7 @@ const PeriodsTable = ({ periods, isAdd, onAddSubmit, onEditSubmit, onDeleteSubmi
               <PeriodEditRow
                 key={`edit=${period.id}`}
                 period={period}
-                onSubmit={values => onEditSubmit(period.id, values).then(() => setEditRow(null))}
+                onSubmit={(values) => onEditSubmit(period.id, values).then(() => setEditRow(null))}
                 onCancel={() => setEditRow(null)}
               />
             ) : (

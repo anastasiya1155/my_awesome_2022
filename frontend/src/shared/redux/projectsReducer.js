@@ -25,7 +25,7 @@ const reducer = (state = initialState, action) => {
         in_progress: [],
         done: [],
       };
-      action.payload.data.forEach(task => {
+      action.payload.data.forEach((task) => {
         tasksByStatus[task.status].push({
           id: task.id,
           body: task.body,

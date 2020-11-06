@@ -8,7 +8,7 @@ const useStyles = makeStyles(() => ({
     width: 22,
     borderRadius: '50%',
     display: 'inline-block',
-    margin: props => (props.noMargin ? '0' : '0 4px -6px'),
+    margin: (props) => (props.noMargin ? '0' : '0 4px -6px'),
     backgroundColor: 'white',
     cursor: 'pointer',
     textAlign: 'center',
@@ -25,7 +25,7 @@ const PostLabel = ({ isActive, label, onClick, noMargin }) => {
         backgroundColor: isActive ? label.colorActive : label.color,
         color: isActive ? 'white' : 'black',
       }}
-      onClick={e => onClick(e, isActive)}
+      onClick={(e) => onClick(e, isActive)}
     >
       {label.name.substr(0, 1)}
     </span>

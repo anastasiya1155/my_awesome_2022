@@ -10,7 +10,7 @@ const reducer = (state = initialState, action) => {
     case TRANS_CATEGORIES_LOADED:
       let nextId = 0;
       const { data } = action.payload;
-      const categories = Object.keys(data).map(key => {
+      const categories = Object.keys(data).map((key) => {
         if (data[key].id >= state.nextId) {
           nextId = data[key].id + 1;
         }

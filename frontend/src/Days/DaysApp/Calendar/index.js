@@ -26,9 +26,9 @@ const Calendar = ({ year, month, posts }) => {
 
   React.useEffect(() => {
     const calendar = getCalendar(month || thisMonth, year || thisYear);
-    const dataToSet = calendar.map(week => {
-      return week.map(d => {
-        const post = posts.find(post => moment(post?.date).format('D') === d?.date?.toString());
+    const dataToSet = calendar.map((week) => {
+      return week.map((d) => {
+        const post = posts.find((post) => moment(post?.date).format('D') === d?.date?.toString());
         return { ...d, ...post, labels: post?.labels, isEmpty: !post };
       });
     });

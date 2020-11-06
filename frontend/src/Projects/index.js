@@ -24,8 +24,8 @@ class Projects extends Component {
 
   fetchData = () => {
     getProjects()
-      .then(response => {
-        const projects = response.data.map(p => ({
+      .then((response) => {
+        const projects = response.data.map((p) => ({
           id: p.id,
           title: p.title,
           description: p.description,
@@ -34,10 +34,10 @@ class Projects extends Component {
 
         this.setState({ projects: projects });
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   };
 
-  handleSubmit = values => {
+  handleSubmit = (values) => {
     if (this.state.isAdd) {
       postProject(values)
         .then(() => {
@@ -81,7 +81,7 @@ class Projects extends Component {
                 <ListItemText secondary={list.description} />
               </Hidden>
               <ListItemIcon>
-                <IconButton onClick={e => this.handleEditClick(e, list)}>
+                <IconButton onClick={(e) => this.handleEditClick(e, list)}>
                   <EditIcon />
                 </IconButton>
               </ListItemIcon>

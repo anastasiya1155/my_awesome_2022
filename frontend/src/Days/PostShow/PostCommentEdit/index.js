@@ -26,11 +26,11 @@ const PostCommentEdit = ({ postId, onCancel }) => {
   const [commentBody, setCommentBody] = React.useState('');
   const dispatch = useDispatch();
 
-  const handleText = e => {
+  const handleText = (e) => {
     setCommentBody(e.target.value);
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     addCommentAction(dispatch, {
       body: commentBody,

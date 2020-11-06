@@ -26,7 +26,7 @@ const Layout = ({ children }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
-  const error = useSelector(state => state.root.error);
+  const error = useSelector((state) => state.root.error);
   const dispatch = useDispatch();
 
   const history = useHistory();
