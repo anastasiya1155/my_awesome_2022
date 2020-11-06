@@ -15,5 +15,13 @@
     "subscriberEmail": "anastasiya1155@gmail.com",
     "agreeToTerms": true
   },
-  "sites": []
+  "sites": [
+    {
+      "subject": "pa2021.solop.cc",
+      "altnames": [
+        "pa2021.solop.cc"
+      ],
+      "renewAt": 1
+    }
+  ]
 }
