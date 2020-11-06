@@ -33,7 +33,7 @@ const PostEdit = ({ body, post, onCancel }) => {
 
   return (
     <form style={{ marginBottom: '30px' }}>
-      <Grid container justify="center">
+      <Grid container justifyContent="center">
         <Grid item xs={12}>
           <TextField
             multiline

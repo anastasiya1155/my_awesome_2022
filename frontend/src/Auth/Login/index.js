@@ -27,7 +27,7 @@ const LoginPage = ({ history }) => {
     setError('');
   };
   return (
-    <Grid container justify="center" alignItems="center" className={classes.container}>
+    <Grid container justifyContent="center" alignItems="center" className={classes.container}>
       <ErrorSnackbar error={error} handleClose={handleClose} />
       <form onSubmit={(e) => e.preventDefault()}>
         <Grid item container direction="column" spacing={2} className={classes.form}>
@@ -50,7 +50,7 @@ const LoginPage = ({ history }) => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </Grid>
-          <Grid item container justify="space-between" alignItems="center">
+          <Grid item container justifyContent="space-between" alignItems="center">
             <Button type="submit" onClick={handleSubmit}>
               Submit
             </Button>

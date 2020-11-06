@@ -146,7 +146,7 @@ const LabelsSettings = () => {
       {(isAdd || isEdit) && (
         <Grid item xs={12}>
           <form onSubmit={isAdd ? handleLabelAdd : handleLabelEdit}>
-            <Grid container spacing={3} justify="space-between">
+            <Grid container spacing={3} justifyContent="space-between">
               <Grid item>
                 <TextField
                   name="labelName"
