@@ -4,21 +4,24 @@ import { Provider } from 'react-redux';
 import { CssBaseline, Button, Typography } from '@material-ui/core';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import App from './App';
-import * as serviceWorker from './serviceWorker';
 import reduxStore from './shared/redux/config';
 import theme from './shared/config/theme';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
-  <Provider store={reduxStore}>
-    <MuiThemeProvider theme={theme}>
-      <CssBaseline />
-      <App />
-    </MuiThemeProvider>
-  </Provider>,
+  <React.StrictMode>
+    <Provider store={reduxStore}>
+      <MuiThemeProvider theme={theme}>
+        <CssBaseline />
+        <App />
+      </MuiThemeProvider>
+    </Provider>
+  </React.StrictMode>,
   document.getElementById('root'),
 );
 
-serviceWorker.register({
+serviceWorkerRegistration.register({
   onUpdate: registration => {
     const waitingServiceWorker = registration.waiting;
 
@@ -50,3 +53,5 @@ serviceWorker.register({
     }
   },
 });
+
+reportWebVitals(console.log);

@@ -15,6 +15,11 @@ const safeAction = (action, callback, dispatch) => {
     .then(callback)
     .catch(err => {
       console.log(err);
+      if (err.message === 'Network Error') {
+        // TODO: add custom logic for each route
+        console.log('request will be synced later');
+        return true;
+      }
       dispatch({ type: SET_ERROR, payload: err.message });
       throw err;
     });
