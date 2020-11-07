@@ -18,9 +18,10 @@
   },
   "sites": [
     {
-      "subject": "pa2021.solop.cc",
+      "subject": "solop.cc",
       "altnames": [
-        "pa2021.solop.cc"
+        "pa2021.solop.cc",
+        "*.solop.cc"
       ],
       "renewAt": 1
     }
