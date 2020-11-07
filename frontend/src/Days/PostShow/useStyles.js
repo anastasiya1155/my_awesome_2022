@@ -38,10 +38,15 @@ const styles = makeStyles((theme) => ({
   period: {
     color: theme.palette.primary.light,
   },
+  date: {
+    padding: theme.spacing(0, 1),
+    backgroundColor: theme.palette.background.default,
+  },
   button: {
     textTransform: 'lowercase',
-    padding: 0,
+    padding: theme.spacing(0, 1),
     minWidth: 32,
+    backgroundColor: theme.palette.background.default,
   },
   post: {
     margin: 'auto',

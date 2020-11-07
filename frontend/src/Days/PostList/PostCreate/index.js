@@ -44,11 +44,14 @@ const PostCreate = () => {
       <Button
         style={{ marginRight: 15 }}
         onClick={() => handleDate({ target: { value: yesterday } })}
+        color="inherit"
       >
         Yesterday
       </Button>
       <TextField style={{ marginRight: 15 }} type="date" value={date} onChange={handleDate} />
-      <Button onClick={() => handleDate({ target: { value: today } })}>Today</Button>
+      <Button onClick={() => handleDate({ target: { value: today } })} color="inherit">
+        Today
+      </Button>
       <Button fullWidth variant="contained" color="primary" onClick={handleSubmit}>
         Send
       </Button>

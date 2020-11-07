@@ -51,7 +51,9 @@ const PostShow = ({ post, labels, searchTerm, oauthToken }) => {
   return (
     <div className={classes.container}>
       <Grid container justifyContent="center" alignItems="center" className={classes.topActions}>
-        <Grid item>{moment(post.date).format('dddd YYYY-MM-DD')}</Grid>
+        <Grid item className={classes.date}>
+          {moment(post.date).format('dddd YYYY-MM-DD')}
+        </Grid>
         <Grid item>
           {labels.map((l) => (
             <PostLabel
@@ -63,13 +65,13 @@ const PostShow = ({ post, labels, searchTerm, oauthToken }) => {
           ))}
         </Grid>
         <Grid item className={classes.actionBtns}>
-          <Button onClick={() => setIsEdit(true)} className={classes.button}>
+          <Button onClick={() => setIsEdit(true)} className={classes.button} color="inherit">
             edit
           </Button>
-          <Button onClick={() => setCommentOpen(true)} className={classes.button}>
+          <Button onClick={() => setCommentOpen(true)} className={classes.button} color="inherit">
             cmnt
           </Button>
-          <Button onClick={toggleDeleteMode} className={classes.button}>
+          <Button onClick={toggleDeleteMode} className={classes.button} color="inherit">
             x
           </Button>
         </Grid>
