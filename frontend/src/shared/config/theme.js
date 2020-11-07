@@ -16,6 +16,13 @@ const theme = createMuiTheme({
       dark: blue[900],
     },
   },
+  components: {
+    MuiButton: {
+      defaultProps: {
+        type: 'button',
+      },
+    },
+  },
   typography: {
     fontSize: 14,
   },
