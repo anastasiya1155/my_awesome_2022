@@ -19,7 +19,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - "./frontend/greenlock.d"
+      - "./frontend/greenlock.d:/usr/app/greenlock.d"
 #  pa:
 #    build:
 #      context: personal_assist
