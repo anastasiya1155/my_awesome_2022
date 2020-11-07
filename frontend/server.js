@@ -1,8 +1,5 @@
 const express = require('express');
 const path = require('path');
-const https = require('https');
-const http = require('http');
-const fs = require('fs');
 
 const app = express();
 
@@ -16,19 +13,21 @@ app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-const httpServer = http.createServer(app);
-const httpsServer = https.createServer(
-  {
-    key: fs.readFileSync('./privkey.pem'),
-    cert: fs.readFileSync('./fullchain.pem'),
-  },
-  app,
-);
+require('greenlock-express')
+  .init({
+    // where to find .greenlockrc and set default paths
+    packageRoot: __dirname,
 
-httpServer.listen(80, () => {
-  console.log('HTTP Server running on port 80');
-});
+    // where config and certificate stuff go
+    configDir: './greenlock.d',
 
-httpsServer.listen(443, () => {
-  console.log('HTTPS Server running on port 443');
-});
+    // contact for security and critical bug notices
+    maintainerEmail: 'anastasiya1155@gmail.com',
+
+    // name & version for ACME client user agent
+    //packageAgent: pkg.name + "/" + pkg.version,
+
+    // whether or not to run at cloudscale
+    cluster: false,
+  })
+  .serve(app);
