@@ -79,7 +79,7 @@ class Tasks extends Component {
         <List>
           {toDoArr.length > 0 ? (
             toDoArr.map((todo) => (
-              <>
+              <React.Fragment key={todo.id}>
                 <ListItem>
                   <ListItemText>{todo.name}</ListItemText>
                   <ListItemSecondaryAction>
@@ -93,7 +93,7 @@ class Tasks extends Component {
                   </ListItemSecondaryAction>
                 </ListItem>
                 <Divider />
-              </>
+              </React.Fragment>
             ))
           ) : (
             <Typography>Relax, there is no to do items</Typography>

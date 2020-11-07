@@ -112,7 +112,7 @@ const LastTime = () => {
                   color={
                     moment().diff(moment(item.date), 'days') >= item.remind_after_days
                       ? 'error'
-                      : 'default'
+                      : 'inherit'
                   }
                 />
               </ListItemIcon>
