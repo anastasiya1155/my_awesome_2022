@@ -75,6 +75,7 @@ const TransactionsCreate = ({ history }) => {
               type="number"
               label="Amount"
               name="amount"
+              autoComplete="off"
               value={values.amount}
               onChange={handleChange}
             />
