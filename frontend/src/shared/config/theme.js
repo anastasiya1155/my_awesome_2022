@@ -22,6 +22,11 @@ const theme = createMuiTheme({
         type: 'button',
       },
     },
+    MuiTextField: {
+      defaultProps: {
+        variant: 'standard',
+      },
+    },
   },
   typography: {
     fontSize: 14,

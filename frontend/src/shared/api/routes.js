@@ -30,14 +30,14 @@ const apiLocalDeleteRequest = (url) =>
 
 // FIREBASE TRANSACTION
 export const getTransactionsByMonthAndYear = (year, month) =>
-  apiGetRequest(`${FIREBASE}/transaction/${year}/${month}.json`);
+  apiLocalGetRequest(`transactions?y=${year}&m=${month}`);
 export const postTransactionsToMonthAndYear = (year, month, data) =>
-  apiPostRequest(`${FIREBASE}/transaction/${year}/${month}.json`, data);
+  apiLocalPostRequest(`transactions`, data);
 
-export const getTransactionsCategories = () => apiGetRequest(`${FIREBASE}/cat.json`);
-export const postTransactionsCategories = (data) => apiPostRequest(`${FIREBASE}/cat.json`, data);
-export const getTransactionsStatistics = () =>
-  apiGetRequest(`${FIREBASE}/transactions-statistics.json`);
+export const getTransactionsCategories = () => apiLocalGetRequest(`transaction-categories`);
+export const postTransactionsCategories = (data) =>
+  apiLocalPostRequest(`transaction-categories`, data);
+export const getTransactionsStatistics = () => apiLocalGetRequest(`transaction-statistics`);
 
 export const getTodos = () => apiGetRequest(`${FIREBASE}/todo.json`);
 export const getTodo = (id) => apiGetRequest(`${FIREBASE}/todo/${id}.json`);
