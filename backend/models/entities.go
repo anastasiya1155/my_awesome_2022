@@ -17,6 +17,7 @@ type User struct {
 	Lastname           string `json:"lastname"`
 	WishGroupId        int    `json:"wish_group_id"`
 	TransactionGroupId int    `json:"transaction_group_id"`
+	ProjectGroupId     int    `json:"project_group_id"`
 }
 
 func (User) TableName() string {

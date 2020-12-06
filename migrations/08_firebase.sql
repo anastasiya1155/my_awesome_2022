@@ -23,10 +23,14 @@ CREATE TABLE `transaction` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
-ALTER TABLE `m2019`.`user` ADD COLUMN `transaction_group_id` INT(11) NULL DEFAULT NULL, ADD COLUMN `wish_group_id` INT(11) NULL DEFAULT NULL;
+ALTER TABLE `m2019`.`user` ADD COLUMN `transaction_group_id` INT(11) NULL DEFAULT NULL, ADD COLUMN `wish_group_id` INT(11) NULL DEFAULT NULL, ADD COLUMN `project_group_id` INT(11) NULL DEFAULT NULL;
 
 CREATE TABLE `transaction_category` (
   `id` INT NOT NULL,
   `name` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+
+ALTER TABLE `m2019`.`projects`
+ADD COLUMN `group_id` INT(11) NULL AFTER `archived`;
