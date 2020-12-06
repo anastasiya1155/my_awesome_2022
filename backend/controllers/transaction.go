@@ -1,34 +1,47 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	dbpkg "github.com/vova/pa2020/backend/db"
 	"github.com/vova/pa2020/backend/middleware"
 	"github.com/vova/pa2020/backend/models"
+	"log"
 	"net/http"
+	"time"
 )
 
 func GetTransactions(c *gin.Context) {
 	db := dbpkg.DBInstance(c)
 	var transactions []models.Transaction
-	rawQuery := "SELECT * FROM transaction where user_id = ?;"
-	db.Raw(rawQuery, middleware.UserInstance(c).ID).Scan(&transactions)
-	c.JSON(201, transactions)
+	rawQuery := fmt.Sprintf("SELECT * FROM transaction where group_id = %d", middleware.UserInstance(c).TransactionGroupId)
+	y, isY := c.GetQuery("y")
+	m, isM := c.GetQuery("m")
+
+	if isY && isM {
+		rawQuery = fmt.Sprintf("%s and year(`date`) = %s and month(`date`) = %s ;", rawQuery, y, m)
+	}
+
+	fmt.Println(rawQuery)
+	db.Raw(rawQuery).Scan(&transactions)
+	c.JSON(200, transactions)
 }
 
 func CreateTransaction(c *gin.Context) {
-
 	db := dbpkg.DBInstance(c)
 	transaction := models.Transaction{}
 
 	if err := c.Bind(&transaction); err != nil {
+		log.Fatal(err.Error())
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
 
 	transaction.UserId = middleware.UserInstance(c).ID
-
+	transaction.GroupId = middleware.UserInstance(c).TransactionGroupId
+	transaction.Date = time.Now()
 	if err := db.Create(&transaction).Error; err != nil {
+		log.Fatal(err.Error())
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}

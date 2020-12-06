@@ -10,11 +10,13 @@ type EntityWithUser interface {
 }
 
 type User struct {
-	ID        int    `gorm:"primary_key"`
-	Email     string `json:"email"`
-	Password  string `json:"password"`
-	Firstname string `json:"firstname"`
-	Lastname  string `json:"lastname"`
+	ID                 int    `gorm:"primary_key"`
+	Email              string `json:"email"`
+	Password           string `json:"password"`
+	Firstname          string `json:"firstname"`
+	Lastname           string `json:"lastname"`
+	WishGroupId        int    `json:"wish_group_id"`
+	TransactionGroupId int    `json:"transaction_group_id"`
 }
 
 func (User) TableName() string {
@@ -133,6 +135,7 @@ type Wish struct {
 	PriceFrom int       `json:"priceFrom"`
 	PriceTo   int       `json:"priceTo"`
 	UserId    int       `json:"-"`
+	GroupId   int       `json:"group_id"`
 }
 
 func (l Wish) GetUserId(db *gorm.DB) int {
@@ -144,12 +147,13 @@ func (Wish) TableName() string {
 }
 
 type Transaction struct {
-	ID          int    `json:"id"`
-	Date        string `json:"date"`
-	Description string `json:"description"`
-	Category    int    `json:"category"`
-	Amount      int    `json:"amount"`
-	UserId      int    `json:"-"`
+	ID          int       `json:"id"`
+	Date        time.Time `json:"date"`
+	Description string    `json:"description"`
+	Category    int       `json:"category"`
+	Amount      int       `json:"amount"`
+	UserId      int       `json:"-"`
+	GroupId     int       `json:"group_id"`
 }
 
 func (t Transaction) GetUserId(db *gorm.DB) int {
@@ -158,4 +162,13 @@ func (t Transaction) GetUserId(db *gorm.DB) int {
 
 func (Transaction) TableName() string {
 	return "transaction"
+}
+
+type TransactionCategory struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+}
+
+func (TransactionCategory) TableName() string {
+	return "transaction_category"
 }

@@ -11,9 +11,9 @@ import (
 func GetWishes(c *gin.Context) {
 	db := dbpkg.DBInstance(c)
 	var wishes []models.Wish
-	rawQuery := "SELECT * FROM wish where user_id = ?;"
-	db.Raw(rawQuery, middleware.UserInstance(c).ID).Scan(&wishes)
-	c.JSON(201, wishes)
+	rawQuery := "SELECT * FROM wish where group_id = ?;"
+	db.Raw(rawQuery, middleware.UserInstance(c).WishGroupId).Scan(&wishes)
+	c.JSON(200, wishes)
 }
 
 func CreateWish(c *gin.Context) {
@@ -27,6 +27,7 @@ func CreateWish(c *gin.Context) {
 	}
 
 	wish.UserId = middleware.UserInstance(c).ID
+	wish.GroupId = middleware.UserInstance(c).WishGroupId
 
 	if err := db.Create(&wish).Error; err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
