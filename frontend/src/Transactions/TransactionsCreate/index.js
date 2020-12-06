@@ -27,7 +27,6 @@ const TransactionsCreate = ({ history }) => {
     const transaction = {
       ...values,
       amount: +values.amount,
-      date: +new Date(),
     };
 
     const month = moment().month() + 1;
