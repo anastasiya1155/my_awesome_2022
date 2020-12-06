@@ -66,7 +66,7 @@ class Tasks extends Component {
     const { toDoArr, newTask } = this.state;
     return (
       <div style={{ maxWidth: 500, margin: 'auto' }}>
-        <Grid container justifyContent="space-between" spacing={3}>
+        <Grid container justify="space-between" spacing={3}>
           <Grid item style={{ flex: 1 }}>
             <TextField value={newTask} onChange={this.handleChange} fullWidth />
           </Grid>

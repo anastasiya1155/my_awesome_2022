@@ -174,7 +174,7 @@ const TransactionsList = ({ history }) => {
           Add
         </Button>
       </Hidden>
-      <Grid container justifyContent="space-around">
+      <Grid container justify="space-around">
         <Grid item>
           <Select value={selectedMonth} onChange={onMonthChange}>
             {moment.months().map((m) => (

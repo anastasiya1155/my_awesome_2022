@@ -38,7 +38,7 @@ const RegistrationPage = ({ history }) => {
   };
 
   return (
-    <Grid container justifyContent="center" alignItems="center" className={classes.container}>
+    <Grid container justify="center" alignItems="center" className={classes.container}>
       <ErrorSnackbar handleClose={handleClose} error={error} />
       <form onSubmit={(e) => e.preventDefault()}>
         <Grid item container direction="column" spacing={2} className={classes.form}>
@@ -93,7 +93,7 @@ const RegistrationPage = ({ history }) => {
               }}
             />
           </Grid>
-          <Grid item container justifyContent="space-between" alignItems="center">
+          <Grid item container justify="space-between" alignItems="center">
             <Button type="submit" onClick={handleSubmit}>
               Submit
             </Button>

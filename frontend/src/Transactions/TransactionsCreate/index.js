@@ -44,7 +44,7 @@ const TransactionsCreate = ({ history }) => {
   return (
     <form onSubmit={(e) => e.preventDefault()}>
       <Grid container spacing={3}>
-        <Grid item xs={12} container justifyContent="space-between">
+        <Grid item xs={12} container justify="space-between">
           {[31, 34, 11, 12, 52, 22, 14].map((id) => (
             <Grid item key={id}>
               <Button

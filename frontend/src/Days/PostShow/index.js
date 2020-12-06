@@ -50,7 +50,7 @@ const PostShow = ({ post, labels, searchTerm, oauthToken }) => {
 
   return (
     <div className={classes.container}>
-      <Grid container justifyContent="center" alignItems="center" className={classes.topActions}>
+      <Grid container justify="center" alignItems="center" className={classes.topActions}>
         <Grid item className={classes.date}>
           {moment(post.date).format('dddd YYYY-MM-DD')}
         </Grid>

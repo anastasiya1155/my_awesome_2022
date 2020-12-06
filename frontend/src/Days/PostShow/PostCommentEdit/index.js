@@ -42,7 +42,7 @@ const PostCommentEdit = ({ postId, onCancel }) => {
 
   return (
     <Paper style={{ width: '100%', padding: '0 10px 5px 10px' }}>
-      <Grid container alignItems="center" justifyContent="space-between">
+      <Grid container alignItems="center" justify="space-between">
         <Grid item style={{ minWidth: 91 }}>
           <Typography>{today}</Typography>
         </Grid>
