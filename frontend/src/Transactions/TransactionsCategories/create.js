@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addTransCategoryAction } from '../../shared/api/handlers';
 
 const useStyles = makeStyles((theme) => ({
@@ -16,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
 const TransactionsCategoriesCreate = () => {
   const [showInput, setShowInput] = React.useState(false);
   const [value, setValue] = React.useState('');
-  const nextId = useSelector((state) => state.transactions.nextId);
   const dispatch = useDispatch();
   const classes = useStyles();
 
@@ -31,7 +30,6 @@ const TransactionsCategoriesCreate = () => {
   const createCategory = () => {
     const post = {
       name: value,
-      id: nextId,
     };
     addTransCategoryAction(dispatch, post).then(() => {
       setValue('');

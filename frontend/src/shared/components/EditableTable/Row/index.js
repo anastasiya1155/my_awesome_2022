@@ -4,7 +4,7 @@ import { IconButton, TableCell, TableRow, Button } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Close';
 import EditIcon from '@material-ui/icons/Edit';
 
-const PeriodRow = ({ period, onEditClicked, onDeleteSubmit }) => {
+const Row = ({ item, onEditClicked, onDeleteSubmit, columns }) => {
   const [isDelete, setIsDelete] = React.useState(false);
   return isDelete ? (
     <TableRow>
@@ -17,17 +17,19 @@ const PeriodRow = ({ period, onEditClicked, onDeleteSubmit }) => {
         <Button
           fullWidth
           variant="contained"
-          onClick={() => onDeleteSubmit(period.id).then(() => setIsDelete(false))}
+          onClick={() => onDeleteSubmit(item.id).then(() => setIsDelete(false))}
         >
           DELETE
         </Button>
       </TableCell>
     </TableRow>
   ) : (
-    <TableRow key={period.id}>
-      <TableCell>{period.name}</TableCell>
-      <TableCell>{period.start}</TableCell>
-      <TableCell>{period.end}</TableCell>
+    <TableRow key={item.id}>
+      {columns.map((col) => (
+        <TableCell key={`show-${col.name}`}>
+          {col.render ? col.render(item, col) : item[col.name]}
+        </TableCell>
+      ))}
       <TableCell>
         <IconButton onClick={() => setIsDelete(true)}>
           <DeleteIcon />
@@ -40,8 +42,8 @@ const PeriodRow = ({ period, onEditClicked, onDeleteSubmit }) => {
   );
 };
 
-PeriodRow.propTypes = {
-  period: PropTypes.object,
+Row.propTypes = {
+  item: PropTypes.object,
 };
 
-export default PeriodRow;
+export default Row;

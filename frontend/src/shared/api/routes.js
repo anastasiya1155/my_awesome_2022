@@ -28,11 +28,12 @@ const apiLocalPutRequest = (url, data) =>
 const apiLocalDeleteRequest = (url) =>
   apiDeleteRequest(`${LOCAL}/api/${url}`, authConfig()).catch(redirectUnauth);
 
-// FIREBASE TRANSACTION
 export const getTransactionsByMonthAndYear = (year, month) =>
   apiLocalGetRequest(`transactions?y=${year}&m=${month}`);
 export const postTransactionsToMonthAndYear = (year, month, data) =>
   apiLocalPostRequest(`transactions`, data);
+export const putTransaction = (id, data) => apiLocalPutRequest(`transactions/${id}`, data);
+export const deleteTransaction = (id) => apiLocalDeleteRequest(`transactions/${id}`);
 
 export const getTransactionsCategories = () => apiLocalGetRequest(`transaction-categories`);
 export const postTransactionsCategories = (data) =>
