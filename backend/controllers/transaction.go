@@ -66,7 +66,8 @@ func UpdateTransaction(c *gin.Context) {
 		return
 	}
 
-	if !vote(c, transaction) {
+	user := middleware.UserInstance(c)
+	if transaction.GroupId != user.TransactionGroupId {
 		c.JSON(403, "you dont have permissions")
 		c.Abort()
 		return
@@ -90,8 +91,8 @@ func DeleteTransaction(c *gin.Context) {
 		c.JSON(404, content)
 		return
 	}
-
-	if !vote(c, transaction) {
+	user := middleware.UserInstance(c)
+	if transaction.GroupId != user.TransactionGroupId {
 		c.JSON(403, "you dont have permissions")
 		c.Abort()
 		return
