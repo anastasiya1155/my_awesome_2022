@@ -1,15 +1,15 @@
 import React from 'react';
 import moment from 'moment';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormGroup from '@material-ui/core/FormGroup';
 import Grid from '@material-ui/core/Grid';
-import { postTransactionsToMonthAndYear } from '../../shared/api/routes';
 import { useMediaQuery } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
+import { addTransaction } from '../../shared/api/handlers';
 
 const initialValues = { description: '', amount: '', category: 31 };
 
@@ -18,19 +18,21 @@ const TransactionsCreate = ({ history }) => {
   const categories = useSelector((state) => state.transactions.categories);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
   const submitTransaction = () => {
-    const transaction = {
+    const data = {
       ...values,
       amount: +values.amount,
     };
 
     const month = moment().month() + 1;
-    postTransactionsToMonthAndYear(moment().year(), month, transaction)
+    const year = moment().year();
+    addTransaction(dispatch, { data, month, year })
       .then(() => {
         setValues(initialValues);
         if (isMobile) {

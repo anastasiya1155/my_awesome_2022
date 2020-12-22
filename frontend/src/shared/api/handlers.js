@@ -8,7 +8,7 @@ import {
 } from '../redux/postReducer';
 import { LAST_TIMES_LOADED, REMINDER_LOADED } from '../redux/lastTimeReducer';
 import { IN_PROGRESS_LOADED, PROJECT_LOADED, TASKS_LOADED } from '../redux/projectsReducer';
-import { TRANS_CATEGORIES_LOADED } from '../redux/transactionsReducer';
+import { TRANS_CATEGORIES_LOADED, TRANSACTIONS_LOADED } from '../redux/transactionsReducer';
 
 const safeAction = (action, callback, dispatch) => {
   return action()
@@ -290,6 +290,44 @@ export function addTransCategoryAction(dispatch, data) {
     () => api.postTransactionsCategories(data),
     () => {
       getTransCategoriesAction(dispatch);
+    },
+    dispatch,
+  );
+}
+
+export function getTransactions(dispatch, { year, month }) {
+  return safeAction(
+    () => api.getTransactionsByMonthAndYear(year, month),
+    (json) => dispatch({ type: TRANSACTIONS_LOADED, payload: json }),
+    dispatch,
+  );
+}
+
+export function editTransaction(dispatch, { id, data, year, month }) {
+  return safeAction(
+    () => api.putTransaction(id, data),
+    () => {
+      getTransactions(dispatch, { year, month });
+    },
+    dispatch,
+  );
+}
+
+export function deleteTransaction(dispatch, { id, year, month }) {
+  return safeAction(
+    () => api.deleteTransaction(id),
+    () => {
+      getTransactions(dispatch, { year, month });
+    },
+    dispatch,
+  );
+}
+
+export function addTransaction(dispatch, { data, year, month }) {
+  return safeAction(
+    () => api.postTransactionsToMonthAndYear(year, month, data),
+    () => {
+      getTransactions(dispatch, { year, month });
     },
     dispatch,
   );

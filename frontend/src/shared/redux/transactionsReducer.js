@@ -1,25 +1,59 @@
+import React from 'react';
+
 export const TRANS_CATEGORIES_LOADED = '@transactions/TRANS_CATEGORIES_LOADED';
+export const TRANSACTIONS_LOADED = '@transactions/TRANSACTIONS_LOADED';
 
 const initialState = {
   categories: [],
-  nextId: 0,
+  transactions: [],
+  transactionsByCat: [],
+  total: 0,
+};
+
+const countSum = (transactions) => {
+  let total = 0;
+  transactions.forEach((tr) => (total += tr.amount));
+  return total;
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case TRANS_CATEGORIES_LOADED:
-      let nextId = 0;
       const { data } = action.payload;
       const categories = Object.keys(data).map((key) => {
-        if (data[key].id >= state.nextId) {
-          nextId = data[key].id + 1;
-        }
         return {
           id: data[key].id,
           name: data[key].name,
         };
       });
-      return { ...state, categories, nextId };
+      return { ...state, categories };
+    case TRANSACTIONS_LOADED:
+      const { data: trData } = action.payload;
+      if (trData) {
+        const newTransactions = Object.keys(trData)
+          .reverse()
+          .map((key) => ({
+            ...trData[key],
+            id: key,
+            category: state.categories.find((c) => c.id === trData[key].category)?.name,
+          }));
+        const newTotal = countSum(newTransactions);
+        const newCategoryData = state.categories
+          .map((category) => {
+            const filtered = newTransactions.filter((tr) => tr.category === category.name);
+            const sum = countSum(filtered);
+            const percentage = ((sum / newTotal) * 100).toFixed(1);
+            return { sum, percentage, category: category.name };
+          })
+          .sort((a, b) => (a.sum > b.sum ? -1 : 1));
+        return {
+          ...state,
+          total: newTotal,
+          transactions: newTransactions,
+          transactionsByCat: newCategoryData,
+        };
+      }
+      return state;
     default:
       return state;
   }

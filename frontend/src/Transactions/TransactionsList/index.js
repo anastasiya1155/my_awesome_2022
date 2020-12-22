@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Grid,
   MenuItem,
@@ -11,24 +11,15 @@ import {
   Button,
   useMediaQuery,
 } from '@material-ui/core';
-import { getTransactionsByMonthAndYear } from '../../shared/api/routes';
 import Table from '../../shared/components/Table';
 import { useTheme } from '@material-ui/core/styles';
+import EditableTable from '../../shared/components/EditableTable';
+import { deleteTransaction, editTransaction, getTransactions } from '../../shared/api/handlers';
 
 const thisMonth = moment().format('MMMM');
 const thisYear = moment().year();
 const startDate = moment('2018-06-01');
 const yearsSinceStart = thisYear - startDate.year();
-
-const tableColumns = [
-  { title: 'Amount', field: 'amount' },
-  {
-    title: 'Category',
-    field: 'category',
-  },
-  { title: 'Description', field: 'description' },
-  { title: 'Date', field: 'date', render: (row) => moment(row.date).format('YYYY-MM-DD') },
-];
 
 const mobileColumns = [
   {
@@ -86,65 +77,23 @@ const getYears = () => {
   return years;
 };
 
-const countSum = (transactions) => {
-  let total = 0;
-  transactions.forEach((tr) => (total += tr.amount));
-  return total;
-};
-
 const TransactionsList = ({ history }) => {
-  const [total, setTotal] = React.useState(0);
-  const [transactions, setTransactions] = React.useState([]);
-  const [categoryData, setCategoryData] = React.useState([]);
   const [selectedMonth, setSelectedMonth] = React.useState(thisMonth);
   const [selectedYear, setSelectedYear] = React.useState(thisYear);
   const [groupByCategory, setGroupByCategory] = React.useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const categories = useSelector((state) => state.transactions.categories);
+  const trState = useSelector((state) => state.transactions);
+  const dispatch = useDispatch();
 
-  const normalizeByCategory = React.useCallback(
-    (trs, totalSum) => {
-      return categories
-        .map((category) => {
-          const filtered = trs.filter((tr) => tr.category === category.name);
-          const sum = countSum(filtered);
-          const percentage = ((sum / totalSum) * 100).toFixed(1);
-          return { sum, percentage, category: category.name };
-        })
-        .sort((a, b) => (a.sum > b.sum ? -1 : 1));
-    },
-    [categories],
-  );
-
-  const fetchData = React.useCallback(
-    (m, y) => {
-      const month = moment().month(m).format('M');
-      getTransactionsByMonthAndYear(y, month)
-        .then((response) => {
-          if (response.data) {
-            const newTransactions = Object.keys(response.data)
-              .reverse()
-              .map((key) => ({
-                ...response.data[key],
-                id: key,
-                category: categories.find((c) => c.id === response.data[key].category)?.name,
-              }));
-            const newTotal = countSum(newTransactions);
-            const newCategoryData = normalizeByCategory(newTransactions, newTotal);
-            setTransactions(newTransactions);
-            setTotal(newTotal);
-            setCategoryData(newCategoryData);
-          }
-        })
-        .catch(console.log);
-    },
-    [categories, normalizeByCategory],
-  );
+  const fetchData = (m, y) => {
+    const month = moment().month(m).format('M');
+    getTransactions(dispatch, { year: y, month });
+  };
 
   React.useEffect(() => {
     fetchData(thisMonth, thisYear);
-  }, [categories, fetchData]);
+  }, []);
 
   const onMonthChange = (e) => {
     setSelectedMonth(e.target.value);
@@ -157,9 +106,23 @@ const TransactionsList = ({ history }) => {
   };
 
   const onGroupByChange = (e) => {
-    const newCategoryData = normalizeByCategory(transactions, total);
     setGroupByCategory(e.target.checked);
-    setCategoryData(newCategoryData);
+  };
+
+  const onEditSubmit = (id, values) => {
+    const data = {
+      amount: Number(values.amount),
+      category: values.category,
+      description: values.description,
+      date: moment.utc(values.date).format(),
+    };
+    console.log(data);
+    return editTransaction(dispatch, { id, data, year: selectedYear, month: selectedMonth });
+  };
+
+  const onDeleteSubmit = (id) => {
+    console.log(id);
+    return deleteTransaction(dispatch, { id, year: selectedYear, month: selectedMonth });
   };
 
   return (
@@ -198,14 +161,38 @@ const TransactionsList = ({ history }) => {
       </Grid>
       <p>
         <b>
-          {selectedMonth} {selectedYear} ({total})
+          {selectedMonth} {selectedYear} ({trState.total})
         </b>
       </p>
-      <Table
-        data={groupByCategory ? categoryData : transactions}
-        columns={groupByCategory ? categoryColumns : isMobile ? mobileColumns : tableColumns}
-        size={isMobile ? 'small' : undefined}
-      />
+      {groupByCategory || isMobile ? (
+        <Table
+          data={groupByCategory ? trState.transactionsByCat : trState.transactions}
+          columns={groupByCategory ? categoryColumns : mobileColumns}
+          size={isMobile ? 'small' : undefined}
+        />
+      ) : (
+        <EditableTable
+          items={trState.transactions}
+          onEditSubmit={onEditSubmit}
+          onDeleteSubmit={onDeleteSubmit}
+          columns={[
+            { label: 'Amount', name: 'amount', type: 'string' },
+            {
+              label: 'Category',
+              name: 'category',
+              type: 'select',
+              options: trState.categories,
+            },
+            { label: 'Description', name: 'description', type: 'string' },
+            {
+              label: 'Date',
+              name: 'date',
+              render: (row) => moment(row.date).format('YYYY-MM-DD'),
+              type: 'date',
+            },
+          ]}
+        />
+      )}
     </div>
   );
 };
