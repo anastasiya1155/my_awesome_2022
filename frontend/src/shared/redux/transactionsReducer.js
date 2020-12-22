@@ -30,13 +30,10 @@ const reducer = (state = initialState, action) => {
     case TRANSACTIONS_LOADED:
       const { data: trData } = action.payload;
       if (trData) {
-        const newTransactions = Object.keys(trData)
-          .reverse()
-          .map((key) => ({
-            ...trData[key],
-            id: key,
-            category: state.categories.find((c) => c.id === trData[key].category)?.name,
-          }));
+        const newTransactions = trData.reverse().map((tr) => ({
+          ...tr,
+          category: state.categories.find((c) => c.id === tr.category)?.name,
+        }));
         const newTotal = countSum(newTransactions);
         const newCategoryData = state.categories
           .map((category) => {

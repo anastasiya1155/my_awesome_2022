@@ -86,23 +86,18 @@ const TransactionsList = ({ history }) => {
   const trState = useSelector((state) => state.transactions);
   const dispatch = useDispatch();
 
-  const fetchData = (m, y) => {
-    const month = moment().month(m).format('M');
-    getTransactions(dispatch, { year: y, month });
-  };
-
   React.useEffect(() => {
-    fetchData(thisMonth, thisYear);
+    getTransactions(dispatch, { year: thisYear, month: thisMonth });
   }, []);
 
   const onMonthChange = (e) => {
     setSelectedMonth(e.target.value);
-    fetchData(e.target.value, selectedYear);
+    getTransactions(dispatch, { year: selectedYear, month: e.target.value });
   };
 
   const onYearChange = (e) => {
     setSelectedYear(e.target.value);
-    fetchData(selectedMonth, e.target.value);
+    getTransactions(dispatch, { month: selectedMonth, year: e.target.value });
   };
 
   const onGroupByChange = (e) => {
@@ -116,12 +111,10 @@ const TransactionsList = ({ history }) => {
       description: values.description,
       date: moment.utc(values.date).format(),
     };
-    console.log(data);
     return editTransaction(dispatch, { id, data, year: selectedYear, month: selectedMonth });
   };
 
   const onDeleteSubmit = (id) => {
-    console.log(id);
     return deleteTransaction(dispatch, { id, year: selectedYear, month: selectedMonth });
   };
 

@@ -9,6 +9,7 @@ import {
 import { LAST_TIMES_LOADED, REMINDER_LOADED } from '../redux/lastTimeReducer';
 import { IN_PROGRESS_LOADED, PROJECT_LOADED, TASKS_LOADED } from '../redux/projectsReducer';
 import { TRANS_CATEGORIES_LOADED, TRANSACTIONS_LOADED } from '../redux/transactionsReducer';
+import moment from 'moment';
 
 const safeAction = (action, callback, dispatch) => {
   return action()
@@ -296,8 +297,9 @@ export function addTransCategoryAction(dispatch, data) {
 }
 
 export function getTransactions(dispatch, { year, month }) {
+  const m = moment().month(month).format('M');
   return safeAction(
-    () => api.getTransactionsByMonthAndYear(year, month),
+    () => api.getTransactionsByMonthAndYear(year, m),
     (json) => dispatch({ type: TRANSACTIONS_LOADED, payload: json }),
     dispatch,
   );
