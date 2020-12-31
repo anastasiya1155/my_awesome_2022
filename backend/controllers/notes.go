@@ -5,12 +5,13 @@ import (
 	dbpkg "github.com/vova/pa2020/backend/db"
 	"github.com/vova/pa2020/backend/middleware"
 	"github.com/vova/pa2020/backend/models"
+	"strconv"
 )
 
 func ListNote(c *gin.Context) {
 	db := dbpkg.DBInstance(c)
 	var listNote []models.Note
-	cat := c.Query("note_category")
+	cat, err := strconv.Atoi(c.Query("note_category"))
 	query := "SELECT * FROM note where user_id = ? and note_category = ?"
 	db.Raw(query, middleware.UserInstance(c).ID, cat).Scan(&listNote)
 	c.JSON(200, listNote)
