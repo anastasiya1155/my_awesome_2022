@@ -1,0 +1,15 @@
+CREATE TABLE `note` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `note_category` INT(11) DEFAULT NULL,
+  `body` LONGTEXT DEFAULT NULL,
+  `created_at` DATETIME DEFAULT NULL,
+  `user_id` INT(11) NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `note_category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) DEFAULT NULL,
+  `user_id` INT(11) NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

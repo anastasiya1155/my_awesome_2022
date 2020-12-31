@@ -173,3 +173,33 @@ type TransactionCategory struct {
 func (TransactionCategory) TableName() string {
 	return "transaction_category"
 }
+
+type Note struct {
+	Id           int       `json:"id"`
+	NoteCategory int       `json:"note_category"`
+	Body         string    `json:"body"`
+	CreatedAt    time.Time `json:"created_at"`
+	UserId       int       `json:"-"`
+}
+
+func (Note) TableName() string {
+	return "note"
+}
+
+func (l Note) GetUserId(db *gorm.DB) int {
+	return l.UserId
+}
+
+type NoteCategory struct {
+	Id     int    `json:"id"`
+	Name   string `json:"name"`
+	UserId int    `json:"-"`
+}
+
+func (NoteCategory) TableName() string {
+	return "note_category"
+}
+
+func (l NoteCategory) GetUserId(db *gorm.DB) int {
+	return l.UserId
+}
