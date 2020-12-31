@@ -12,7 +12,7 @@ const styles = makeStyles((theme) => ({
   moreIcon: {
     padding: theme.spacing(0.5),
     position: 'absolute',
-    bottom: 8,
+    bottom: 11,
     right: 0,
   },
   noteText: {

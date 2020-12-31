@@ -22,7 +22,9 @@ const NoteCategoryShow = ({ match }) => {
   }, []);
 
   const handleSubmit = (values) => {
-    let action = isAdd ? () => postNote(values) : () => putNote(noteToEdit.id, values);
+    let action = isAdd
+      ? () => postNote({ ...values, note_category: Number(match.params.id) })
+      : () => putNote(noteToEdit.id, values);
     return action()
       .then(() => {
         getNotes(match.params.id)
