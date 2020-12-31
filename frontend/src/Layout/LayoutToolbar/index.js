@@ -39,6 +39,14 @@ const LayoutToolbar = ({ open }) => {
           <ListItemText primary="Last Time" />
         </ListItem>
       </Link>
+      <Link to="/notes">
+        <ListItem button>
+          <ListItemIcon>
+            <ListAlt />
+          </ListItemIcon>
+          <ListItemText primary="Notes" />
+        </ListItem>
+      </Link>
       {open ? <ListSubheader component="spam"> Family </ListSubheader> : <Divider />}
       <Link to="/transactions/list">
         <ListItem button>
@@ -46,14 +54,6 @@ const LayoutToolbar = ({ open }) => {
             <Equalizer />
           </ListItemIcon>
           <ListItemText primary="Transactions" />
-        </ListItem>
-      </Link>
-      <Link to="/tasks">
-        <ListItem button>
-          <ListItemIcon>
-            <ListAlt />
-          </ListItemIcon>
-          <ListItemText primary="Tasks" />
         </ListItem>
       </Link>
       <Link to="/wishlist/list">

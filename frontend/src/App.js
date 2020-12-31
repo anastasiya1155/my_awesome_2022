@@ -3,7 +3,8 @@ import { Route, Switch, BrowserRouter as Router, Redirect } from 'react-router-d
 import CheckAuth from './Auth/CheckAuth';
 const Days = lazy(() => import(/* webpackChunkName: "days" */ './Days'));
 const Transactions = lazy(() => import(/* webpackChunkName: "transactions" */ './Transactions'));
-const Tasks = lazy(() => import(/* webpackChunkName: "tasks" */ './Tasks'));
+const Notes = lazy(() => import(/* webpackChunkName: "tasks" */ './Notes'));
+const Note = lazy(() => import(/* webpackChunkName: "tasks" */ './NoteShow'));
 const Sandbox = lazy(() => import(/* webpackChunkName: "sandbox" */ './Sandbox'));
 const Projects = lazy(() => import(/* webpackChunkName: "projects" */ './Projects'));
 const Project = lazy(() => import(/* webpackChunkName: "project-show" */ './ProjectShow'));
@@ -35,7 +36,8 @@ function App() {
                 <Switch>
                   <Route path="/days" component={Days} />
                   <Route path="/transactions" component={Transactions} />
-                  <Route path="/tasks" component={Tasks} />
+                  <Route path="/notes/:id" component={Note} />
+                  <Route path="/notes" component={Notes} />
                   <Route path="/projects/:id" component={Project} />
                   <Route path="/projects" component={Projects} />
                   <Route path="/last-time" component={LastTime} exact />

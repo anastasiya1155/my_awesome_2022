@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const TRANS_CATEGORIES_LOADED = '@transactions/TRANS_CATEGORIES_LOADED';
 export const TRANSACTIONS_LOADED = '@transactions/TRANSACTIONS_LOADED';
 

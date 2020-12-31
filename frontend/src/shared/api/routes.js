@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { LOCAL, FIREBASE } from '../config/const';
+import { LOCAL } from '../config/const';
 import { getItemFromStorage, TOKEN_KEY } from '../utils/storage';
 
 const apiGetRequest = (url, config) => axios.get(url, config);
@@ -40,11 +40,15 @@ export const postTransactionsCategories = (data) =>
   apiLocalPostRequest(`transaction-categories`, data);
 export const getTransactionsStatistics = () => apiLocalGetRequest(`transaction-statistics`);
 
-export const getTodos = () => apiGetRequest(`${FIREBASE}/todo.json`);
-export const getTodo = (id) => apiGetRequest(`${FIREBASE}/todo/${id}.json`);
-export const postTodo = (data) => apiPostRequest(`${FIREBASE}/todo.json`, data);
-export const putTodo = (id, data) => apiPutRequest(`${FIREBASE}/todo/${id}.json`, data);
-export const deleteTodo = (id) => apiDeleteRequest(`${FIREBASE}/todo/${id}.json`);
+export const getNoteCategories = () => apiLocalGetRequest('note-categories');
+export const postNoteCategory = (data) => apiLocalPostRequest('note-categories', data);
+export const putNoteCategory = (id, data) => apiLocalPutRequest(`note-categories/${id}`, data);
+export const deleteNoteCategory = (id) => apiLocalDeleteRequest(`note-categories/${id}`);
+
+export const getNotes = (categoryId) => apiLocalGetRequest(`notes?note_category=${categoryId}`);
+export const postNote = (data) => apiLocalPostRequest('notes', data);
+export const putNote = (id, data) => apiLocalPutRequest(`notes/${id}`, data);
+export const deleteNote = (id) => apiLocalDeleteRequest(`notes/${id}`);
 
 export const getWishes = () => apiLocalGetRequest('wishes');
 export const postWish = (data) => apiLocalPostRequest('wishes', data);
