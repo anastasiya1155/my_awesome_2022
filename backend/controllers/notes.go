@@ -10,7 +10,7 @@ import (
 func ListNote(c *gin.Context) {
 	db := dbpkg.DBInstance(c)
 	var listNote []models.Note
-	cat := c.Params.ByName("note_category")
+	cat := c.Query("note_category")
 	query := "SELECT * FROM note where user_id = ? and note_category = ?"
 	db.Raw(query, middleware.UserInstance(c).ID, cat).Scan(&listNote)
 	c.JSON(200, listNote)
