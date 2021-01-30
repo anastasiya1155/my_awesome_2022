@@ -18,11 +18,15 @@ const RegistrationPage = lazy(() =>
 
 function App() {
   React.useEffect(() => {
-    window.gapi.load('auth2', function () {
-      window.gapi.auth2.init({
-        client_id: process.env.REACT_APP_OAUTH_ID,
+    if (window.gapi) {
+      window.gapi.load('auth2', function () {
+        window.gapi.auth2.init({
+          client_id: process.env.REACT_APP_OAUTH_ID,
+        });
       });
-    });
+    } else {
+      console.log('Google API not available');
+    }
   }, []);
   return (
     <Router>
