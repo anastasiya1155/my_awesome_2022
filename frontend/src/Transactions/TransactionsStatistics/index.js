@@ -11,12 +11,21 @@ const TransactionsStatistics = () => {
   const [chartData, setChartData] = React.useState([]);
   const categories = useSelector((state) => state.transactions.categories);
 
-  const getChartData = (d, categories) => {
+  const getChartData = (d, cats) => {
     const cD = [];
+    const grouped = {};
     d.forEach((i) => {
-      const row = [i[0].date];
-      categories.forEach((cat) => {
-        row.push(i.find((mC) => mC.category === cat).sum);
+      if (grouped[i.Date]) {
+        grouped[i.Date].push(i);
+      } else {
+        grouped[i.Date] = [i];
+      }
+    });
+    Object.entries(grouped).forEach(([month, trans]) => {
+      const row = [month];
+      cats.forEach((cat) => {
+        const category = categories.find(({ name }) => name === cat);
+        row.push(trans.find((mC) => mC.Category === category.id.toString())?.Sum || 0);
       });
       cD.push(row);
     });
