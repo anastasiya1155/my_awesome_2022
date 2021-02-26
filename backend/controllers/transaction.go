@@ -27,6 +27,16 @@ func GetTransactions(c *gin.Context) {
 	c.JSON(200, transactions)
 }
 
+func TransactionStatistics(c *gin.Context) {
+	db := dbpkg.DBInstance(c)
+	var transactions []models.Transaction
+	rawQuery := fmt.Sprintf("SELECT DATE_FORMAT(date, '%Y-%m'), category, SUM(amount) FROM transaction where group_id = %d GROUP BY DATE_FORMAT(date, '%Y-%m'), category;", middleware.UserInstance(c).TransactionGroupId)
+
+	fmt.Println(rawQuery)
+	db.Raw(rawQuery).Scan(&transactions)
+	c.JSON(200, transactions)
+}
+
 func CreateTransaction(c *gin.Context) {
 	db := dbpkg.DBInstance(c)
 	transaction := models.Transaction{}

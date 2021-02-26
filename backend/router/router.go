@@ -80,6 +80,8 @@ func Initialize(r *gin.Engine) {
 		api.PUT("/transaction-categories/:id", controllers.UpdateTransactionCategory)
 		api.DELETE("/transaction-categories/:id", controllers.DeleteTransactionCategory)
 
+		api.GET("/transaction-statistics", controllers.TransactionStatistics)
+
 		api.GET("/notes", controllers.ListNote)
 		api.POST("/notes", controllers.CreateNote)
 		api.GET("/notes/:id", controllers.ReadNote)
