@@ -29,12 +29,16 @@ func GetTransactions(c *gin.Context) {
 
 func TransactionStatistics(c *gin.Context) {
 	db := dbpkg.DBInstance(c)
-	var transactions []models.Transaction
-	rawQuery := fmt.Sprintf("SELECT DATE_FORMAT(date, '%Y-%m'), category, SUM(amount) FROM transaction where group_id = %d GROUP BY DATE_FORMAT(date, '%Y-%m'), category;", middleware.UserInstance(c).TransactionGroupId)
-
+	type stat struct {
+		Date     string
+		Category string
+		Sum      int64
+	}
+	var transactionStat []stat
+	rawQuery := `SELECT DATE_FORMAT(date, "%Y-%m") as date, category, SUM(amount) as sum FROM transaction where group_id = ? GROUP BY DATE_FORMAT(date, "%Y-%m"), category;`
 	fmt.Println(rawQuery)
-	db.Raw(rawQuery).Scan(&transactions)
-	c.JSON(200, transactions)
+	db.Raw(rawQuery, middleware.UserInstance(c).TransactionGroupId).Scan(&transactionStat)
+	c.JSON(200, transactionStat)
 }
 
 func CreateTransaction(c *gin.Context) {
