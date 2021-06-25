@@ -1,4 +1,4 @@
-FROM golang:1.11
+FROM golang:1.13
 WORKDIR /go/src/github.com/vova/pa2020/backend/
 COPY . .
 RUN go get -d -v ./...
