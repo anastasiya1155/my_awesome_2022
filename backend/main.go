@@ -23,6 +23,6 @@ func main() {
 	if os.Getenv("LOCAL") == "1" {
 		s.Run(":" + port)
 	} else {
-		s.RunTLS(":"+port, "../frontend/greenlock.d/live/pa2021.solop.cc/cert.pem", "../frontend/greenlock.d/live/pa2021.solop.cc/privkey.pem")
+		s.RunTLS(":"+port, "cert.pem", "privkey.pem")
 	}
 }
