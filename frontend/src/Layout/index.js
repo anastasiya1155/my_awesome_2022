@@ -38,7 +38,7 @@ const Layout = ({ children }) => {
 
   const handleLogout = () => {
     dispatch({ type: USER_SIGN_OUT });
-    history.push('/login');
+    history.push('/signin');
   };
 
   const handleClose = () => {

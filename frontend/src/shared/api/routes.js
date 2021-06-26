@@ -13,7 +13,7 @@ const authConfig = () => ({
 
 const redirectUnauth = (err) => {
   if (err.message === 'Request failed with status code 401') {
-    window.location.replace('/login');
+    window.location.replace('/signin');
   } else {
     throw err;
   }
