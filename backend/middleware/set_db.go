@@ -1,11 +1,13 @@
 package middleware
 
 import (
-	"github.com/dgrijalva/jwt-go"
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	dbpkg "github.com/vova/pa2020/backend/db"
 	"github.com/vova/pa2020/backend/models"
+	"io/ioutil"
+	"log"
 	"net/http"
 )
 
@@ -18,32 +20,30 @@ func SetDBtoContext(db *gorm.DB) gin.HandlerFunc {
 	}
 }
 
+type AuthResp struct {
+	Error bool `json:"error"`
+	Code int `json:"code"`
+	ErrorMessage string `json:"message"`
+	Email string `json:"email"`
+}
+
 func CheckJwt() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.Request.Header.Get("Authorization")
-
-		type Claims struct {
-			Email string `json:"email"`
-			jwt.StandardClaims
-		}
-
-		claims := &Claims{}
-
-		tkn, err := jwt.ParseWithClaims(token, claims, func(token *jwt.Token) (interface{}, error) {
-			return jwtKey, nil
-		})
-
+		resp, err := http.Get("http://auth:18401/auth?token="+token)
 		if err != nil {
-			if err == jwt.ErrSignatureInvalid {
-				c.JSON(401, gin.H{"error": "Signature Invalid"})
-				c.Abort()
-				return
-			}
-			c.JSON(401, gin.H{"error": "auth error"})
-			c.Abort()
-			return
+			log.Fatalln(err)
 		}
-		if !tkn.Valid {
+		//We Read the response body on the line below.
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		var authResponse AuthResp
+		if err := json.Unmarshal(body, &authResponse); err != nil {
+			log.Fatal(err)
+		}
+		if authResponse.Error {
 			c.JSON(401, gin.H{"error": "token is not Valid"})
 			c.Abort()
 			return
@@ -51,9 +51,16 @@ func CheckJwt() gin.HandlerFunc {
 
 		db := dbpkg.DBInstance(c)
 		var user models.User
-		db.Where("email = ?", claims.Email).First(&user)
-		c.Set("USER", user)
-		c.Next()
+		db.Where("email = ?", authResponse.Email).First(&user)
+
+		if user.ID > 0 {
+			c.Set("USER", user)
+			c.Next()
+		} else {
+			c.JSON(401, gin.H{"error": "token is not Valid"})
+			c.Abort()
+			return
+		}
 	}
 }
 

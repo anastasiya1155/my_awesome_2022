@@ -12,14 +12,14 @@ services:
     tty: true
     volumes:
       - "./db:/var/lib/mysql:cached"
-  front:
-    build:
-      context: frontend
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - "./frontend/greenlock.d:/usr/app/greenlock.d"
+#  front:
+#    build:
+#      context: frontend
+#    ports:
+#      - "80:80"
+#      - "443:443"
+#    volumes:
+#      - "./frontend/greenlock.d:/usr/app/greenlock.d"
 #  pa:
 #    build:
 #      context: personal_assist
@@ -30,6 +30,7 @@ services:
 #      - mysql
 #    volumes:
 #      - "./personal_assist/cmd:/cmd"
+
   app:
     build:
       context: backend
@@ -38,3 +39,10 @@ services:
     restart: always
     depends_on:
       - mysql
+
+  auth:
+    build:
+      context: auth
+    ports:
+      - "${AUTH_PORT}:18401"
+    restart: always
