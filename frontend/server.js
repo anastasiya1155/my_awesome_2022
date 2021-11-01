@@ -1,7 +1,21 @@
 const express = require('express');
 const path = require('path');
+const createProxyMiddleware = require('http-proxy-middleware');
 
 const app = express();
+
+app.use(
+  '/api',
+  createProxyMiddleware({ target: 'http://pa2021.solop.cc:8888', changeOrigin: true }),
+);
+app.use(
+  '/login',
+  createProxyMiddleware({ target: 'http://pa2021.solop.cc:8888', changeOrigin: true }),
+);
+app.use(
+  '/register',
+  createProxyMiddleware({ target: 'http://pa2021.solop.cc:8888', changeOrigin: true }),
+);
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
@@ -31,3 +45,5 @@ require('greenlock-express')
     cluster: false,
   })
   .serve(app);
+
+// app.listen(2000, () => 'Listening on port 2000');

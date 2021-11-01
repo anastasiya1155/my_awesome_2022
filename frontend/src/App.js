@@ -32,8 +32,8 @@ function App() {
     <Router>
       <Suspense fallback={<div>Loading...</div>}>
         <Switch>
-          <Route path="/login" component={LoginPage} />
-          <Route path="/register" component={RegistrationPage} />
+          <Route path="/signin" component={LoginPage} />
+          <Route path="/signup" component={RegistrationPage} />
           <CheckAuth>
             <Layout>
               <Suspense fallback={<div>Loading...</div>}>

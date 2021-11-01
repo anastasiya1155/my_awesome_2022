@@ -97,7 +97,7 @@ const RegistrationPage = ({ history }) => {
             <Button type="submit" onClick={handleSubmit}>
               Submit
             </Button>
-            <Link to="/login">Login</Link>
+            <Link to="/signin">Login</Link>
           </Grid>
         </Grid>
       </form>

@@ -12,7 +12,7 @@ const CheckAuth = ({ children }) => {
     setIsOk(!!token);
   }, [location]);
 
-  return isOk ? children : <Redirect to="/login" />;
+  return isOk ? children : <Redirect to="/signin" />;
 };
 
 CheckAuth.propTypes = {

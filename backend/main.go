@@ -20,9 +20,9 @@ func main() {
 		}
 	}
 
-	if os.Getenv("LOCAL") == "1" {
+// 	if os.Getenv("LOCAL") == "1" {
 		s.Run(":" + port)
-	} else {
-		s.RunTLS(":"+port, "certificate.crt", "private.key")
-	}
+// 	} else {
+// 		s.RunTLS(":"+port, "cert.pem", "privkey.pem")
+// 	}
 }
