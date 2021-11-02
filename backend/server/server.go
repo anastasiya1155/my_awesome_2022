@@ -2,6 +2,7 @@ package server
 
 import (
 	"github.com/gin-contrib/cors"
+	"github.com/patrickmn/go-cache"
 	"github.com/vova/pa2020/backend/middleware"
 	"github.com/vova/pa2020/backend/router"
 
@@ -9,8 +10,9 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-func Setup(db *gorm.DB) *gin.Engine {
+func Setup(db *gorm.DB, c *cache.Cache) *gin.Engine {
 	r := gin.Default()
+	r.Use(middleware.Cache(c))
 	r.Use(middleware.Options)
 	r.Use(middleware.SetDBtoContext(db))
 	r.Use(cors.Default())

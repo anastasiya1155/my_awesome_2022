@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
+	"github.com/patrickmn/go-cache"
 	dbpkg "github.com/vova/pa2020/backend/db"
 	"github.com/vova/pa2020/backend/models"
 	"io/ioutil"
@@ -30,28 +31,39 @@ type AuthResp struct {
 func CheckJwt() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.Request.Header.Get("Authorization")
-		resp, err := http.Get("http://auth:18401/auth?token="+token)
-		if err != nil {
-			log.Fatalln(err)
-		}
-		//We Read the response body on the line below.
-		body, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			log.Fatalln(err)
-		}
-		var authResponse AuthResp
-		if err := json.Unmarshal(body, &authResponse); err != nil {
-			log.Fatal(err)
-		}
-		if authResponse.Error {
-			c.JSON(401, gin.H{"error": "token is not Valid"})
-			c.Abort()
-			return
+		cacheInstance := CacheInstance(c)
+		cachedEmail, found := cacheInstance.Get(token)
+
+		// todo: string
+		var email interface{}
+		if found {
+			email = cachedEmail
+		} else {
+			resp, err := http.Get("http://auth:18401/auth?token="+token)
+			if err != nil {
+				log.Fatalln(err)
+			}
+			//We Read the response body on the line below.
+			body, err := ioutil.ReadAll(resp.Body)
+			if err != nil {
+				log.Fatalln(err)
+			}
+			var authResponse AuthResp
+			if err := json.Unmarshal(body, &authResponse); err != nil {
+				log.Fatal(err)
+			}
+			if authResponse.Error {
+				c.JSON(401, gin.H{"error": "token is not Valid"})
+				c.Abort()
+				return
+			}
+			email = authResponse.Email
+			cacheInstance.Set(token, email, cache.DefaultExpiration)
 		}
 
 		db := dbpkg.DBInstance(c)
 		var user models.User
-		db.Where("email = ?", authResponse.Email).First(&user)
+		db.Where("email = ?", email).First(&user)
 
 		if user.ID > 0 {
 			c.Set("USER", user)
@@ -79,4 +91,15 @@ func Options(c *gin.Context) {
 		c.Header("Content-Type", "application/json")
 		c.AbortWithStatus(http.StatusOK)
 	}
+}
+
+func Cache(cache *cache.Cache) gin.HandlerFunc   {
+	return func(c *gin.Context) {
+		c.Set("CACHE", cache)
+		c.Next()
+	}
+}
+
+func CacheInstance(c *gin.Context) *cache.Cache {
+	return c.MustGet("CACHE").(*cache.Cache)
 }

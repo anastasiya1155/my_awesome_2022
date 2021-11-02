@@ -1,17 +1,19 @@
 package main
 
 import (
+	"github.com/patrickmn/go-cache"
 	"github.com/vova/pa2020/backend/db"
 	"github.com/vova/pa2020/backend/server"
 	"os"
 	"strconv"
+	"time"
 )
 
 // main ...
 func main() {
 	database := db.Connect()
-
-	s := server.Setup(database)
+	c := cache.New(10*time.Minute, 15*time.Minute)
+	s := server.Setup(database, c)
 	port := "8888"
 
 	if p := os.Getenv("PORT"); p != "" {
