@@ -2,9 +2,10 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import { ListItem, Menu } from '@material-ui/core';
+import { ListItem, Menu, TextField } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import CheckSharp from '@material-ui/icons/CheckSharp';
 import IconButton from '@material-ui/core/IconButton';
 import Divider from '@material-ui/core/Divider';
 import { deleteTaskAction, editTaskAction, getProjectAction } from '../shared/api/handlers';
@@ -15,6 +16,8 @@ import AddTask from './AddTask';
 const Project = ({ match }) => {
   const [menuAnchorElement, setMenuAnchorElement] = React.useState(null);
   const [pressedTask, setPressedTask] = React.useState(null);
+  const [editedTask, setEditedTask] = React.useState(null);
+  const [editedTaskValue, setEditedTaskValue] = React.useState(null);
   const [taskForModal, setTaskForModal] = React.useState(null);
   const project = useSelector((state) => state.projects.projects[match.params.id] || {});
   const tasks = useSelector((state) => state.projects.tasksByStatus[match.params.id] || []);
@@ -39,6 +42,12 @@ const Project = ({ match }) => {
   const handleStatusChange = (task, status) => {
     handleMenuClose();
     editTaskAction(dispatch, { id: task.id, data: { status: status }, projectId: match.params.id });
+  };
+
+  const handleEdit = (task) => {
+    handleMenuClose();
+    setEditedTask(task);
+    setEditedTaskValue(task.body);
   };
 
   const handleArchive = (task) => {
@@ -69,6 +78,21 @@ const Project = ({ match }) => {
     setTaskForModal(null);
   };
 
+  const handleChangeTask = (e) => {
+    setEditedTaskValue(e.target.value);
+  };
+
+  const handleSubmitTaskEdit = () => {
+    editTaskAction(dispatch, {
+      id: editedTask.id,
+      data: { body: editedTaskValue },
+      projectId: match.params.id,
+    }).then(() => {
+      setEditedTask(null);
+      setEditedTaskValue(null);
+    });
+  };
+
   return (
     <div className={classes.root}>
       <div>
@@ -88,13 +112,24 @@ const Project = ({ match }) => {
             {tasks[key].map((task) => (
               <Grid item key={task.id}>
                 <Paper className={classes.paper}>
-                  <Typography className={classes.taskText}>{task.body}</Typography>
-                  <IconButton
-                    onClick={(event) => handleMoreClick(task, event.currentTarget)}
-                    className={classes.moreIcon}
-                  >
-                    <MoreVertIcon />
-                  </IconButton>
+                  {editedTask?.id === task.id ? (
+                    <>
+                      <IconButton onClick={handleSubmitTaskEdit} className={classes.moreIcon}>
+                        <CheckSharp />
+                      </IconButton>
+                      <TextField value={editedTaskValue} onChange={handleChangeTask} />
+                    </>
+                  ) : (
+                    <>
+                      <Typography className={classes.taskText}>{task.body}</Typography>
+                      <IconButton
+                        onClick={(event) => handleMoreClick(task, event.currentTarget)}
+                        className={classes.moreIcon}
+                      >
+                        <MoreVertIcon />
+                      </IconButton>
+                    </>
+                  )}
                 </Paper>
               </Grid>
             ))}
@@ -118,6 +153,7 @@ const Project = ({ match }) => {
         </ListItem>
         <ListItem onClick={() => handleStatusChange(pressedTask, 'done')}>Done</ListItem>
         <Divider />
+        <ListItem onClick={() => handleEdit(pressedTask)}>Edit</ListItem>
         <ListItem onClick={() => handleArchive(pressedTask)}>Archive</ListItem>
         <ListItem onClick={() => handleDelete(pressedTask)}>Delete</ListItem>
       </Menu>
