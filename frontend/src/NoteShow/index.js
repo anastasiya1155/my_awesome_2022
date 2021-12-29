@@ -76,9 +76,10 @@ const NoteCategoryShow = ({ match }) => {
       >
         <AddIcon />
       </IconButton>
-      {notes.map((note) => (
+      {notes.map((note, index) => (
         <Paper key={note.id} className={classes.paper}>
           <Typography className={classes.noteText}>
+            {index + 1}{' '}
             {note.body.split('\n').map((item, key) => (
               <Fragment key={key}>
                 {item}
