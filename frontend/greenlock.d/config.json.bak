@@ -1,6 +1,7 @@
 {
   "defaults": {
     "store": {
+      "basePath": "./greenlock.d",
       "module": "greenlock-store-fs"
     },
     "challenges": {
@@ -21,7 +22,7 @@
       "altnames": [
         "pa2021.solop.cc"
       ],
-      "renewAt": 1
+      "renewAt": 1642819569420
     }
   ]
 }

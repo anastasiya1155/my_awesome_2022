@@ -12,14 +12,14 @@ services:
     tty: true
     volumes:
       - "./db:/var/lib/mysql:cached"
-  front:
-    build:
-      context: frontend
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - "./frontend/greenlock.d:/usr/app/greenlock.d"
+#  front:
+#    build:
+#      context: frontend
+#    ports:
+#      - "80:80"
+#      - "443:443"
+#    volumes:
+#      - "./frontend/greenlock.d:/usr/app/greenlock.d"
 #  pa:
 #    build:
 #      context: personal_assist
