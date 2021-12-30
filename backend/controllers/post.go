@@ -1,14 +1,14 @@
 package controllers
 
 import (
-	"github.com/vova/pa2020/backend/middleware"
+	"backend/middleware"
 	"net/http"
 	"sort"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	dbpkg "github.com/vova/pa2020/backend/db"
-	"github.com/vova/pa2020/backend/models"
+	dbpkg "backend/db"
+	"backend/models"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -247,7 +247,7 @@ func GetPostMonths(c *gin.Context) {
 
 	var result []Result
 
-	sqlquery := `SELECT 
+	sqlquery := `SELECT
 		DATE_FORMAT(date, '%y-%m') ym,
 		DATE_FORMAT(date, '%M') m,
 		DATE_FORMAT(date, '%Y') y,
@@ -255,10 +255,10 @@ func GetPostMonths(c *gin.Context) {
 	FROM
 		posts
 	Where user_id = ?
-	GROUP BY 
+	GROUP BY
 		DATE_FORMAT(date, '%y-%m'),
 		DATE_FORMAT(date, '%M'),
-		DATE_FORMAT(date, '%Y')	
+		DATE_FORMAT(date, '%Y')
 	;`
 
 	db.Raw(sqlquery, middleware.UserInstance(c).ID).Scan(&result)

@@ -12,12 +12,13 @@ type EntityWithUser interface {
 type User struct {
 	ID                 int    `gorm:"primary_key"`
 	Email              string `json:"email"`
-	Password           string `json:"password"`
+	Password           string `json:"-""`
 	Firstname          string `json:"firstname"`
 	Lastname           string `json:"lastname"`
 	WishGroupId        int    `json:"wish_group_id"`
 	TransactionGroupId int    `json:"transaction_group_id"`
 	ProjectGroupId     int    `json:"project_group_id"`
+	Theme              string `json:"theme"`
 }
 
 func (User) TableName() string {

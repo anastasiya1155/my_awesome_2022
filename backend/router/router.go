@@ -2,8 +2,8 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/vova/pa2020/backend/controllers"
-	"github.com/vova/pa2020/backend/middleware"
+	"backend/controllers"
+	"backend/middleware"
 )
 
 func Initialize(r *gin.Engine) {
@@ -17,6 +17,10 @@ func Initialize(r *gin.Engine) {
 	api := r.Group("api")
 	api.Use(middleware.CheckJwt())
 	{
+
+    api.GET("/user", controllers.GetUser)
+    api.PUT("/user", controllers.UpdateUser)
+
 		api.POST("/sandbox", controllers.Sandbox)
 
 		api.POST("/comments", controllers.CreateComment)

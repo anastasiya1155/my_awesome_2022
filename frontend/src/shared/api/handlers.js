@@ -1,5 +1,5 @@
 import * as api from './routes';
-import { SET_ERROR } from '../redux/rootReducer';
+import { SET_ERROR, SET_USER_THEME } from '../redux/rootReducer';
 import {
   LABELS_LOADED,
   PERIODS_LOADED,
@@ -81,6 +81,29 @@ export function getReminderAction(dispatch) {
     api.getExpiredLts,
     (json) => {
       dispatch({ type: REMINDER_LOADED, payload: json });
+    },
+    dispatch,
+  );
+}
+
+export function getUser(dispatch) {
+  return safeAction(
+    api.getUser,
+    (json) => {
+      dispatch({ type: SET_USER_THEME, payload: JSON.parse(json.data.theme || '{}') || {} });
+    },
+    dispatch,
+  );
+}
+
+export function editUserAction(dispatch, { data }) {
+  return safeAction(
+    () => api.putUser(data),
+    () => {
+      if (data.theme) {
+        localStorage.setItem('theme', data.theme);
+        dispatch({ type: SET_USER_THEME, payload: JSON.parse(data.theme) });
+      }
     },
     dispatch,
   );

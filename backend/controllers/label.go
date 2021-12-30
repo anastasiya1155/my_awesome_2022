@@ -1,13 +1,13 @@
 package controllers
 
 import (
-	"github.com/vova/pa2020/backend/middleware"
+	"backend/middleware"
 	"net/http"
 
-	dbpkg "github.com/vova/pa2020/backend/db"
-	"github.com/vova/pa2020/backend/helper"
-	"github.com/vova/pa2020/backend/models"
-	"github.com/vova/pa2020/backend/version"
+	dbpkg "backend/db"
+	"backend/helper"
+	"backend/models"
+	"backend/version"
 
 	"github.com/gin-gonic/gin"
 )

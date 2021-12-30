@@ -101,3 +101,6 @@ export const getPeriods = () => apiLocalGetRequest(`periods`);
 export const postPeriod = (data) => apiLocalPostRequest(`periods`, data);
 export const deletePeriod = (id) => apiLocalDeleteRequest(`periods/${id}`);
 export const putPeriod = (id, data) => apiLocalPutRequest(`periods/${id}`, data);
+
+export const getUser = () => apiLocalGetRequest(`user`);
+export const putUser = (data) => apiLocalPutRequest(`user`, data);

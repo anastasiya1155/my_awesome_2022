@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"time"
 
-	dbpkg "github.com/vova/pa2020/backend/db"
-	"github.com/vova/pa2020/backend/models"
-	"github.com/vova/pa2020/backend/version"
+	dbpkg "backend/db"
+	"backend/models"
+	"backend/version"
 
 	"github.com/gin-gonic/gin"
 )
