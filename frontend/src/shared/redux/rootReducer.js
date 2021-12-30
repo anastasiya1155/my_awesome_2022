@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { createMuiTheme } from '@material-ui/core/styles';
 import post from './postReducer';
 import projects from './projectsReducer';
 import lastTime from './lastTimeReducer';
@@ -6,15 +7,22 @@ import transactions from './transactionsReducer';
 import photos from './photosReducer';
 
 export const SET_ERROR = '@root/SET_ERROR';
+export const SET_USER_THEME = '@root/SET_USER_THEME';
 
 const initialState = {
   error: null,
+  userTheme: localStorage.getItem('theme')
+    ? createMuiTheme(JSON.parse(localStorage.getItem('theme') || '{}'))
+    : {},
+  rawUserTheme: JSON.parse(localStorage.getItem('theme') || '{}'),
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_ERROR:
       return { ...state, error: action.payload };
+    case SET_USER_THEME:
+      return { ...state, userTheme: createMuiTheme(action.payload), rawUserTheme: action.payload };
     default:
       return state;
   }

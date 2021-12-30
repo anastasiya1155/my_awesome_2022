@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/patrickmn/go-cache"
-	"github.com/vova/pa2020/backend/db"
-	"github.com/vova/pa2020/backend/server"
+	"backend/db"
+	"backend/server"
 	"os"
 	"strconv"
 	"time"

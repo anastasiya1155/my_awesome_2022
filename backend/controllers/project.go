@@ -1,14 +1,14 @@
 package controllers
 
 import (
-	"github.com/vova/pa2020/backend/middleware"
+	"backend/middleware"
 	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	dbpkg "github.com/vova/pa2020/backend/db"
-	"github.com/vova/pa2020/backend/helper"
-	"github.com/vova/pa2020/backend/models"
+	dbpkg "backend/db"
+	"backend/helper"
+	"backend/models"
 )
 
 // todo: vote

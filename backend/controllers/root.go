@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"fmt"
-	"github.com/vova/pa2020/backend/middleware"
+	"backend/middleware"
 	"log"
 	"net/http"
 	"strings"
@@ -12,8 +12,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	dbpkg "github.com/vova/pa2020/backend/db"
-	"github.com/vova/pa2020/backend/models"
+	dbpkg "backend/db"
+	"backend/models"
 	"golang.org/x/crypto/bcrypt"
 )
 

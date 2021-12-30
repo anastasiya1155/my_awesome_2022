@@ -3,8 +3,8 @@ package server
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/patrickmn/go-cache"
-	"github.com/vova/pa2020/backend/middleware"
-	"github.com/vova/pa2020/backend/router"
+	"backend/middleware"
+	"backend/router"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"

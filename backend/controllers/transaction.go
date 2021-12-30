@@ -3,9 +3,9 @@ package controllers
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	dbpkg "github.com/vova/pa2020/backend/db"
-	"github.com/vova/pa2020/backend/middleware"
-	"github.com/vova/pa2020/backend/models"
+	dbpkg "backend/db"
+	"backend/middleware"
+	"backend/models"
 	"log"
 	"net/http"
 	"time"
