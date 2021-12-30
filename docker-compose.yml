@@ -31,18 +31,18 @@ services:
 #    volumes:
 #      - "./personal_assist/cmd:/cmd"
 
-  app:
-    build:
-      context: backend
-    ports:
-      - "${BACK_PORT}:8888"
-    restart: always
-    depends_on:
-      - mysql
-
-  auth:
-    build:
-      context: auth
-    ports:
-      - "${AUTH_PORT}:18401"
-    restart: always
+#  app:
+#    build:
+#      context: backend
+#    ports:
+#      - "${BACK_PORT}:8888"
+#    restart: always
+#    depends_on:
+#      - mysql
+#
+#  auth:
+#    build:
+#      context: auth
+#    ports:
+#      - "${AUTH_PORT}:18401"
+#    restart: always
