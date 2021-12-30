@@ -39,7 +39,7 @@ func CheckJwt() gin.HandlerFunc {
 		if found {
 			email = cachedEmail
 		} else {
-			resp, err := http.Get("http://auth:18401/auth?token="+token)
+			resp, err := http.Get("http://localhost:18401/auth?token="+token)
 			if err != nil {
 				log.Fatalln(err)
 			}

@@ -3,14 +3,14 @@ then
   export $(cat .env | sed 's/#.*//g' | xargs)
 fi
 
-cd frontend
-npm run build
+cd backend
+GOOS=linux GOARCH=amd64 go build -v ./main.go
 
 echo "Using env variables:"
 echo $PEM_KEY
 echo $SERVER_USER
 echo $SERVER_ADDRESS
 
-scp -r -i $PEM_KEY build/ $SERVER_USER@$SERVER_ADDRESS:pa2020/frontend
+scp -i $PEM_KEY main $SERVER_USER@$SERVER_ADDRESS:pa2020/backend
 
-ssh sjh "pm2 restart front"
+ssh sjh "pm2 restart back"

@@ -4,17 +4,11 @@ const createProxyMiddleware = require('http-proxy-middleware');
 
 const app = express();
 
-app.use(
-  '/api',
-  createProxyMiddleware({ target: 'http://pa2021.solop.cc:8888', changeOrigin: true }),
-);
-app.use(
-  '/login',
-  createProxyMiddleware({ target: 'http://pa2021.solop.cc:8888', changeOrigin: true }),
-);
+app.use('/api', createProxyMiddleware({ target: 'http://localhost:8888', changeOrigin: true }));
+app.use('/login', createProxyMiddleware({ target: 'http://localhost:8888', changeOrigin: true }));
 app.use(
   '/register',
-  createProxyMiddleware({ target: 'http://pa2021.solop.cc:8888', changeOrigin: true }),
+  createProxyMiddleware({ target: 'http://localhost:8888', changeOrigin: true }),
 );
 
 app.get('/', (req, res) => {

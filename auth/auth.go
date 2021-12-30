@@ -8,6 +8,7 @@ import (
 )
 
 func main() {
+  fmt.Println("Starting auth service")
 	var jwtKey = []byte("my_awsome_key")
 	type AuthResp struct {
 		Error bool `json:"error"`
