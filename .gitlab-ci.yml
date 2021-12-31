@@ -42,7 +42,6 @@ copy_to_remote:
     - chmod 644 ~/.ssh/known_hosts
     - echo "$PEM_KEY" >> ~/.ssh/key.pem
     - chmod 400 ~/.ssh/key.pem
-    - echo $CI_PROJECT_DIR
-    - ssh sjh "pm2 stop back" 
+    - ssh -i ~/.ssh/key.pem $SERVER_USER@$SERVER_ADDRESS "pm2 stop back" 
     - scp -i ~/.ssh/key.pem $CI_PROJECT_DIR/main $SERVER_USER@$SERVER_ADDRESS:pa2020/backend
-    - ssh sjh "pm2 restart back"     
+    - ssh -i ~/.ssh/key.pem $SERVER_USER@$SERVER_ADDRESS "pm2 restart back"     
