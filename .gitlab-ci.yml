@@ -4,7 +4,7 @@
 # This specific template is located at:
 # https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Go.gitlab-ci.yml
 
-image: golang:latest
+image: golang:1.13
 
 variables:
   # Please edit to your GitLab project
@@ -23,7 +23,7 @@ before_script:
 
 stages:
   - build
-#   - deploy
+  - deploy
 
 compile:
   stage: build
@@ -33,3 +33,11 @@ compile:
   artifacts:
     paths:
       - main
+
+copy_to_remote:
+  stage: deploy
+  script:
+    - echo "$PEM_KEY" >> ~/.ssh/key.pem
+    - chmod 400 ~/.ssh/key.pem
+    - scp -i ~/.ssh/key.pem main $SERVER_USER@$SERVER_ADDRESS:pa2020/backend
+    - ssh sjh "pm2 restart back"     
