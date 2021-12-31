@@ -30,7 +30,6 @@ compile:
   script:
     - cd $CI_PROJECT_DIR/backend  
     - GOOS=linux GOARCH=amd64 go build -v -race -ldflags "-extldflags '-static'" -o $CI_PROJECT_DIR/main ./main.go
-    - echo $CI_PROJECT_DIR
   artifacts:
     paths:
       - main
@@ -43,6 +42,6 @@ copy_to_remote:
     - chmod 644 ~/.ssh/known_hosts
     - echo "$PEM_KEY" >> ~/.ssh/key.pem
     - chmod 400 ~/.ssh/key.pem
-    - echo $PEM_KEY
+    - echo $CI_PROJECT_DIR
     - scp -i ~/.ssh/key.pem $CI_PROJECT_DIR/main $SERVER_USER@$SERVER_ADDRESS:pa2020/backend
     - ssh sjh "pm2 restart back"     
