@@ -38,7 +38,10 @@ copy_to_remote:
   stage: deploy
   script:
     - mkdir -p ~/.ssh/
+    - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
     - echo "$PEM_KEY" >> ~/.ssh/key.pem
     - chmod 400 ~/.ssh/key.pem
+    - echo $PEM_KEY
     - scp -i ~/.ssh/key.pem main $SERVER_USER@$SERVER_ADDRESS:pa2020/backend
     - ssh sjh "pm2 restart back"     
