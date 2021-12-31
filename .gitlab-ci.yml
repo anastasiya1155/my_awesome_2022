@@ -22,11 +22,12 @@ before_script:
   - cd $GOPATH/src/$REPO_NAME
 
 stages:
-  - build
+  - build:backend
+  - build:frontend
   - deploy
 
-compile:
-  stage: build
+compile_backend:
+  stage: build:backend
   script:
     - cd $CI_PROJECT_DIR/backend  
     - GOOS=linux GOARCH=amd64 go build -v -race -ldflags "-extldflags '-static'" -o $CI_PROJECT_DIR/main ./main.go
@@ -34,14 +35,32 @@ compile:
     paths:
       - main
 
+compile_frontend:
+  stage: build:frontend
+  image: node:14.0
+  cache:
+  paths:
+    - node_modules/
+  script:
+    - cd $CI_PROJECT_DIR/frontend  
+    - npm ci
+    - npm run build
+  artifacts:
+    paths:
+      - $CI_PROJECT_DIR/frontend/build
+
 copy_to_remote:
   stage: deploy
+  dependencies:
+    - build:backend
+    - build:frontend
   script:
     - mkdir -p ~/.ssh/
     - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
     - echo "$PEM_KEY" >> ~/.ssh/key.pem
     - chmod 400 ~/.ssh/key.pem
-    - ssh -i ~/.ssh/key.pem $SERVER_USER@$SERVER_ADDRESS "pm2 stop back" 
+    - ssh -i ~/.ssh/key.pem $SERVER_USER@$SERVER_ADDRESS "pm2 stop back; pm2 stop front" 
     - scp -i ~/.ssh/key.pem $CI_PROJECT_DIR/main $SERVER_USER@$SERVER_ADDRESS:pa2020/backend
-    - ssh -i ~/.ssh/key.pem $SERVER_USER@$SERVER_ADDRESS "pm2 restart back"     
+    - scp -r -i ~/.ssh/key.pem $CI_PROJECT_DIR/frontend/build $SERVER_USER@$SERVER_ADDRESS:pa2020/frontend
+    - ssh -i ~/.ssh/key.pem $SERVER_USER@$SERVER_ADDRESS "pm2 restart back; pm2 restart front"     
