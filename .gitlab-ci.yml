@@ -39,21 +39,21 @@ compile_frontend:
   stage: build:frontend
   image: node:14.0
   cache:
-  paths:
-    - node_modules/
+    paths:
+      - node_modules/
   script:
     - cd $CI_PROJECT_DIR/frontend  
     - npm ci
     - npm run build
   artifacts:
     paths:
-      - $CI_PROJECT_DIR/frontend/build
+      - frontend/build
 
 copy_to_remote:
   stage: deploy
   dependencies:
-    - build:backend
-    - build:frontend
+    - compile_backend
+    - compile_frontend
   script:
     - mkdir -p ~/.ssh/
     - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
