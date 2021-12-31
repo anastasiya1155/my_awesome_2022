@@ -13,4 +13,4 @@ echo $SERVER_ADDRESS
 
 scp -i $PEM_KEY auth $SERVER_USER@$SERVER_ADDRESS:pa2020/auth
 
-ssh sjh "pm2 restart auth"
+ssh -i $PEM_KEY $SERVER_USER@$SERVER_ADDRESS "pm2 restart auth"

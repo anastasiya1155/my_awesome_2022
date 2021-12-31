@@ -13,4 +13,4 @@ echo $SERVER_ADDRESS
 
 scp -i $PEM_KEY main $SERVER_USER@$SERVER_ADDRESS:pa2020/backend
 
-ssh sjh "pm2 restart back"
+ssh -i $PEM_KEY $SERVER_USER@$SERVER_ADDRESS "pm2 restart back"

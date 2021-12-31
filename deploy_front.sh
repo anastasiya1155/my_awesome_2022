@@ -13,4 +13,4 @@ echo $SERVER_ADDRESS
 
 scp -r -i $PEM_KEY build/ $SERVER_USER@$SERVER_ADDRESS:pa2020/frontend
 
-ssh sjh "pm2 restart front"
+ssh -i $PEM_KEY $SERVER_USER@$SERVER_ADDRESS "pm2 restart front"
