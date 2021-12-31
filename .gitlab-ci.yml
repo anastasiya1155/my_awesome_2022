@@ -37,6 +37,7 @@ compile:
 copy_to_remote:
   stage: deploy
   script:
+    - mkdir -p ~/.ssh/
     - echo "$PEM_KEY" >> ~/.ssh/key.pem
     - chmod 400 ~/.ssh/key.pem
     - scp -i ~/.ssh/key.pem main $SERVER_USER@$SERVER_ADDRESS:pa2020/backend
